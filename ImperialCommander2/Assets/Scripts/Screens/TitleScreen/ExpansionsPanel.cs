@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ExpansionsPanel : MonoBehaviour
@@ -8,7 +9,9 @@ public class ExpansionsPanel : MonoBehaviour
 	{
 		foreach ( Transform t in transform )
 		{
-			if ( t.name == "Button" || t.name == "Figure Packs" || t.name == "Imported" )
+			if ( t.name == "Button"
+				|| t.name == "Figure Packs"
+				|| t.name == "Imported" )
 				continue;
 
 			if ( DataStore.ownedExpansions.Contains( (Expansion)Enum.Parse( typeof( Expansion ), t.name ) ) )
@@ -16,5 +19,8 @@ public class ExpansionsPanel : MonoBehaviour
 			else
 				t.GetComponent<Toggle>().isOn = false;
 		}
+
+		//highlight first child toggle
+		EventSystem.current.SetSelectedGameObject( transform.GetChild( 0 ).gameObject );
 	}
 }

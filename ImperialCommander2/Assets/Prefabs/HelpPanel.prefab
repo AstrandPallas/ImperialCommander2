@@ -97,8 +97,6 @@ MonoBehaviour:
     type: 3}
   textBoxPrefab: {fileID: 1492675755930720784, guid: 70d9e2627c6e1e842bca1a40f0a21eab,
     type: 3}
-  popupBase: {fileID: 7150021106356742139}
-  textBoxPopupBase: {fileID: 845381710578679096}
   rootPanels: []
 --- !u!1 &3214277671056700040
 GameObject:
@@ -202,7 +200,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 0.509434, g: 0.509434, b: 0.509434, a: 1}
-    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
+    m_SelectedColor: {r: 0.6, g: 0.4, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -663,18 +661,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4907222634767412087}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &845381710578679096 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5738310311597184591, guid: cde6f7b41a9f92445aca26c4fc45a58d,
-    type: 3}
-  m_PrefabInstance: {fileID: 4907222634767412087}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4bc91e5156c5d645a95936426a9218c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5253983347275179779
 PrefabInstance:
   m_ObjectHideFlags: 0

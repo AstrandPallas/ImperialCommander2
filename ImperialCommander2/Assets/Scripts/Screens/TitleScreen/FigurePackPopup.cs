@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Saga;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class FigurePackPopup : MonoBehaviour
@@ -7,9 +9,12 @@ public class FigurePackPopup : MonoBehaviour
 	public Text continueText;
 	public Transform layoutContainer;
 	public HelpPanel helpPanel;
+	public GameObject continueButton;
 
 	public void Show()
 	{
+		InputManager.Instance.PushFocus( gameObject );
+		EventSystem.current.SetSelectedGameObject( continueButton );
 		continueText.text = DataStore.uiLanguage.uiTitle.continueBtn;
 
 		foreach ( Transform item in layoutContainer )
@@ -23,6 +28,7 @@ public class FigurePackPopup : MonoBehaviour
 
 	public void Close()
 	{
+		InputManager.Instance.PopFocus();
 		DataStore.ownedFigurePacks.Clear();
 		foreach ( Transform item in layoutContainer )
 		{
@@ -37,5 +43,19 @@ public class FigurePackPopup : MonoBehaviour
 	public void OnHelpClick()
 	{
 		helpPanel.Show();
+	}
+
+	private void Update()
+	{
+		if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
+		{
+			Close();
+		}
+
+		if ( InputManager.Instance.HasFocus()
+			&& EventSystem.current.currentSelectedGameObject == null )
+		{
+			EventSystem.current.SetSelectedGameObject( continueButton );
+		}
 	}
 }

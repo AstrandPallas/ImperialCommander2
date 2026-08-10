@@ -16,6 +16,8 @@ public class HelpPanel : MonoBehaviour
 	RectTransform closeButton;//this panel's "close help" button
 	Canvas theCanvas;
 	Transform customRegionsRoot;
+	List<GameObject> helpButtons;
+	int selectedHelpButtonIndex = 0;
 
 	Action closeCallback;
 	bool tbOpen = false;
@@ -30,6 +32,7 @@ public class HelpPanel : MonoBehaviour
 
 	public void Show( Action callback = null )
 	{
+		InputManager.Instance.PushFocus( gameObject );
 		popupBase = transform.parent.GetComponent<PopupBase>();
 		popupBase.ShowNoZoom();
 
@@ -38,6 +41,11 @@ public class HelpPanel : MonoBehaviour
 		List<Transform> controlList = new List<Transform>();
 		List<Transform> customRegions = new List<Transform>();
 		Transform helpActivationButton = null;
+		helpButtons = new List<GameObject>();
+
+		EventSystem.current.SetSelectedGameObject( closeButton.gameObject );
+		selectedHelpButtonIndex = 0;
+		helpButtons.Add( closeButton.gameObject );
 
 		foreach ( Transform rootPanel in rootPanels )
 		{
@@ -88,6 +96,8 @@ public class HelpPanel : MonoBehaviour
 				goRect.anchoredPosition = relBounds.center;
 				goRect.sizeDelta = relBounds.size;
 
+				helpButtons.Add( helpButton );
+
 				if ( !meta.showIcon )
 				{
 					helpButton.transform.Find( "icon" ).gameObject.SetActive( false );
@@ -96,6 +106,14 @@ public class HelpPanel : MonoBehaviour
 			else
 				Destroy( helpButton );
 		}
+
+		if ( helpButtons.Count > 0 )
+		{
+			selectedHelpButtonIndex = 0;
+			EventSystem.current.SetSelectedGameObject( helpButtons[selectedHelpButtonIndex] );
+		}
+		else
+			EventSystem.current.SetSelectedGameObject( closeButton.gameObject );
 	}
 
 	public void OnHelpRequest( string elementID )
@@ -158,6 +176,7 @@ public class HelpPanel : MonoBehaviour
 	/// </summary>
 	public void Close()
 	{
+		InputManager.Instance.PopFocus();
 		popupBase.CloseNoZoom();
 		closeCallback?.Invoke();
 		foreach ( Transform t in transform )
@@ -177,7 +196,7 @@ public class HelpPanel : MonoBehaviour
 
 	private void Update()
 	{
-		if ( InputManager.Instance.settingsOpenCloseInput )
+		if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
 		{
 			if ( tbOpen )
 			{
@@ -185,9 +204,40 @@ public class HelpPanel : MonoBehaviour
 					.Find( "TextBox" )
 					.GetComponent<TextBox>().OnClose();
 				CloseTB();
+				return;
 			}
 			else
 				Close();
+		}
+
+		if ( tbOpen
+			|| helpButtons == null
+			|| helpButtons.Count == 0 )
+			return;
+
+		if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
+		{
+			Close();
+			return;
+		}
+
+		if ( EventSystem.current.currentSelectedGameObject == null )
+		{
+			EventSystem.current.SetSelectedGameObject( closeButton.gameObject );
+			selectedHelpButtonIndex = 0;
+		}
+
+		if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.NavigateUp )
+			|| InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.NavigateLeft ) )
+		{
+			selectedHelpButtonIndex = (selectedHelpButtonIndex - 1 + helpButtons.Count) % helpButtons.Count;
+			EventSystem.current.SetSelectedGameObject( helpButtons[selectedHelpButtonIndex] );
+		}
+		else if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.NavigateDown )
+			|| InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.NavigateRight ) )
+		{
+			selectedHelpButtonIndex = (selectedHelpButtonIndex + 1) % helpButtons.Count;
+			EventSystem.current.SetSelectedGameObject( helpButtons[selectedHelpButtonIndex] );
 		}
 	}
 }

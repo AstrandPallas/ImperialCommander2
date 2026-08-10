@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Saga
@@ -13,12 +14,17 @@ namespace Saga
 		public CampaignTogglePrefab campaignTogglePrefab;
 		public GameObject toggleContainer;
 		public Button startButton;
+		public GameObject cancelButton;
 
 		Action callback;
 		Guid selectedCampaign;
+		List<Selectable> importButtonList = new List<Selectable>();
 
 		public void Show( Action onClose )
 		{
+			importButtonList.Clear();
+			InputManager.Instance.PushFocus( gameObject );
+			EventSystem.current.SetSelectedGameObject( cancelButton );
 			startText.text = DataStore.uiLanguage.sagaUISetup.setupStartBtn;
 			cancelText.text = DataStore.uiLanguage.uiSetup.cancel;
 			titleText.text = DataStore.uiLanguage.uiTitle.loadCampaign;
@@ -56,7 +62,42 @@ namespace Saga
 				{
 					var go = Instantiate( campaignTogglePrefab, toggleContainer.transform );
 					go.GetComponent<CampaignTogglePrefab>().Init( item, toggleGroup, OnToggleCallback );
+					importButtonList.Add( go.GetComponent<Selectable>() );
 				}
+			}
+
+			//iterate through the list of import buttons and modify its navigation so that it loops through the list
+			for ( int i = 0; i < importButtonList.Count; i++ )
+			{
+				importButtonList[i].navigation = new Navigation
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnUp = importButtonList[(i - 1 + importButtonList.Count) % importButtonList.Count],
+					selectOnDown = importButtonList[(i + 1) % importButtonList.Count],
+					selectOnLeft = null,
+					selectOnRight = null
+				};
+			}
+			//set the last button's down navigation to the cancel button
+			if ( importButtonList.Count > 0 )
+			{
+				//make the cancel button's up navigation select the last import button
+				cancelButton.GetComponent<Selectable>().navigation = new Navigation
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnUp = importButtonList[importButtonList.Count - 1],
+					selectOnDown = null,
+					selectOnLeft = null,
+					selectOnRight = null
+				};
+				var lastNav = importButtonList[importButtonList.Count - 1].navigation;
+				lastNav.selectOnDown = cancelButton.GetComponent<Selectable>();
+				importButtonList[importButtonList.Count - 1].navigation = lastNav;
+			}
+
+			if ( importButtonList.Count > 0 )
+			{
+				EventSystem.current.SetSelectedGameObject( importButtonList[0].gameObject );
 			}
 
 			startButton.interactable = false;
@@ -82,6 +123,7 @@ namespace Saga
 
 		public void Close( bool doCallback = true )
 		{
+			InputManager.Instance.PopFocus();
 			popupBase.Close();
 			if ( doCallback )
 				callback?.Invoke();
@@ -92,6 +134,24 @@ namespace Saga
 			startButton.interactable = t.GetComponent<Toggle>().isOn;
 			if ( t.GetComponent<Toggle>().isOn )
 				selectedCampaign = t.campaignGUID;
+		}
+
+		private void Update()
+		{
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
+			{
+				Close();
+			}
+
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.NavigateLeft )
+				&& EventSystem.current.currentSelectedGameObject == cancelButton )
+				EventSystem.current.SetSelectedGameObject( startButton.gameObject );
+
+			if ( InputManager.Instance.HasFocus()
+				&& EventSystem.current.currentSelectedGameObject == null )
+			{
+				EventSystem.current.SetSelectedGameObject( cancelButton );
+			}
 		}
 	}
 }

@@ -38,14 +38,17 @@ public class SettingsPanel : MonoBehaviour
 	bool toggleBusy;
 	bool awaitInput = false;
 	string oldValue, inputCommand;
+	GameObject lastSelected;
 
 	public void Show( Action<SettingsCommand> onQuit, BiomeType btype = BiomeType.Menu, Action callback = null )
 	{
 		EventSystem.current.SetSelectedGameObject( tabButtons[0].gameObject );
+		InputManager.Instance.PushFocus( gameObject );
 		InputManager.Instance.uiAnimationsPlaying = true;
 		quitAction = onQuit;
 		biomeType = btype;
 		callbackAction = callback;
+		//awaiting custom input key mapping
 		awaitInput = false;
 		//remove return to title button only if we're already on the title screen
 		returnButton.SetActive( FindObjectOfType<TitleController>() == null );
@@ -57,7 +60,6 @@ public class SettingsPanel : MonoBehaviour
 		transform.GetChild( 1 ).localScale = new Vector3( .85f, .85f, .85f );
 		transform.GetChild( 1 ).DOScale( 1, .5f ).SetEase( Ease.OutExpo ).OnComplete( () =>
 		{
-			InputManager.Instance.settingsOpen = true;
 			InputManager.Instance.uiAnimationsPlaying = false;
 		} );
 
@@ -149,7 +151,8 @@ public class SettingsPanel : MonoBehaviour
 
 		fader.DOFade( 0, .5f ).OnComplete( () =>
 		{
-			InputManager.Instance.settingsOpen = false;
+			//InputManager.Instance.settingsOpen = false;
+			InputManager.Instance.PopFocus();
 			InputManager.Instance.uiAnimationsPlaying = false;
 			gameObject.SetActive( false );
 			callbackAction?.Invoke();
@@ -181,7 +184,6 @@ public class SettingsPanel : MonoBehaviour
 		cg.DOFade( 0, .2f );
 		transform.GetChild( 1 ).DOScale( .85f, .5f ).SetEase( Ease.OutExpo ).OnComplete( () =>
 		{
-			InputManager.Instance.settingsOpen = false;
 			InputManager.Instance.uiAnimationsPlaying = false;
 		} );
 		InputManager.Instance.uiAnimationsPlaying = true;
@@ -362,7 +364,6 @@ public class SettingsPanel : MonoBehaviour
 
 	public void ToggleColor( Image i )
 	{
-		//EventSystem.current.SetSelectedGameObject( null );
 		sound.PlaySound( FX.Click );
 
 		int colorIndex = ColorToIndex( i.color );
@@ -420,7 +421,7 @@ public class SettingsPanel : MonoBehaviour
 	private void Update()
 	{
 		//if we're waiting for input, check if any key was pressed this frame and if so, set that key as the new value for this input command and save it to PlayerPrefs. Also if Escape is pressed, exit awaitInput mode without changing the key mapping.
-		if ( awaitInput )
+		if ( InputManager.Instance.IsFocused( gameObject ) && awaitInput )
 		{
 			if ( Input.GetKeyDown( KeyCode.Escape ) )
 			{
@@ -456,13 +457,49 @@ public class SettingsPanel : MonoBehaviour
 				tabButtons.First( x => x.isOn ).Select();
 			}
 
-			if ( InputManager.Instance.settingsOpenCloseInput
-				&& InputManager.Instance.settingsOpen
-				&& !InputManager.Instance.uiAnimationsPlaying )
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.SettingsOpenClose ) )
 			{
 				OnOK();
 			}
 
+			var current = EventSystem.current.currentSelectedGameObject;
+			if ( current != lastSelected )
+			{
+				lastSelected = current;
+			}
+
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.IncreaseValue ) )
+			{
+				//audio tab
+				if ( lastSelected.name == "setting item (music)" )
+					musicWheelHandler.OnAdd();
+				if ( lastSelected.name == "setting item (sound)" )
+					soundWheelHandler.OnAdd();
+				if ( lastSelected.name == "setting item (ambient)" )
+					ambientWheelHandler.OnAdd();
+
+				//colors tab
+				if ( lastSelected.name == "setting item (regular)" )
+					ToggleColor( regularEnemyButton2 );
+				if ( lastSelected.name == "setting item( elite dual )" )
+					ToggleColor( eliteEnemyButton2 );
+			}
+			else if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.DecreaseValue ) )
+			{
+				//audio tab
+				if ( lastSelected.name == "setting item (music)" )
+					musicWheelHandler.OnSubtract();
+				if ( lastSelected.name == "setting item (sound)" )
+					soundWheelHandler.OnSubtract();
+				if ( lastSelected.name == "setting item (ambient)" )
+					ambientWheelHandler.OnSubtract();
+
+				//colors tab
+				if ( lastSelected.name == "setting item (regular)" )
+					ToggleColor( regularEnemyButton1 );
+				if ( lastSelected.name == "setting item( elite dual )" )
+					ToggleColor( eliteEnemyButton1 );
+			}
 		}
 	}
 

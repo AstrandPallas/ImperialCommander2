@@ -78,6 +78,7 @@ namespace Saga
 	public enum ThumbType { All, Other, Rebel, Imperial, Mercenary, StockImperial, StockAlly, StockHero, StockVillain }
 	public enum Factions { Imperial, Mercenary }
 	public enum MissionLogType { TextBox, InputBox, PromptBox, PlayerSelection, GroupActivation, GroupDeployment, GroupRemoved, GroupDefeated, DeploymentEvent }
+	public enum FocusedInputType { SettingsOpenClose, NavigateUp, NavigateDown, NavigateLeft, NavigateRight, AnalogLeftUp, AnalogLeftDown, AnalogRightUp, AnalogRightDown, Cancel, IncreaseValue, DecreaseValue, DismissDialog }
 	public enum CameraView { Normal, TopDown }
 	public enum CampaignType { Official, Custom, Imported }
 	public enum MissionSource { None, Official, Custom, Embedded }//embedded=custom campaign

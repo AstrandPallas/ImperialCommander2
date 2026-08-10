@@ -310,6 +310,7 @@ MonoBehaviour:
   theText: {fileID: 1282912117672621203}
   fader: {fileID: 1282912117444310007}
   cg: {fileID: 1282912118127278870}
+  continueButtonObject: {fileID: 1282912118039427101}
 --- !u!1 &1282912117672621201
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,8 +344,8 @@ RectTransform:
   m_Father: {fileID: 1282912118333317596}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -590,7 +591,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 0.15686275, b: 0, a: 1}
     m_HighlightedColor: {r: 1, g: 0.5586207, b: 0, a: 1}
     m_PressedColor: {r: 0.46226418, g: 0.07251203, b: 0, a: 1}
-    m_SelectedColor: {r: 1, g: 0.15686275, b: 0, a: 1}
+    m_SelectedColor: {r: 0.6, g: 0.4, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

@@ -49,8 +49,13 @@ public class PopupBase : MonoBehaviour
 
 		if ( doZoom )
 		{
+			InputManager.Instance.uiAnimationsPlaying = true;
 			transform.GetChild( 1 ).localScale = new Vector3( .85f, .85f, .85f );
-			transform.GetChild( 1 ).DOScale( 1, .5f ).SetEase( Ease.OutExpo ).OnComplete( () => callback?.Invoke() );
+			transform.GetChild( 1 ).DOScale( 1, .5f ).SetEase( Ease.OutExpo ).OnComplete( () =>
+			{
+				callback?.Invoke();
+				InputManager.Instance.uiAnimationsPlaying = false;
+			} );
 		}
 		else
 			callback?.Invoke();
@@ -61,8 +66,11 @@ public class PopupBase : MonoBehaviour
 		EventSystem.current.SetSelectedGameObject( null );
 		isActive = false;
 		FindObjectOfType<Sound>().PlaySound( FX.Click );
+		InputManager.Instance.uiAnimationsPlaying = true;
+
 		fader.DOFade( 0, .5f ).OnComplete( () =>
 		{
+			InputManager.Instance.uiAnimationsPlaying = false;
 			gameObject.SetActive( false );
 			callback?.Invoke();
 		} );

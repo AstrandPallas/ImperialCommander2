@@ -1,6 +1,7 @@
 using Saga;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TutorialPanel : MonoBehaviour
@@ -8,14 +9,18 @@ public class TutorialPanel : MonoBehaviour
 	public PopupBase popupBase;
 	public Text startText, cancelText, titleText;
 	public TextMeshProUGUI descriptionText, taglineText;
+	public GameObject startButton;
 
 	int tutIndex;
 
 	public void Show( int index )
 	{
+		InputManager.Instance.PushFocus( gameObject );
 		startText.text = DataStore.uiLanguage.sagaUISetup.setupStartBtn;
 		cancelText.text = DataStore.uiLanguage.uiSetup.cancel;
 		tutIndex = index + 1;
+
+		EventSystem.current.SetSelectedGameObject( startButton );
 
 		//try to load the mission
 		TranslatedMission translatedMission = null;
@@ -56,6 +61,7 @@ public class TutorialPanel : MonoBehaviour
 
 	public void Close()
 	{
+		InputManager.Instance.PopFocus();
 		popupBase.Close();
 	}
 
@@ -97,5 +103,19 @@ public class TutorialPanel : MonoBehaviour
 		}
 
 		FindObjectOfType<TitleController>().StartTutorial();
+	}
+
+	private void Update()
+	{
+		if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
+		{
+			Close();
+		}
+
+		if ( InputManager.Instance.HasFocus()
+			&& EventSystem.current.currentSelectedGameObject == null )
+		{
+			EventSystem.current.SetSelectedGameObject( startButton );
+		}
 	}
 }

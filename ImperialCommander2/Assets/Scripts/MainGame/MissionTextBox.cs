@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MissionTextBox : MonoBehaviour
@@ -10,11 +11,14 @@ public class MissionTextBox : MonoBehaviour
 	public TextMeshProUGUI theText;
 	public Image fader;
 	public CanvasGroup cg;
+	public GameObject continueButtonObject;
 
 	Action callback;
 
 	public void Show( string text, Action action = null )
 	{
+		InputManager.Instance.PushFocus( gameObject );
+		EventSystem.current.SetSelectedGameObject( continueButtonObject );
 		callback = action;
 
 		gameObject.SetActive( true );
@@ -33,6 +37,7 @@ public class MissionTextBox : MonoBehaviour
 
 	public void OnClose()
 	{
+		InputManager.Instance.PopFocus();
 		callback?.Invoke();
 		FindObjectOfType<Sound>().PlaySound( FX.Click );
 		fader.DOFade( 0, .5f ).OnComplete( () => gameObject.SetActive( false ) );
@@ -42,7 +47,7 @@ public class MissionTextBox : MonoBehaviour
 
 	private void Update()
 	{
-		if ( Input.GetKeyDown( KeyCode.Space ) )
+		if ( InputManager.Instance.GetFocusedInput( gameObject, Saga.FocusedInputType.DismissDialog ) )
 			OnClose();
 	}
 }

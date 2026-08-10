@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Saga
@@ -15,6 +16,7 @@ namespace Saga
 		public TextMeshProUGUI placeholderText, importedCampaignNameText;
 		public Text startText, cancelText, importCampaignBtn;
 		public Button startButton;
+		public GameObject cancelButton, importButton;
 		public Toggle customToggle;
 		public ImportCampaignPanel campaignPanel;
 		public Image packageSprite;
@@ -27,12 +29,15 @@ namespace Saga
 
 		public void Show( Action onClose )
 		{
+			InputManager.Instance.PushFocus( gameObject );
+			EventSystem.current.SetSelectedGameObject( cancelButton );
 			campaignNameInputField.text = "";
 			startText.text = DataStore.uiLanguage.sagaUISetup.setupStartBtn;
 			cancelText.text = DataStore.uiLanguage.uiSetup.cancel;
 			placeholderText.text = DataStore.uiLanguage.uiCampaign.campaignNameUC;
 			importCampaignBtn.text = DataStore.uiLanguage.sagaUISetup.importBtn;
 
+			startButton.interactable = false;
 			selectedCampaignPackage = null;
 			importFuncDoRemove = false;
 			callback = onClose;
@@ -103,6 +108,7 @@ namespace Saga
 				{
 					if ( campaignPanel.selectedPackage != null )
 					{
+						EventSystem.current.SetSelectedGameObject( importButton );
 						selectedCampaignPackage = campaignPanel.selectedPackage;
 
 						var translatedCampaignItem = selectedCampaignPackage.campaignTranslationItems.Where( x => x.fileName.ToLower().Contains( $"_{DataStore.Language.ToLower()}.json" ) ).FirstOr( null );
@@ -126,7 +132,10 @@ namespace Saga
 						}
 					}
 					else
+					{
 						selectedCampaignPackage = null;
+						EventSystem.current.SetSelectedGameObject( importButton );
+					}
 				} );
 			}
 		}
@@ -144,9 +153,33 @@ namespace Saga
 
 		public void Close( bool doCallback = true )
 		{
+			if ( InputManager.Instance.uiAnimationsPlaying )
+				return;
+			InputManager.Instance.PopFocus();
 			popupBase.Close();
 			if ( doCallback )
 				callback?.Invoke();
+		}
+
+		private void Update()
+		{
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
+			{
+				Close();
+			}
+
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.NavigateLeft )
+				&& EventSystem.current.currentSelectedGameObject == cancelButton )
+			{
+				if ( startButton.interactable )
+					EventSystem.current.SetSelectedGameObject( startButton.gameObject );
+			}
+
+			if ( InputManager.Instance.HasFocus()
+				&& EventSystem.current.currentSelectedGameObject == null )
+			{
+				EventSystem.current.SetSelectedGameObject( cancelButton );
+			}
 		}
 	}
 }
