@@ -63,7 +63,7 @@ public class PopupBase : MonoBehaviour
 
 	void ClosePopup( Action callback, bool doZoom )
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		isActive = false;
 		FindObjectOfType<Sound>().PlaySound( FX.Click );
 		InputManager.Instance.uiAnimationsPlaying = true;

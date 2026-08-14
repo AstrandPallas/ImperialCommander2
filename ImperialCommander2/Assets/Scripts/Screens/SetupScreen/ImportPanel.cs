@@ -28,7 +28,7 @@ public class ImportPanel : MonoBehaviour
 
 	public void Show()
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		popupBase.Show();
 
 		continueText.text = DataStore.uiLanguage.uiSetup.continueBtn;

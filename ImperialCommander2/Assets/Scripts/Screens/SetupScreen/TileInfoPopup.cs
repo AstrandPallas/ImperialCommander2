@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -10,9 +11,16 @@ namespace Saga
 	{
 		public PopupBase popupBase;
 		public Transform container;
+		public GameObject closeButton;
 
-		public void Show( string[] tiles )
+		Action callback = null;
+
+		public void Show( string[] tiles, Action callback = null )
 		{
+			this.callback = callback;
+			InputManager.Instance.PushFocus( gameObject );
+			EventSystem.current.SetSelectedGameObject( closeButton );
+
 			var tileExpansionTranslatedNames = new Dictionary<string, string>()
 				{
 					{ Expansion.Core.ToString(), $"<color=#7FD3FF>{DataStore.uiLanguage.sagaMainApp.mmCoreTileNameUC}</color>" },
@@ -24,7 +32,6 @@ namespace Saga
 					{ Expansion.Lothal.ToString(), $"<color=#7FD3FF>{DataStore.uiLanguage.sagaMainApp.mmLothalTileNameUC}</color>" },
 				};
 
-			EventSystem.current.SetSelectedGameObject( null );
 			popupBase.Show();
 
 			foreach ( Transform item in container )
@@ -73,7 +80,7 @@ namespace Saga
 					itemTileTranslated = Utils.ReplaceGlyphs( itemTileTranslated );
 				}
 
-				if (Utils.tileShapes.ContainsKey(item.Tile))
+				if ( Utils.tileShapes.ContainsKey( item.Tile ) )
 					itemTileTranslated = $"{itemTileTranslated} <font=\"TilesIcons SDF\">{Utils.tileShapes[item.Tile]}</font>";
 
 				nt.text = itemTileTranslated;
@@ -82,13 +89,25 @@ namespace Saga
 
 		public void OnClose()
 		{
+			if ( InputManager.Instance.uiAnimationsPlaying )
+				return;
+			InputManager.Instance.PopFocus();
+
 			popupBase.Close();
+			callback?.Invoke();
 		}
 
 		private void Update()
 		{
-			if ( Input.GetKeyDown( KeyCode.Space ) )
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.DismissDialog )
+				|| InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
 				OnClose();
+
+			if ( InputManager.Instance.HasFocus()
+				&& EventSystem.current.currentSelectedGameObject == null )
+			{
+				EventSystem.current.SetSelectedGameObject( closeButton );
+			}
 		}
 	}
 }

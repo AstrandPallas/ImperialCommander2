@@ -17,19 +17,23 @@ namespace Saga
 		public TextMeshProUGUI nameText;
 		public DynamicCardPrefab cardPrefab;
 		public HelpPanel helpPanel;
+		public GameObject closeButton, helpButton, coreToggle, twinToggle, hothToggle, bespinToggle, jabbaToggle, empireToggle, lothalToggle, otherToggle, importsToggle;
 
 		Action callback;
 		int prevExp;
 		bool updating;
 		List<DeploymentCard> disabledGroups = new List<DeploymentCard>();
 		GroupSelectionMode dataMode;
+		List<Selectable> mugIconToggle = new List<Selectable>();//for navigation with controller/keyboard
 
 		public void Show( GroupSelectionMode mode, List<DeploymentCard> disabledG = null, Action cb = null )
 		{
+			InputManager.Instance.PushFocus( gameObject );
+			EventSystem.current.SetSelectedGameObject( closeButton );
+
 			disabledGroups = disabledG ?? new List<DeploymentCard>();
 			callback = cb;
 			dataMode = mode;
-			EventSystem.current.SetSelectedGameObject( null );
 			popupBase.Show();
 
 			prevExp = -1;
@@ -37,6 +41,44 @@ namespace Saga
 			ResetExpansionUI();
 
 			OnChangeExpansion( 0 );
+
+			//wire up navigation for the expansion toggles, based on owned expansions
+			WireUpExpansionNavigation();
+		}
+
+		void WireUpExpansionNavigation()
+		{
+			for ( int i = 0; i < expansionToggles.Length; i++ )
+			{
+				expansionToggles[i].navigation = new Navigation
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnLeft = i > 0 ? FirstInteractibleExpansionToggleLeft( i ) : null,
+					selectOnRight = i < expansionToggles.Length - 1 ? FirstInteractibleExpansionToggleRight( i ) : null,
+					selectOnUp = null,
+					selectOnDown = mugIconToggle.Count > 0 ? mugIconToggle[0] : closeButton.GetComponent<Button>()
+				};
+			}
+		}
+
+		Selectable FirstInteractibleExpansionToggleRight( int index )
+		{
+			for ( int i = index + 1; i < expansionToggles.Length; i++ )
+			{
+				if ( expansionToggles[i].interactable )
+					return expansionToggles[i];
+			}
+			return null;
+		}
+
+		Selectable FirstInteractibleExpansionToggleLeft( int index )
+		{
+			for ( int i = index - 1; i >= 0; i-- )
+			{
+				if ( expansionToggles[i].interactable )
+					return expansionToggles[i];
+			}
+			return null;
 		}
 
 		void ResetExpansionUI()
@@ -68,8 +110,6 @@ namespace Saga
 		//change expansion
 		public void OnChangeExpansion( int idx )
 		{
-			EventSystem.current.SetSelectedGameObject( null );
-
 			if ( prevExp == idx || updating )
 				return;
 
@@ -92,10 +132,15 @@ namespace Saga
 			{
 				UpdateVillains( idx );
 			}
+
+			WireUpExpansionNavigation();
 		}
 
 		void UpdateIgnored( int idx )
 		{
+			InputManager.Instance.uiAnimationsPlaying = true;
+			mugIconToggle.Clear();
+
 			updating = true;//avoid tripping toggle callback
 
 			string expansion = ((Expansion)idx).ToString();
@@ -116,6 +161,22 @@ namespace Saga
 					mug.GetComponent<GroupMugshotToggle>().isOn = true;
 					mug.GetComponent<GroupMugshotToggle>().UpdateToggle();
 				}
+
+				mugIconToggle.Add( mug.transform.GetComponentInChildren<Button>().GetComponent<Selectable>() );
+				//add navigation to the toggles for controller/keyboard support
+				for ( int mugidx = 0; mugidx < mugIconToggle.Count; mugidx++ )
+				{
+					mugIconToggle[mugidx].navigation = new Navigation
+					{
+						mode = Navigation.Mode.Explicit,
+						selectOnLeft = mugidx > 0 ? mugIconToggle[mugidx - 1] : null,
+						selectOnRight = mugidx < mugIconToggle.Count - 1 ? mugIconToggle[mugidx + 1] : null,
+						//set selectOnUp and down based on a row of 7 items
+						selectOnUp = mugidx >= 7 ? mugIconToggle[mugidx - 7] : expansionToggles[0],
+						selectOnDown = mugidx < mugIconToggle.Count - 7 ? mugIconToggle[mugidx + 7] : closeButton.GetComponent<Button>(),
+					};
+				}
+
 				//disable the toggle if it's on the mission/preset ignore list
 				if ( disabledGroups.ContainsCard( cards[i] ) )
 					mug.GetComponent<GroupMugshotToggle>().DisableMug();
@@ -125,10 +186,26 @@ namespace Saga
 			UpdateExpansionCounts();
 			if ( cards.Count > 0 )
 				cardPrefab.InitCard( cards[0] );
+
+			InputManager.Instance.uiAnimationsPlaying = false;
+			if ( mugIconToggle.Count > 0 )
+			{
+				closeButton.GetComponent<Button>().navigation = new Navigation
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnLeft = null,
+					selectOnRight = helpButton.GetComponent<Button>(),
+					selectOnUp = mugIconToggle[mugIconToggle.Count - 1],//last item in the list
+					selectOnDown = null
+				};
+			}
 		}
 
 		void UpdateIgnoredImported()
 		{
+			InputManager.Instance.uiAnimationsPlaying = true;
+			mugIconToggle.Clear();
+
 			updating = true;//avoid tripping toggle callback
 
 			//add imported Imperial cards
@@ -164,16 +241,47 @@ namespace Saga
 				//disable the toggle if it's on the mission/preset ignore list
 				if ( disabledGroups.ContainsCard( cards[i] ) )
 					mug.GetComponent<GroupMugshotToggle>().DisableMug();
+
+				mugIconToggle.Add( mug.transform.GetComponentInChildren<Button>().GetComponent<Selectable>() );
+				//add navigation to the toggles for controller/keyboard support
+				for ( int mugidx = 0; mugidx < mugIconToggle.Count; mugidx++ )
+				{
+					mugIconToggle[mugidx].navigation = new Navigation
+					{
+						mode = Navigation.Mode.Explicit,
+						selectOnLeft = mugidx > 0 ? mugIconToggle[mugidx - 1] : null,
+						selectOnRight = mugidx < mugIconToggle.Count - 1 ? mugIconToggle[mugidx + 1] : null,
+						//set selectOnUp and down based on a row of 7 items
+						selectOnUp = mugidx >= 7 ? mugIconToggle[mugidx - 7] : expansionToggles[0],
+						selectOnDown = mugidx < mugIconToggle.Count - 7 ? mugIconToggle[mugidx + 7] : closeButton.GetComponent<Button>(),
+					};
+				}
 			}
 
 			updating = false;
 			UpdateExpansionCounts();
 			if ( cards.Count > 0 )
 				cardPrefab.InitCard( cards[0] );
+
+			InputManager.Instance.uiAnimationsPlaying = false;
+			if ( mugIconToggle.Count > 0 )
+			{
+				closeButton.GetComponent<Button>().navigation = new Navigation
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnLeft = null,
+					selectOnRight = helpButton.GetComponent<Button>(),
+					selectOnUp = mugIconToggle[mugIconToggle.Count - 1],//last item in the list
+					selectOnDown = null
+				};
+			}
 		}
 
 		void UpdateVillains( int idx )
 		{
+			InputManager.Instance.uiAnimationsPlaying = true;
+			mugIconToggle.Clear();
+
 			updating = true;//avoid tripping toggle callback
 
 			string expansion = ((Expansion)idx).ToString();//tab 8 (imported) will == "8"
@@ -202,11 +310,39 @@ namespace Saga
 					mug.GetComponent<GroupMugshotToggle>().isOn = true;
 					mug.GetComponent<GroupMugshotToggle>().UpdateToggle();
 				}
+
+				mugIconToggle.Add( mug.transform.GetComponentInChildren<Button>().GetComponent<Selectable>() );
+				//add navigation to the toggles for controller/keyboard support
+				for ( int mugidx = 0; mugidx < mugIconToggle.Count; mugidx++ )
+				{
+					mugIconToggle[mugidx].navigation = new Navigation
+					{
+						mode = Navigation.Mode.Explicit,
+						selectOnLeft = mugidx > 0 ? mugIconToggle[mugidx - 1] : null,
+						selectOnRight = mugidx < mugIconToggle.Count - 1 ? mugIconToggle[mugidx + 1] : null,
+						//set selectOnUp and down based on a row of 7 items
+						selectOnUp = mugidx >= 7 ? mugIconToggle[mugidx - 7] : expansionToggles[0],
+						selectOnDown = mugidx < mugIconToggle.Count - 7 ? mugIconToggle[mugidx + 7] : closeButton.GetComponent<Button>(),
+					};
+				}
 			}
 
 			updating = false;
 			if ( cards.Count > 0 )
 				cardPrefab.InitCard( cards[0] );
+
+			InputManager.Instance.uiAnimationsPlaying = false;
+			if ( mugIconToggle.Count > 0 )
+			{
+				closeButton.GetComponent<Button>().navigation = new Navigation
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnLeft = null,
+					selectOnRight = helpButton.GetComponent<Button>(),
+					selectOnUp = mugIconToggle[mugIconToggle.Count - 1],//last item in the list
+					selectOnDown = null
+				};
+			}
 		}
 
 		/// <summary>
@@ -295,6 +431,10 @@ namespace Saga
 
 		public void OnClose()
 		{
+			if ( InputManager.Instance.uiAnimationsPlaying )
+				return;
+			InputManager.Instance.PopFocus();
+
 			FindObjectOfType<Sound>().PlaySound( FX.Click );
 			callback?.Invoke();
 			popupBase.Close( () =>
@@ -308,13 +448,23 @@ namespace Saga
 
 		public void OnHelpClick()
 		{
-			helpPanel.Show();
+			helpPanel.Show( () =>
+			{
+				EventSystem.current.SetSelectedGameObject( helpButton );
+			} );
 		}
 
 		private void Update()
 		{
-			if ( Input.GetKeyDown( KeyCode.Space ) )
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.DismissDialog )
+				|| InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
 				OnClose();
+
+			if ( InputManager.Instance.HasFocus()
+				&& EventSystem.current.currentSelectedGameObject == null )
+			{
+				EventSystem.current.SetSelectedGameObject( closeButton );
+			}
 		}
 	}
 }

@@ -7,6 +7,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
+/// <summary>
+/// DEPRECATED: This class is no longer used. Settings are now handled in SettingsPanel.
+/// </summary>
 public class SettingsScreen : MonoBehaviour
 {
 	public CanvasGroup cg;
@@ -109,18 +112,18 @@ public class SettingsScreen : MonoBehaviour
 		PlayerPrefs.SetInt( "ambientVolume", ambientWheelHandler.wheelValue );
 		PlayerPrefs.SetInt( "soundVolume", soundWheelHandler.wheelValue );
 		PlayerPrefs.SetInt( "skipWarpIntro", skipWarpIntroToggle.isOn ? 1 : 0 );
-		PlayerPrefs.SetInt( "defaultRegularEnemyColor1", ColorToIndex(regularEnemyButton1.color) );
-		PlayerPrefs.SetInt( "defaultRegularEnemyColor2", ColorToIndex(regularEnemyButton2.color) );
-		if (PlayerPrefs.GetString("Lothal") == "true")
+		PlayerPrefs.SetInt( "defaultRegularEnemyColor1", ColorToIndex( regularEnemyButton1.color ) );
+		PlayerPrefs.SetInt( "defaultRegularEnemyColor2", ColorToIndex( regularEnemyButton2.color ) );
+		if ( PlayerPrefs.GetString( "Lothal" ) == "true" )
 		{
-			PlayerPrefs.SetInt( "defaultEliteEnemyColor1", ColorToIndex(eliteEnemyButton1.color) );
+			PlayerPrefs.SetInt( "defaultEliteEnemyColor1", ColorToIndex( eliteEnemyButton1.color ) );
 		}
 		else
 		{
-			PlayerPrefs.SetInt( "defaultEliteEnemyColor1", ColorToIndex(eliteEnemySingleButton.color) );
+			PlayerPrefs.SetInt( "defaultEliteEnemyColor1", ColorToIndex( eliteEnemySingleButton.color ) );
 		}
-		PlayerPrefs.SetInt( "defaultEliteEnemyColor2", ColorToIndex(eliteEnemyButton2.color) );
-		PlayerPrefs.SetInt( "defaultVillainColor", ColorToIndex(villainButton.color) );
+		PlayerPrefs.SetInt( "defaultEliteEnemyColor2", ColorToIndex( eliteEnemyButton2.color ) );
+		PlayerPrefs.SetInt( "defaultVillainColor", ColorToIndex( villainButton.color ) );
 
 		PlayerPrefs.Save();
 
@@ -274,12 +277,12 @@ public class SettingsScreen : MonoBehaviour
 		colorPanel.SetActive( true );
 	}
 
-	public void ToggleColor(Image i)
+	public void ToggleColor( Image i )
 	{
-		EventSystem.current.SetSelectedGameObject(null);
-		sound.PlaySound(FX.Click);
+		EventSystem.current.SetSelectedGameObject( null );
+		sound.PlaySound( FX.Click );
 
-		int colorIndex = ColorToIndex(i.color);
+		int colorIndex = ColorToIndex( i.color );
 		//red black purple blue green gray
 		colorIndex = colorIndex == 6 ? 0 : colorIndex + 1;
 		i.color = DataStore.pipColors[colorIndex].ToColor();
@@ -302,7 +305,7 @@ public class SettingsScreen : MonoBehaviour
 		if ( c.Equals( DataStore.pipColors[0].ToColor() ) )
 			return 0;
 		if ( c.Equals( DataStore.pipColors[1].ToColor() ) )
-			return 1; 
+			return 1;
 		if ( c.Equals( DataStore.pipColors[2].ToColor() ) )
 			return 2;
 		if ( c.Equals( DataStore.pipColors[3].ToColor() ) )

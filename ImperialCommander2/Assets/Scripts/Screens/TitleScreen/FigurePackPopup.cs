@@ -28,6 +28,8 @@ public class FigurePackPopup : MonoBehaviour
 
 	public void Close()
 	{
+		if ( InputManager.Instance.uiAnimationsPlaying )
+			return;
 		InputManager.Instance.PopFocus();
 		DataStore.ownedFigurePacks.Clear();
 		foreach ( Transform item in layoutContainer )

@@ -215,7 +215,7 @@ public class TitleController : MonoBehaviour
 
 	public void ReturnTo()
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		FlipIn( animator );
 		titleText.Show();
 		titleText.FlipIn();
@@ -227,7 +227,7 @@ public class TitleController : MonoBehaviour
 
 	public void OnNewGame()
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		soundController.PlaySound( FX.Click );
 		soundController.PlaySound( 3 );
 
@@ -252,7 +252,7 @@ public class TitleController : MonoBehaviour
 
 	public void OnContinueSession()
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		soundController.PlaySound( FX.Click );
 
 		SagaSession session = LoadSagaSession( SessionMode.Saga );
@@ -298,7 +298,7 @@ public class TitleController : MonoBehaviour
 
 	public void OnExpansions()
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		soundController.PlaySound( FX.Click );
 		if ( animator.GetBool( expID ) == true )
 		{
@@ -313,7 +313,7 @@ public class TitleController : MonoBehaviour
 
 	public void OnOptions()
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		soundController.PlaySound( FX.Click );
 		GlowEngine.FindUnityObject<SettingsPanel>().Show(
 			( SettingsCommand s ) => OnExitAppButton(),
@@ -352,6 +352,8 @@ public class TitleController : MonoBehaviour
 
 	public void OnFigurePackClick()
 	{
+		if ( InputManager.Instance.uiAnimationsPlaying )
+			return;
 		FigurePackPopup.Show();
 	}
 
@@ -548,6 +550,7 @@ public class TitleController : MonoBehaviour
 		InputFocusCheck();
 	}
 
+	//try to focus the expansions panel button
 	private bool TryFocusExpansionsPanelButton()
 	{
 		if ( !animator.GetBool( expID )
@@ -572,6 +575,7 @@ public class TitleController : MonoBehaviour
 		return true;
 	}
 
+	//check if we can restore the previous selected object, or if it is disabled or not interactable
 	private bool CanRestoreSelection( GameObject gameObject )
 	{
 		if ( gameObject == null
@@ -582,6 +586,7 @@ public class TitleController : MonoBehaviour
 		return selectable == null || selectable.IsInteractable();
 	}
 
+	//focus the default button for the active mode (saga or campaign)
 	private void FocusDefaultButtonForActiveMode()
 	{
 		if ( sagaToggle.isOn )
@@ -599,9 +604,7 @@ public class TitleController : MonoBehaviour
 	//make sure that if the player is using a controller, a button is always highlighted, even if they click on the background with a mouse
 	private void InputFocusCheck()
 	{
-		//if no UI element is currently selected, select the first button of the active panel so that player can navigate with controller/keyboard
-
-		//only do this if no panels are active
+		//only process main screen if no panels are active
 		if ( InputManager.Instance.anyPanelsOpen )
 			return;
 
@@ -691,7 +694,7 @@ public class TitleController : MonoBehaviour
 	{
 		if ( InputManager.Instance.uiAnimationsPlaying )
 			return;
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		soundController.PlaySound( FX.Click );
 		soundController.PlaySound( 2 );
 
@@ -708,7 +711,7 @@ public class TitleController : MonoBehaviour
 	{
 		if ( InputManager.Instance.uiAnimationsPlaying )
 			return;
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		soundController.PlaySound( FX.Click );
 
 		animator.SetBool( m_OpenParameterId, false );
@@ -724,7 +727,7 @@ public class TitleController : MonoBehaviour
 
 	public void OnContinueCampaign()
 	{
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 		soundController.PlaySound( FX.Click );
 
 		SagaSession session = LoadSagaSession( SessionMode.Campaign );

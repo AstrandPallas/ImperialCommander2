@@ -1,6 +1,7 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Saga
@@ -10,6 +11,7 @@ namespace Saga
 		public TextMeshProUGUI message;
 		public PopupBase popupBase;
 		public Text exitText, continueText;
+		public GameObject continueButton, exitButton;
 
 		Action closeCallback = null;
 
@@ -18,11 +20,18 @@ namespace Saga
 		/// </summary>
 		public void Show( string m, Action onCloseCallback = null )
 		{
+			InputManager.Instance.PushFocus( gameObject );
+
 			exitText.text = DataStore.uiLanguage.uiSettings.quit;
 			continueText.text = DataStore.uiLanguage.uiSetup.continueBtn;
 
 			message.text = m;
 			closeCallback = onCloseCallback;
+
+			if ( continueButton.gameObject.activeSelf )
+				continueButton.GetComponent<Selectable>().Select();
+			else
+				exitButton.GetComponent<Selectable>().Select();
 
 			popupBase.Show();
 		}
@@ -32,6 +41,8 @@ namespace Saga
 		/// </summary>
 		public void Show( string header, string m, Action onCloseCallback = null )
 		{
+			InputManager.Instance.PushFocus( gameObject );
+
 			try
 			{
 				exitText.text = DataStore.uiLanguage.uiSettings.quit;
@@ -46,6 +57,11 @@ namespace Saga
 			message.text = $"<color=yellow>{header}</color>\n\n<align=left>{m}</align>";
 			closeCallback = onCloseCallback;
 
+			if ( continueButton.gameObject.activeSelf )
+				continueButton.GetComponent<Selectable>().Select();
+			else
+				exitButton.GetComponent<Selectable>().Select();
+
 			popupBase.Show();
 		}
 
@@ -54,6 +70,8 @@ namespace Saga
 		/// </summary>
 		public void Show( string header, Exception e, Action onCloseCallback = null )
 		{
+			InputManager.Instance.PushFocus( gameObject );
+
 			try
 			{
 				exitText.text = DataStore.uiLanguage.uiSettings.quit;
@@ -68,6 +86,11 @@ namespace Saga
 			message.text = $"<color=yellow>{header}</color>\n\n<align=left><color=orange>{e.Message}</color>\n{e.StackTrace.Replace( " at ", "\nat " )}</align>";
 			closeCallback = onCloseCallback;
 
+			if ( continueButton.gameObject.activeSelf )
+				continueButton.GetComponent<Selectable>().Select();
+			else
+				exitButton.GetComponent<Selectable>().Select();
+
 			popupBase.Show();
 		}
 
@@ -78,6 +101,7 @@ namespace Saga
 
 		public void Hide()
 		{
+			InputManager.Instance.PopFocus();
 			popupBase.Close( closeCallback );
 		}
 

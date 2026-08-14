@@ -120,6 +120,17 @@ namespace Saga
 			}
 		}
 
+		public static Color Hex2UnityColor( string hex )
+		{
+			if ( ColorUtility.TryParseHtmlString( hex, out Color color ) )
+				return color;
+			else
+			{
+				Debug.Log( "Hex2UnityColor()::COLOR NOT FOUND::" + hex );
+				return Color.white;
+			}
+		}
+
 		public static Guid GUIDOne { get { return Guid.Parse( "11111111-1111-1111-1111-111111111111" ); } }
 
 		public static string ReplaceGlyphs( string item )
@@ -214,25 +225,25 @@ namespace Saga
 			return item;
 		}
 
-		public static string AddTilesIcons(string item)
+		public static string AddTilesIcons( string item )
 		{
-			if (string.IsNullOrEmpty(item))
+			if ( string.IsNullOrEmpty( item ) )
 				return "";
 
-			var results = Regex.Matches(item, @"(\{[0-6]\}[0-9]+)([A-Ba-b])").Cast<Match>().Select(x => x.Groups[1].Value).Distinct().ToList();
+			var results = Regex.Matches( item, @"(\{[0-6]\}[0-9]+)([A-Ba-b])" ).Cast<Match>().Select( x => x.Groups[1].Value ).Distinct().ToList();
 
-			foreach (var result in results)
+			foreach ( var result in results )
 			{
-				if (Int32.TryParse(result.Substring(1, 1), out int expansionId))
-					{
-					var tileName = result.Replace($"{{{expansionId}}}", Enum.GetName(typeof(Expansion), expansionId) + " ");
+				if ( Int32.TryParse( result.Substring( 1, 1 ), out int expansionId ) )
+				{
+					var tileName = result.Replace( $"{{{expansionId}}}", Enum.GetName( typeof( Expansion ), expansionId ) + " " );
 
-					if (tileShapes.ContainsKey(tileName))
+					if ( tileShapes.ContainsKey( tileName ) )
 					{
-						var formatedResult = result.Replace("{", "\\{").Replace("}", "\\}");
-						item = Regex.Replace(item, $"({formatedResult}[A-Ba-b]+\\sx\\s[0-9]+)", $"$1\u00A0<font=\"TilesIcons SDF\">{tileShapes[tileName]}</font>");
-						item = Regex.Replace(item, $"({formatedResult}[A-Ba-b]+)(?!\\sx\\s[0-9]+)", $"$1\u00A0<font=\"TilesIcons SDF\">{tileShapes[tileName]}</font>");
-					} 
+						var formatedResult = result.Replace( "{", "\\{" ).Replace( "}", "\\}" );
+						item = Regex.Replace( item, $"({formatedResult}[A-Ba-b]+\\sx\\s[0-9]+)", $"$1\u00A0<font=\"TilesIcons SDF\">{tileShapes[tileName]}</font>" );
+						item = Regex.Replace( item, $"({formatedResult}[A-Ba-b]+)(?!\\sx\\s[0-9]+)", $"$1\u00A0<font=\"TilesIcons SDF\">{tileShapes[tileName]}</font>" );
+					}
 				}
 			}
 

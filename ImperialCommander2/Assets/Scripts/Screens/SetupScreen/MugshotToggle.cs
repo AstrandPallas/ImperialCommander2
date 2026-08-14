@@ -39,7 +39,7 @@ namespace Saga
 
 		public void UpdateToggle()
 		{
-			EventSystem.current.SetSelectedGameObject( null );
+			//EventSystem.current.SetSelectedGameObject( null );
 			if ( isOn )//button is selected
 			{
 				outlineImage.color = Color.green;
@@ -68,7 +68,7 @@ namespace Saga
 
 		public void OnToggle()
 		{
-			EventSystem.current.SetSelectedGameObject( null );
+			//EventSystem.current.SetSelectedGameObject( null );
 			isOn = !isOn;
 			if ( isOn && !FindObjectOfType<SagaAddHeroPanel>().OnToggle( card ) )
 				isOn = false;

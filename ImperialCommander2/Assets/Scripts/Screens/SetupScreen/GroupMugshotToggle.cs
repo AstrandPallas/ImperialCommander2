@@ -9,6 +9,7 @@ namespace Saga
 	/// </summary>
 	public class GroupMugshotToggle : MonoBehaviour
 	{
+		public Button theButton;
 		bool _isOn;
 
 		public Image mugImage, outlineImage;
@@ -30,13 +31,23 @@ namespace Saga
 			mugImage.sprite = Resources.Load<Sprite>( cd.mugShotPath );
 
 			if ( cd.isElite )
-				mugImage.color = new Color( 1, 40f / 255f, 0 );
+				theButton.colors = new ColorBlock()
+				{
+					normalColor = new Color( 1, 40f / 255f, 0 ),
+					highlightedColor = Utils.Hex2UnityColor( "#9966FF" ),
+					pressedColor = Utils.Hex2UnityColor( "#C8C8C8" ),
+					selectedColor = Utils.Hex2UnityColor( "#9966FF" ),
+					disabledColor = Utils.Hex2UnityColor( "#5C5C5C" ),
+					colorMultiplier = 1,
+					fadeDuration = .1f
+				};
+			//mugImage.color = new Color( 1, 40f / 255f, 0 );
 			isOn = false;
 		}
 
 		public void UpdateToggle()
 		{
-			EventSystem.current.SetSelectedGameObject( null );
+			//EventSystem.current.SetSelectedGameObject( null );
 			if ( isOn )
 				outlineImage.color = Color.green;
 			else
@@ -50,7 +61,7 @@ namespace Saga
 
 		public void OnToggle()
 		{
-			EventSystem.current.SetSelectedGameObject( null );
+			//EventSystem.current.SetSelectedGameObject( null );
 			isOn = !isOn;
 			if ( isOn && !FindObjectOfType<SagaModifyGroupsPanel>().OnToggle( card ) )
 				isOn = false;

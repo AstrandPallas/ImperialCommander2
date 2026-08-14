@@ -17,9 +17,9 @@ namespace Saga
 		public Camera theCamera;
 		//UI TRINKETS
 		public GameObject descriptionTextBox;
-		public Text difficultyText;
+		public Text difficultyText, adaptiveText;
 		public Transform heroContainer;
-		public Button adaptiveButton, startMissionButton, viewMissionCardButton, campaignTilesButton, allyButton, difficultyButton;
+		public Button adaptiveButton, startMissionButton, viewMissionCardButton, campaignTilesButton, allyButton, difficultyButton, helpButton, heroButton, villainsButton, ignoredButton, threatButton, additionalButton;
 		public GameObject miniMugPrefab;
 		public Image allyImage, allyBackgroundImage;
 		public MWheelHandler threatValue, addtlThreatValue;
@@ -54,6 +54,7 @@ namespace Saga
 		public GameObject textBoxPrefab;
 		public bool isDebugMode = false;
 
+		Selectable lastSelected = null;
 		Color allyDisabledColor = new Color( 0.5283019f, .0828f, 0 );
 		Color allyEnabledColor = new Color( 0, 0.6440244f, 1 );
 		Sound sound;
@@ -165,10 +166,11 @@ namespace Saga
 			//difficulty
 			difficultyText.text = DataStore.uiLanguage.uiSetup.normal;
 			//adaptive
-			adaptiveButton.colors = setupOptions.useAdaptiveDifficulty ? greenBlock : redBlock;
-			ColorBlock cb = adaptiveButton.colors;
-			cb.selectedColor = new Color( .6f, .4f, .1f );
-			adaptiveButton.colors = cb;
+			//adaptiveButton.colors = setupOptions.useAdaptiveDifficulty ? greenBlock : redBlock;
+			//ColorBlock cb = adaptiveButton.colors;
+			//cb.selectedColor = new Color( .6f, .4f, .1f );
+			//adaptiveButton.colors = cb;
+			adaptiveText.color = setupOptions.useAdaptiveDifficulty ? greenBlock.normalColor : redBlock.normalColor;
 
 			//clear hero panel if not loading from campaign
 			if ( heroContainer.childCount > 0 )
@@ -460,23 +462,23 @@ namespace Saga
 		public void AddHero()
 		{
 			sound.PlaySound( FX.Click );
-			EventSystem.current.SetSelectedGameObject( null );
 			addHeroPanel.Show( CharacterType.Hero, () =>
 			 {
 				 UpdateHeroes();
+				 EventSystem.current.SetSelectedGameObject( heroButton.gameObject );
 			 } );
 		}
 
 		public void AddAlly()
 		{
 			sound.PlaySound( FX.Click );
-			EventSystem.current.SetSelectedGameObject( null );
 
 			if ( DataStore.sagaSessionData.selectedAlly == null )
 			{
 				addHeroPanel.Show( CharacterType.Ally, () =>
 				{
 					UpdateHeroes();
+					EventSystem.current.SetSelectedGameObject( allyButton.gameObject );
 				} );
 			}
 			else
@@ -493,6 +495,7 @@ namespace Saga
 			{
 				int impCount = DataStore.globalImportedCharacters.Where( x => x.deploymentCard.characterType == CharacterType.Imperial ).Count() - DataStore.sagaSessionData.globalImportedCharacters.Count;
 				languageController.UpdateIgnoredCount( DataStore.sagaSessionData.MissionIgnored.Count + impCount );
+				EventSystem.current.SetSelectedGameObject( ignoredButton.gameObject );
 			} );
 		}
 
@@ -502,6 +505,7 @@ namespace Saga
 			modifyGroupsPanel.Show( GroupSelectionMode.Villains, null, () =>
 			{
 				languageController.UpdateVillainCount( DataStore.sagaSessionData.EarnedVillains.Count );
+				EventSystem.current.SetSelectedGameObject( villainsButton.gameObject );
 			} );
 		}
 
@@ -682,14 +686,18 @@ namespace Saga
 		{
 			sound.PlaySound( FX.Click );
 			setupOptions.useAdaptiveDifficulty = !setupOptions.useAdaptiveDifficulty;
-			thisButton.colors = setupOptions.useAdaptiveDifficulty ? greenBlock : redBlock;
-			ColorBlock cb = thisButton.colors;
-			cb.selectedColor = new Color( .6f, .4f, .1f );
-			thisButton.colors = cb;
+			//thisButton.colors = setupOptions.useAdaptiveDifficulty ? greenBlock : redBlock;
+			//ColorBlock cb = thisButton.colors;
+			//cb.selectedColor = new Color( .6f, .4f, .1f );
+			//thisButton.colors = cb;
+			adaptiveText.color = setupOptions.useAdaptiveDifficulty ? greenBlock.normalColor : redBlock.normalColor;
 		}
 
 		public void OnViewMissionCard()
 		{
+			if ( InputManager.Instance.anyPanelsOpen )
+				return;
+
 			if ( missionPicker.pickerMode == PickerMode.BuiltIn )
 			{
 				sound.PlaySound( FX.Click );
@@ -810,7 +818,7 @@ namespace Saga
 
 		public void OnHelpClick()
 		{
-			helpPanel.Show();
+			helpPanel.Show( () => { EventSystem.current.SetSelectedGameObject( helpButton.gameObject ); } );
 		}
 
 		public void OnAdditionalinfoClick()
@@ -854,27 +862,115 @@ namespace Saga
 				&& !missionPicker.isBusy )
 			{
 				viewMissionCardButton.interactable = true;
+				//set navigation for difficulty and adaptive buttons
+				difficultyButton.navigation = new Navigation()
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnUp = viewMissionCardButton,
+					selectOnDown = threatButton
+				};
+				adaptiveButton.navigation = new Navigation()
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnUp = viewMissionCardButton,
+					selectOnDown = additionalButton,
+					selectOnLeft = difficultyButton
+				};
 			}
 			else
 			{
 				viewMissionCardButton.interactable = false;
+				//set navigation for difficulty and adaptive buttons
+				difficultyButton.navigation = new Navigation()
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnUp = null,
+					selectOnDown = threatButton,
+				};
+				adaptiveButton.navigation = new Navigation()
+				{
+					mode = Navigation.Mode.Explicit,
+					selectOnUp = null,
+					selectOnDown = additionalButton,
+					selectOnLeft = difficultyButton
+				};
 			}
 
-			//set default selected button
-			if ( EventSystem.current.currentSelectedGameObject == null )
+			InputFocusCheck();
+		}
+
+		private void InputFocusCheck()
+		{
+			//only process main screen if no panels are active
+			if ( InputManager.Instance.anyPanelsOpen )
+				return;
+
+			if ( InputManager.Instance.cancelPressed )
 			{
-				difficultyButton.Select();
+				OnCancel();
+				return;
+			}
+
+			GameObject selected = EventSystem.current.currentSelectedGameObject;
+
+			//set default selected button
+			if ( selected == null )
+			{
+				if ( lastSelected != null )
+					lastSelected.Select();
+				else
+					difficultyButton.Select();
+				selected = EventSystem.current.currentSelectedGameObject;
+				return;
+			}
+
+			//handle changing value of threat level and additional threat wheels with controller/keyboard
+			if ( InputManager.Instance.increaseValue )
+			{
+				if ( selected.name == "threatLevelSelectable" )
+					threatValue.OnAdd();
+				else if ( selected.name == "additionalSelectable" )
+					addtlThreatValue.OnAdd();
+			}
+			else if ( InputManager.Instance.decreaseValue )
+			{
+				if ( selected.name == "threatLevelSelectable" )
+					threatValue.OnSubtract();
+				else if ( selected.name == "additionalSelectable" )
+					addtlThreatValue.OnSubtract();
+			}
+
+			//handle pressing RIGHT NAV
+			//avoid a race between built-in Navigation and this custom logic within the same input frame
+			if ( InputManager.Instance.navRight )
+			{
+				if ( selected == difficultyButton.gameObject )
+					EventSystem.current.SetSelectedGameObject( adaptiveButton.gameObject );
+				else if ( selected == threatButton.gameObject )
+					EventSystem.current.SetSelectedGameObject( additionalButton.gameObject );
+				else if ( selected == ignoredButton.gameObject )
+					EventSystem.current.SetSelectedGameObject( villainsButton.gameObject );
+				else if ( selected == viewMissionCardButton.gameObject
+					|| selected == adaptiveButton.gameObject
+					|| selected == additionalButton.gameObject
+					|| selected == villainsButton.gameObject
+					|| selected == allyButton.gameObject
+					|| selected == heroButton.gameObject )
+				{
+					lastSelected = selected.GetComponent<Selectable>();
+					missionPicker.SetInputFocus();
+				}
 			}
 		}
 
 		public void OnThreatLevelClick()
 		{
-			threatLevelWheel.DoClick();
+			//threatLevelWheel.DoClick();
 		}
 
 		public void OnAdditionalThreatClick()
 		{
-			addtlThreatWheel.DoClick();
+			//addtlThreatWheel.DoClick();
 		}
 	}
 }

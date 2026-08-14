@@ -18,6 +18,8 @@ namespace Saga
 		public DynamicCardPrefab cardPrefab;
 		public Toggle customToggle;
 		public HelpPanel helpPanel;
+		public GameObject closeButton, helpButton;
+		List<Selectable> mugIconToggle = new List<Selectable>();//for navigation with controller/keyboard
 
 		Action callback;
 		int prevSelected = -1;
@@ -29,8 +31,10 @@ namespace Saga
 		/// </summary>
 		public void Show( CharacterType cType, Action cb = null )
 		{
+			InputManager.Instance.PushFocus( gameObject );
+			EventSystem.current.SetSelectedGameObject( closeButton );
+
 			callback = cb;
-			EventSystem.current.SetSelectedGameObject( null );
 			popupBase.Show();
 
 			nameText.text = "";
@@ -44,6 +48,9 @@ namespace Saga
 
 		private void ShowContent( bool showCustom )
 		{
+			InputManager.Instance.uiAnimationsPlaying = true;
+			mugIconToggle.Clear();
+
 			try
 			{
 				//populate mugshot toggles
@@ -88,6 +95,21 @@ namespace Saga
 						{
 							mug.GetComponent<MugshotToggle>().isOn = true;
 							mug.GetComponent<MugshotToggle>().UpdateToggle();
+						}
+
+						mugIconToggle.Add( mug.transform.GetComponentInChildren<Button>().GetComponent<Selectable>() );
+						//add navigation to the toggles for controller/keyboard support
+						for ( int idx = 0; idx < mugIconToggle.Count; idx++ )
+						{
+							mugIconToggle[idx].navigation = new Navigation
+							{
+								mode = Navigation.Mode.Explicit,
+								selectOnLeft = idx > 0 ? mugIconToggle[idx - 1] : null,
+								selectOnRight = idx < mugIconToggle.Count - 1 ? mugIconToggle[idx + 1] : customToggle,
+								//set selectOnUp and down based on a row of 7 items
+								selectOnUp = idx >= 7 ? mugIconToggle[idx - 7] : null,
+								selectOnDown = idx < mugIconToggle.Count - 7 ? mugIconToggle[idx + 7] : closeButton.GetComponent<Button>(),
+							};
 						}
 					}
 
@@ -177,6 +199,24 @@ namespace Saga
 						}
 					}
 
+					foreach ( Transform mug in mugContainer.transform )
+					{
+						mugIconToggle.Add( mug.GetComponentInChildren<Button>().GetComponent<Selectable>() );
+					}
+					//add navigation to the toggles for controller/keyboard support
+					for ( int idx = 0; idx < mugIconToggle.Count; idx++ )
+					{
+						mugIconToggle[idx].navigation = new Navigation
+						{
+							mode = Navigation.Mode.Explicit,
+							selectOnLeft = idx > 0 ? mugIconToggle[idx - 1] : null,
+							selectOnRight = idx < mugIconToggle.Count - 1 ? mugIconToggle[idx + 1] : customToggle,
+							//set selectOnUp and down based on a row of 7 items
+							selectOnUp = idx >= 7 ? mugIconToggle[idx - 7] : null,
+							selectOnDown = idx < mugIconToggle.Count - 7 ? mugIconToggle[idx + 7] : closeButton.GetComponent<Button>(),
+						};
+					}
+
 					if ( allyCards.Count > 0 )
 						cardPrefab.InitCard( allyCards[0], true );
 				}
@@ -184,6 +224,24 @@ namespace Saga
 			catch ( Exception ex )
 			{
 				Utils.LogError( $"Error in ShowContent: {ex.Message}\n{ex.StackTrace}" );
+			}
+			finally
+			{
+				InputManager.Instance.uiAnimationsPlaying = false;
+				if ( mugIconToggle.Count > 0 )
+				{
+					EventSystem.current.SetSelectedGameObject( mugIconToggle[0].gameObject );
+					closeButton.GetComponent<Button>().navigation = new Navigation
+					{
+						mode = Navigation.Mode.Explicit,
+						selectOnLeft = null,
+						selectOnRight = helpButton.GetComponent<Button>(),
+						selectOnUp = mugIconToggle[mugIconToggle.Count - 1],//last item in the list
+						selectOnDown = null
+					};
+				}
+				else
+					EventSystem.current.SetSelectedGameObject( closeButton );
 			}
 		}
 
@@ -333,6 +391,10 @@ namespace Saga
 
 		public void OnClose()
 		{
+			if ( InputManager.Instance.uiAnimationsPlaying )
+				return;
+			InputManager.Instance.PopFocus();
+
 			FindObjectOfType<Sound>().PlaySound( FX.Click );
 			callback?.Invoke();
 			popupBase.Close( () =>
@@ -346,13 +408,23 @@ namespace Saga
 
 		public void OnHelpClick()
 		{
-			helpPanel.Show();
+			helpPanel.Show( () =>
+			{
+				EventSystem.current.SetSelectedGameObject( helpButton );
+			} );
 		}
 
 		private void Update()
 		{
-			if ( Input.GetKeyDown( KeyCode.Space ) )
+			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.DismissDialog )
+				|| InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
 				OnClose();
+
+			if ( InputManager.Instance.HasFocus()
+				&& EventSystem.current.currentSelectedGameObject == null )
+			{
+				EventSystem.current.SetSelectedGameObject( closeButton );
+			}
 		}
 	}
 }

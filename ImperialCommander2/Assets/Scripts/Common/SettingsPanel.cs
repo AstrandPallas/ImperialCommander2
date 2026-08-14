@@ -460,6 +460,7 @@ public class SettingsPanel : MonoBehaviour
 			if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.SettingsOpenClose ) )
 			{
 				OnOK();
+				return;
 			}
 
 			var current = EventSystem.current.currentSelectedGameObject;

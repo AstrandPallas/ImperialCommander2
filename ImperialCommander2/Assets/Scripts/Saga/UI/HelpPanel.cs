@@ -120,7 +120,7 @@ public class HelpPanel : MonoBehaviour
 	{
 		Debug.Log( $"Help requested for: {elementID}" );
 
-		EventSystem.current.SetSelectedGameObject( null );
+		//EventSystem.current.SetSelectedGameObject( null );
 
 		//uiHelpOverlay will be null if the help.json for the chosen language doesn't exist
 		var panelHelp = DataStore.uiLanguage.uiHelpOverlay?.helpOverlayPanels.Where( x => x.panelHelpID == helpOverlayID ).FirstOr( null );
@@ -215,7 +215,8 @@ public class HelpPanel : MonoBehaviour
 			|| helpButtons.Count == 0 )
 			return;
 
-		if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel ) )
+		if ( InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.Cancel )
+			|| InputManager.Instance.GetFocusedInput( gameObject, FocusedInputType.DismissDialog ) )
 		{
 			Close();
 			return;
