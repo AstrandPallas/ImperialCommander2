@@ -33,6 +33,14 @@ namespace Saga.Board.Tests
 			new DoorPlacement { X = 95, Y = 96, Rotation = 0, Open = false },
 		};
 
+		/// <summary>Active highlights, which is where Rebels start.</summary>
+		public static readonly (string Name, int C, int R)[] Highlights =
+			new (string, int, int)[]
+			{
+				( "Entrance", 96, 101 ),
+				( "Narrow Path", 98, 95 ),
+			};
+
 		/// <summary>Tile dimensions for every tile this mission uses.</summary>
 		public static readonly Dictionary<string, (int w, int h)> Dimensions =
 			new Dictionary<string, (int w, int h)>

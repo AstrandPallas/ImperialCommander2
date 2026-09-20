@@ -38,6 +38,13 @@ namespace Saga.Board.Tests
 			new DoorPlacement { X = 114, Y = 98, Rotation = 180, Open = false },
 		};
 
+		/// <summary>Active highlights, which is where Rebels start.</summary>
+		public static readonly (string Name, int C, int R)[] Highlights =
+			new (string, int, int)[]
+			{
+				( "Entrance", 100, 98 ),
+			};
+
 		/// <summary>Tile dimensions for every tile this mission uses.</summary>
 		public static readonly Dictionary<string, (int w, int h)> Dimensions =
 			new Dictionary<string, (int w, int h)>
@@ -80,7 +87,7 @@ namespace Saga.Board.Tests
 			new TileTerrain { Expansion = "Hoth", TileId = "21", Side = "B", Width = 2, Height = 2, Rows = new[] { "..", ".." } },
 			new TileTerrain { Expansion = "Hoth", TileId = "22", Side = "A", Width = 2, Height = 2, Rows = new[] { "..", ".." } },
 			new TileTerrain { Expansion = "Hoth", TileId = "23", Side = "B", Width = 1, Height = 2, Rows = new[] { ".", "." } },
-			new TileTerrain { Expansion = "Hoth", TileId = "6", Side = "A", Width = 5, Height = 7, Rows = new[] { "..d..", "..d..", "..d..", "ddXXd", "..XXd", "..d..", "..d.." } },
+			new TileTerrain { Expansion = "Hoth", TileId = "6", Side = "A", Width = 5, Height = 7, Rows = new[] { "dd.dd", "dd.dd", "dd.dd", "..XX.", "ddXX.", "dd.dd", "dd.dd" } },
 			new TileTerrain { Expansion = "Hoth", TileId = "8", Side = "B", Width = 4, Height = 5, Rows = new[] { "-..-", "-ddd", ".dd.", "....", "...." } },
 			new TileTerrain { Expansion = "Hoth", TileId = "9", Side = "B", Width = 4, Height = 4, Rows = new[] { "...-", "....", "....", "...." } },
 		};

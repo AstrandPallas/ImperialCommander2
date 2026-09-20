@@ -17,6 +17,7 @@ from corpus_check import MISSIONS, EXPANSIONS, load_lenient, load_dimensions, pa
 import tile_shapes  # noqa: E402
 
 DOOR = 6
+HIGHLIGHT = 5
 OUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                        "tests", "BoardTests", "Generated")
 
@@ -52,6 +53,16 @@ def generate(name="CORE1"):
         doors.append((int(fx), int(fy), int(round(e["entityRotation"])),
                       bool(e["entityProperties"].get("isActive"))))
 
+    highlights = []
+    for e in d.get("mapEntities") or []:
+        if e.get("entityType") != HIGHLIGHT:
+            continue
+        if not (e.get("entityProperties") or {}).get("isActive", True):
+            continue
+        fx, fy = parse_pos(e["entityPosition"])
+        highlights.append(((e.get("name") or "").strip(),
+                           int(fx), int(fy)))
+
     used = sorted({(t[0], t[1]) for t in tiles})
     faces = sorted({(t[0], t[1], t[2]) for t in tiles})
     cls = name.capitalize() + "Placements"
@@ -76,7 +87,15 @@ def generate(name="CORE1"):
     for x, y, rot, op in doors:
         L.append(f'\t\t\tnew DoorPlacement {{ X = {x}, Y = {y}, Rotation = {rot}, '
                  f'Open = {str(op).lower()} }},')
-    L += ["\t\t};", "",
+    L += ["		};", "",
+          "		/// <summary>Active highlights, which is where Rebels start.</summary>",
+          "		public static readonly (string Name, int C, int R)[] Highlights =",
+          "			new (string, int, int)[]", "			{"]
+    for _n, _c, _r in highlights:
+        L.append(f'				( "{_n}", {_c}, {_r} ),')
+    L += ["			};"]
+
+    L += ["",
           "\t\t/// <summary>Tile dimensions for every tile this mission uses.</summary>",
           "\t\tpublic static readonly Dictionary<string, (int w, int h)> Dimensions =",
           "\t\t\tnew Dictionary<string, (int w, int h)>", "\t\t\t{"]
