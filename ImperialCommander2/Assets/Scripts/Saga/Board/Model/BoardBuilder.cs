@@ -331,5 +331,8 @@ namespace Saga.Board
 			=> _tiles.TryGetValue( Key( exp, id, side ), out var t ) ? t : null;
 
 		public int Count => _tiles.Count;
+
+		/// <summary>Every loaded tile face, for diagnostics and verification.</summary>
+		public IEnumerable<TileTerrain> All => _tiles.Values;
 	}
 }

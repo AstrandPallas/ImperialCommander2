@@ -53,6 +53,44 @@ namespace Saga.EditorTools
 			Debug.Log( "BoardSetup: wrote " + PrefabPath );
 		}
 
+		/// <summary>Check the authored terrain actually loads at runtime.</summary>
+		/// <remarks>
+		/// Terrain that fails to load does not throw: every tile simply reads
+		/// as open floor, and the AI confidently walks through walls the
+		/// players can see. The totals are checked against the authoring tool's
+		/// own count so a silent loss shows up here instead of at the table.
+		/// </remarks>
+		[MenuItem( "Imperial Commander/Board/Verify Terrain Loads" )]
+		public static void VerifyTerrainLoads()
+		{
+			const int expectedFaces = 276;
+			const int expectedTerrainSquares = 332;
+
+			TerrainLoader.Reload();
+			var library = TerrainLoader.Library;
+
+			int terrain = 0;
+			int edges = 0;
+			foreach ( var face in library.All )
+			{
+				if ( face.Rows != null )
+					foreach ( var row in face.Rows )
+						foreach ( var ch in row )
+							if ( ch == 'd' || ch == 'X' || ch == 'I' || ch == 'P' ) terrain++;
+				if ( face.Edges != null ) edges += face.Edges.Length;
+			}
+
+			string summary = "TerrainLoader: " + library.Count + " faces, " + terrain
+				+ " terrain squares, " + edges + " edges";
+
+			if ( library.Count != expectedFaces || terrain != expectedTerrainSquares )
+				Debug.LogError( summary + " -- EXPECTED " + expectedFaces + " faces and "
+					+ expectedTerrainSquares + " terrain squares. Terrain has been lost "
+					+ "between authoring and runtime." );
+			else
+				Debug.Log( summary + " -- matches the authored data" );
+		}
+
 		private const string ScenePath = "Assets/Scenes/Saga.unity";
 		private const string LayerName = "FigureLayer";
 
