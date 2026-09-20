@@ -60,8 +60,9 @@ namespace Saga.Board.Tests
 			"JABBA1",
 		};
 
+		/// <summary>Run a mission, optionally handing each plan to an inspector.</summary>
 		public static int Run( uint seed = 1, int rounds = 6, bool quiet = false,
-			string mission = "CORE1" )
+			string mission = "CORE1", Action<ActivationPlan> inspect = null )
 		{
 			_quiet = quiet;
 			var built = Build( mission );
@@ -125,6 +126,7 @@ namespace Saga.Board.Tests
 				}
 
 				var plan = ActivationPlanner.Plan( board, enemies, live, null, null );
+				inspect?.Invoke( plan );
 				violations += Report( board, plan, enemies, live, heroes, round, seed );
 				Apply( plan, enemies, heroes, rng );
 			}

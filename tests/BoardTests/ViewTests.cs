@@ -76,6 +76,43 @@ namespace Saga.Board.Tests
 				Eq( end, points.Last(), "and finish where the order sends it" );
 			} );
 
+			Test( "every ordered path animates without teleporting", () =>
+			{
+				// FigureToken slides from one square to the next, so a path
+				// whose consecutive entries are not touching would jump the
+				// token across the board. That reads as an obvious error at the
+				// table even when the order itself is legal, and nothing in the
+				// rules checks catch it: PlanLegality only verifies CanStep for
+				// small figures, and skips large ones entirely.
+				int checkedSteps = 0;
+				foreach ( var mission in Sim.Missions )
+				{
+					for ( uint seed = 1; seed <= 6; seed++ )
+					{
+						Sim.Run( seed, 6, quiet: true, mission: mission,
+							inspect: plan =>
+							{
+								foreach ( var fp in plan.Figures )
+								{
+									for ( int i = 1; i < fp.Path.Count; i++ )
+									{
+										var a = fp.Path[i - 1];
+										var b = fp.Path[i];
+										int d = Sq.Chebyshev( a, b );
+										True( d <= 1,
+											$"{mission} seed {seed}: {fp.Figure.Name} jumps "
+											+ $"{a} -> {b} ({d} squares), which would teleport "
+											+ "the token" );
+										checkedSteps++;
+									}
+								}
+							} );
+					}
+				}
+				True( checkedSteps > 100,
+					$"expected to inspect many steps, only saw {checkedSteps}" );
+			} );
+
 			Test( "an empty or missing path converts to no points", () =>
 			{
 				Eq( 0, SagaBoardBridge.PathToWorld( null ).Count, "null path" );

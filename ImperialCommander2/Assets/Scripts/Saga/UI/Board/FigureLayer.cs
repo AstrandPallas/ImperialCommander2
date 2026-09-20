@@ -10,7 +10,11 @@ namespace Saga
 	/// <summary>The figures drawn on the map, and the playback of an activation.</summary>
 	public class FigureLayer : MonoBehaviour
 	{
+		/// <summary>Leave unassigned to load the generated prefab from Resources.</summary>
 		public FigureToken tokenPrefab;
+
+		/// <summary>Built by Assets/Editor/BoardSetup.cs.</summary>
+		private const string DefaultPrefab = "BoardView/FigureToken";
 		public Color imperialColour = new Color( 0.78f, 0.16f, 0.16f );
 		public Color rebelColour = new Color( 0.20f, 0.45f, 0.82f );
 
@@ -28,9 +32,15 @@ namespace Saga
 		public FigureToken Spawn( string figureId, Sq square, bool imperial, string caption )
 		{
 			Despawn( figureId );
+			// Falling back to Resources means the layer works from code alone,
+			// without anyone having to drag the prefab into an inspector slot.
+			if ( tokenPrefab == null )
+				tokenPrefab = Resources.Load<FigureToken>( DefaultPrefab );
+
 			if ( tokenPrefab == null )
 			{
-				Utils.LogWarning( "FigureLayer::tokenPrefab is not assigned" );
+				Utils.LogWarning( "FigureLayer::no token prefab, and " + DefaultPrefab
+					+ " is missing from Resources" );
 				return null;
 			}
 
