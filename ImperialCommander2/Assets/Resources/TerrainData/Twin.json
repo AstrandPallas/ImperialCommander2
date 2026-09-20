@@ -1,0 +1,596 @@
+{
+	"schemaVersion": 1,
+	"expansion": "Twin",
+	"_comment": [
+		"Shape ('-') is exact, from the art's alpha channel, and needs no review.",
+		"Terrain glyphs come from a reading of the art and carry a reason.",
+		"Entries with source 'shape-only' are UNREVIEWED for terrain: they are not",
+		"asserting the tile has no terrain, only that nobody has looked yet."
+	],
+	"tiles": [
+		{
+			"tileId": "10",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "10",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "11",
+			"side": "A",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "11",
+			"side": "B",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "12",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "12",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "1",
+			"side": "A",
+			"width": 6,
+			"height": 8,
+			"squares": [
+				"......",
+				"......",
+				"......",
+				"......",
+				"......",
+				"......",
+				"......",
+				"X....X"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						5,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						5,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						4
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						4
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						5
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						6
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						6
+					],
+					"dir": "W",
+					"type": "impassable"
+				}
+			],
+			"why": "A hangar. DASHED red traces the stepped boundary between the central corridor and the equipment alcoves down both flanks -- 14 impassable edges, all measured at coverage 0.46-0.61 with 4-6 gaps. Four SOLID edges at the bottom corners enclose blocking squares (0,7) and (5,7), their remaining sides being the tile boundary. Authored from edge_report; the image was used only to confirm the ink is a marking rather than decoration.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "1",
+			"side": "B",
+			"width": 6,
+			"height": 8,
+			"squares": [
+				"......",
+				"......",
+				"..dd..",
+				"..dd..",
+				"..dd..",
+				"......",
+				"......",
+				"......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "W",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "W",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "W",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "W",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "W",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "W",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						0,
+						6
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						1,
+						6
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						4,
+						6
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						5,
+						6
+					],
+					"dir": "N",
+					"type": "blocking"
+				}
+			],
+			"why": "A cantina: booths round the walls and a horseshoe bar down the middle. The bar is a solid blue 2x3 at coverage 0.97-1.00 with 0-1 gaps and boundary_perimeter 0, so difficult -- you clamber over it. Twelve further edges are solid red and are walls: the back-room frame at the top, the booth dividers at rows 4 and 6, and (3,2)W and (3,3)W, which run down the INSIDE of the difficult region and are the bar's own solid back. An edge marking inside a terrain region is not a contradiction -- the squares are difficult to stand on and the counter still cannot be crossed.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "2",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				"-...",
+				"--.."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "2",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				".dd.",
+				".dd-",
+				"..--"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A 2x2 spill of crates, tools and scrap across the middle of a storeroom, ringed in solid blue on all six boundary edges at 0.91-1.00 coverage with 0-2 gaps. boundary_perimeter 0, so the enclosure is complete and which side is marked is not in question. Voids at (3,2), (2,3) and (3,3).",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "3",
+			"side": "A",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"-..",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+ink-too-shredded",
+			"verified": false,
+			"triage": "ink-too-shredded"
+		},
+		{
+			"tileId": "3",
+			"side": "B",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"..-",
+				"...",
+				"X.."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "One square of solid machinery in the bottom-left corner, boxed by (0,2)N at 0.91 and (1,2)W at 0.88, both 1 gap, closing against the west and south tile edges. The third reading on this tile, (1,2)N in blue, is discarded at 13 gaps -- far outside the 3-5 a dashed marking measures. Void at (2,0).",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "4",
+			"side": "A",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"..----",
+				"..----",
+				"....--",
+				".II.--",
+				".II...",
+				"......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A circular holotable on a raised plinth, ringed by all eight edges of a red-and-white DASHED box at 0.51-0.56 coverage with 4-6 gaps, boundary_perimeter 0. Dashed means impassable, so the table stays adjacent and line of sight crosses it -- which matters here, because calling it blocking would cut every sight line across the middle of the room. The tile also reads 5.55% blue, all of it the table's own glow: those readings run 5 to 15 gaps and none of them is a marking. (4,2)W is the clearest case, since (4,2) is void -- that edge is the tile's own outline lit from beneath.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "4",
+			"side": "B",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"----..",
+				"----..",
+				"--....",
+				"--....",
+				"......",
+				"......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. An L-shaped dune tile; the 0.17% red is scattered rock and debris detail, none of it on a grid edge. 16 void squares from alpha.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "5",
+			"side": "A",
+			"width": 3,
+			"height": 8,
+			"squares": [
+				"...",
+				"...",
+				"-..",
+				"-..",
+				"-..",
+				"-..",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "5",
+			"side": "B",
+			"width": 3,
+			"height": 8,
+			"squares": [
+				"...",
+				"...",
+				".X-",
+				".X-",
+				"..-",
+				"..-",
+				"X..",
+				"X.."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Two solid red rock piles. The detector found only the lower one at (0,6),(0,7); the upper pile at (1,2),(1,3) closes against the VOID column at (2,2)-(2,5) rather than into a loop, so no region forms. Third confirmed instance of that failure mode, after Core_9A and Core_22B.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "6",
+			"side": "A",
+			"width": 5,
+			"height": 3,
+			"squares": [
+				"..X..",
+				"..X..",
+				"....."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "An engine assembly filling the middle column of the top two rows, boxed by (2,0)W, (3,0)W, (2,1)W, (3,1)W and (2,2)N at 0.92-1.00 coverage with 0-1 gaps, closing against the north tile edge. The detector splits the two squares into separate regions because of a dashed red reading at (2,1)N, but that is the machine's own banding: a dashed impassable edge BETWEEN two blocking squares would be meaningless, since neither can be entered from either side. The mixed blue at (2,2)N is the lit floor panel below the box, not a second marking.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "6",
+			"side": "B",
+			"width": 5,
+			"height": 3,
+			"squares": [
+				"..X..",
+				"..X..",
+				"....."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red over the rock pile forming a 2-square column at (2,0),(2,1). The detector reports them as two separate 1-square regions, which is the same answer.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "7",
+			"side": "A",
+			"width": 3,
+			"height": 4,
+			"squares": [
+				"...",
+				"...",
+				".X.",
+				"..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A single blocking square at (1,2), enclosed by four solid red edges at 0.98-0.99 with 1 gap each and boundary_perimeter 0. The two blue readings at 9 and 17 gaps are art, not markings. The shredded-ink rule does not auto-clear the tile despite those two, because it only clears when no edge on the tile looks like a line.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "7",
+			"side": "B",
+			"width": 3,
+			"height": 4,
+			"squares": [
+				"...",
+				"...",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "8",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "8",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "9",
+			"side": "A",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "9",
+			"side": "B",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		}
+	]
+}

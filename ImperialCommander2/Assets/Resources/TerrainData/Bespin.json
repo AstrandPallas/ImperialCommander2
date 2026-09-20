@@ -1,0 +1,448 @@
+{
+	"schemaVersion": 1,
+	"expansion": "Bespin",
+	"_comment": [
+		"Shape ('-') is exact, from the art's alpha channel, and needs no review.",
+		"Terrain glyphs come from a reading of the art and carry a reason.",
+		"Entries with source 'shape-only' are UNREVIEWED for terrain: they are not",
+		"asserting the tile has no terrain, only that nobody has looked yet."
+	],
+	"tiles": [
+		{
+			"tileId": "10",
+			"side": "A",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "10",
+			"side": "B",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "11",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "11",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "12",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "12",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "1",
+			"side": "A",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"......",
+				"......",
+				"......",
+				"......",
+				"......",
+				"......"
+			],
+			"source": "auto-shape+ink-fills-squares",
+			"verified": false,
+			"triage": "ink-fills-squares"
+		},
+		{
+			"tileId": "1",
+			"side": "B",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"......",
+				".d..d.",
+				"......",
+				"......",
+				".d..d.",
+				"......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A Cloud City lounge with four seating clusters arranged symmetrically round a central sculpture. Each cluster is a single square boxed in solid blue at 0.98-0.99 coverage with 1 gap, and all four come back with boundary_perimeter 0. The sculpture in the middle is NOT marked, which is a useful negative: the detector finds no edges there either, so art and measurement agree on the absence as well as on the four positives.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "2",
+			"side": "A",
+			"width": 8,
+			"height": 4,
+			"squares": [
+				"..X..X..",
+				"..X.....",
+				"........",
+				"-......-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				}
+			],
+			"why": "A gantry corridor. Two solid red boxes: a conduit assembly over (2,0) and (2,1), closed by (2,0)W, (2,1)W, (3,0)W, (3,1)W and (2,2)N against the north tile edge, and a tool rack at (5,0). As on Twin_6A the detector splits the 1x2 because of a dashed reading at (2,1)N inside it, which is the conduit's own banding -- an impassable edge between two blocking squares would mean nothing. A red dashed railing at (3,3)N and (4,3)N (0.48-0.52, 4-5 gaps) runs along the walkway lip. This tile reads 6.31% blue and produced eleven blue edges, two of them at 0.91-0.92 coverage with 2 gaps -- indistinguishable by measurement from a solid marking. Magnified they are the seams between HEX DECK PLATES, a regular floor texture whose panel edges happen to run along the square grid. This defeats coverage and gap count together, so it is the first false positive neither automatic test can catch. What gives it away is distribution rather than shape: a printed marking is isolated and internally consistent, while the plating lit up eleven edges across one contiguous block at every style and coverage from 0.31 to 0.92. (3,2)N at 0.78 is excluded on the same grounds -- it is the soft lower edge of the red glow in column 3 and encloses nothing.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "2",
+			"side": "B",
+			"width": 8,
+			"height": 4,
+			"squares": [
+				"..X..X..",
+				"........",
+				"d......d",
+				"-d....d-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Two solid RED boxes along the top wall at (2,0) and (5,0), each closing against the north tile edge, and four solid BLUE single squares in the corners. Everything measures 0.91-1.00 with 0-2 gaps. The corner squares are worth noting: (1,3) and (6,3) close against the voids at (0,3) and (7,3) rather than against ink, so they only register as regions at all because the fill treats void squares as off-board.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "3",
+			"side": "A",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"-..-",
+				"-..-",
+				"....",
+				"....",
+				"-..-",
+				"-..-"
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "3",
+			"side": "B",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"-..-",
+				"-..-",
+				".dd.",
+				".dd.",
+				"-..-",
+				"-..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						4
+					],
+					"dir": "W",
+					"type": "impassable"
+				}
+			],
+			"why": "Cloud City's dining room, and it carries BOTH marking types at once. A solid blue box encloses the middle of the banquet table -- all 8 of its boundary edges inked at coverage 0.91-0.94, gaps 1, and the region comes back with boundary_perimeter 0, i.e. fully closed. That is difficult terrain over (1,2),(2,2),(1,3),(2,3). Separately a DASHED red line runs the length of the table's spine down the west edge of column 2, rows 1-4, at coverage ~0.5 with 4-5 gaps. Dashed is impassable, not blocking, so the table stays adjacent and does not stop line of sight -- you simply cannot step across it. Rows 0 and 5 carry nothing even at a 0.10 threshold, which matches the art: the table tapers to ordinary floor at both ends.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "4",
+			"side": "A",
+			"width": 6,
+			"height": 4,
+			"squares": [
+				"---..-",
+				"d.....",
+				"d.....",
+				"---..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A cross-shaped viewport room, and the clearest case yet of the tile's OWN OUTLINE reading as a marking: the boundary glows blue, so 10 of the 16 detected edges sit on it at 0.91-1.00 coverage and look exactly like printed lines. They are not -- the shape already makes the tile edge a wall, so they carry nothing. edge_report now flags them, which is what this tile prompted. Of the six genuinely interior edges, (1,1)W and (1,2)W are solid blue at 0.91-0.92 and enclose the alcove at (0,1),(0,2) against the west tile edge. The other four run 0.35-0.49 coverage with 4-7 gaps and are the station ring in the window behind.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "4",
+			"side": "B",
+			"width": 6,
+			"height": 4,
+			"squares": [
+				"-..---",
+				"......",
+				"......",
+				"-..---"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				}
+			],
+			"why": "A Cloud City control room. A red DASHED line runs down the west edge of column 2 through rows 1 and 2, cutting across the curved console bank, at 0.64-0.65 coverage with 4-6 gaps. Impassable, so the console blocks movement but not sight -- an operator behind it can still be shot. The blue reading at (3,3)W is not a third marking: (3,3) is void, so that edge is the tile's own outline.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "5",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				"....",
+				"....",
+				"-..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "No terrain. A cross-shaped junction round an OCTAGONAL lit platform, and the octagon is the whole story: its facets run diagonally across grid lines, so they clip six edges without ever lying along one. Same class as Bespin_6B's circular rotunda. Note (2,2)W is reported as 'solid' on 2 gaps, which is a reminder that the gap count only separates solid from dashed ONCE an edge is known to be a marking -- it cannot establish that one exists. Coverage is the check that fails here: 0.48, against the 0.86-1.00 every confirmed solid marking measures.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "5",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				"....",
+				"....",
+				"-..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "No terrain. The reverse of 5A and the same story with circles instead of facets: a turbolift platform of concentric rings, 2.41% blue, four edges clipped at 0.48-0.55 and none of them aligned to the grid.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "6",
+			"side": "A",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"..-",
+				".I.",
+				"..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A glowing floor vent at (1,1), ringed by a dashed red box on all four sides -- (1,1)N, (1,1)W, (2,1)W, (1,2)N, coverage 0.42-0.50 with 4 gaps each. The tile is 4.37% red because of the glow, so colour alone would have called the whole tile terrain; the marking is real regardless. Dashed means IMPASSABLE, so the vent stays adjacent and line of sight passes over it. (2,0) is void.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "6",
+			"side": "B",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"-..",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "No terrain. The reverse of 6A: a circular Cloud City platform on a blue-violet tile that reads 19.1% blue, by far the highest blue fraction anywhere in the corpus. The four edges that clear the coverage floor are the platform's circular rim clipping through them, and the gap counts say so plainly -- 10, 14, 17 and 19, against 4-5 for a genuine dashed line and 0-1 for a solid one. This adds a false-positive class to the four already on record: a CURVED feature crossing grid edges. A printed marking is drawn along square boundaries by definition, so it runs parallel to the edge it inks; a curve only ever crosses one, which is what produces the shredded gap count.",
+			"confidence": "high",
+			"triage": "ink-fills-squares"
+		},
+		{
+			"tileId": "7",
+			"side": "A",
+			"width": 2,
+			"height": 5,
+			"squares": [
+				"..",
+				"..",
+				"..",
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "7",
+			"side": "B",
+			"width": 2,
+			"height": 5,
+			"squares": [
+				"..",
+				"..",
+				"..",
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "8",
+			"side": "A",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+ink-too-shredded",
+			"verified": false,
+			"triage": "ink-too-shredded"
+		},
+		{
+			"tileId": "8",
+			"side": "B",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "9",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "9",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		}
+	]
+}

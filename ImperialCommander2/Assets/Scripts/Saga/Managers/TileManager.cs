@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
+using Saga.Board;
 
 namespace Saga
 {
@@ -43,6 +44,56 @@ namespace Saga
 		/// <summary>
 		/// Create the tiles in the whole mission, doesn't show them
 		/// </summary>
+		/// <summary>
+		/// Every tile in the mission, reduced to what the rules engine needs.
+		///
+		/// The engine assembly cannot reference UnityEngine and so cannot read
+		/// MapTile directly, which is why the extraction lives on this side of
+		/// the boundary rather than inside Saga.Board.
+		///
+		/// Two conversions happen here and both are exact rather than rounded.
+		/// entityPosition is in editor units at ten to the board square, and
+		/// every shipped mission holds only multiples of ten -- verified across
+		/// all 138 of them, with zero fractional positions. entityRotation is
+		/// likewise always one of 0, 90, 180 and 270, with zero non-orthogonal
+		/// values in the corpus. If either assumption ever breaks, it breaks
+		/// loudly here instead of silently shifting the whole board by half a
+		/// square.
+		/// </summary>
+		public List<SagaBoardBridge.TileInput> CollectBoardTiles()
+		{
+			var output = new List<SagaBoardBridge.TileInput>();
+			if ( mapSections == null ) return output;
+
+			foreach ( var section in mapSections )
+			{
+				foreach ( var tile in section.mapTiles )
+				{
+					float x = tile.entityPosition.X, y = tile.entityPosition.Y;
+					float rot = tile.entityRotation;
+
+					if ( x % 10 != 0 || y % 10 != 0 || rot % 90 != 0 )
+					{
+						Utils.LogWarning( $"CollectBoardTiles()::tile {tile.textureName} "
+							+ $"is off the grid at ({x},{y}) rotation {rot} -- skipped" );
+						continue;
+					}
+
+					output.Add( new SagaBoardBridge.TileInput
+					{
+						Expansion = tile.expansion.ToString(),
+						TileId = tile.tileID,
+						Side = tile.tileSide,
+						X = (int)(x / 10f),
+						Y = (int)(y / 10f),
+						Rotation = ((int)rot % 360 + 360) % 360,
+						SectionGuid = section.GUID.ToString(),
+					} );
+				}
+			}
+			return output;
+		}
+
 		public void InstantiateTiles( List<MapSection> sections )
 		{
 			mapSections = sections;

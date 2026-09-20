@@ -1,0 +1,65 @@
+{
+  "_comment": [
+    "Hand-verified terrain ground truth. This is the calibration set: both the",
+    "detector and the semantic review pass are measured against it before being",
+    "trusted on the remaining tile faces.",
+    "",
+    "Entries here are authored by someone reading the physical tiles, not",
+    "derived from the art by tooling, which is the whole point -- on Core_19B",
+    "the detector's accept/reject heuristic and an unaided review both",
+    "produced confident, specific and WRONG answers (close to the exact",
+    "complement of the truth). The flood-fill component, however, matched the",
+    "truth exactly at 23/23 squares.",
+    "",
+    "Glyphs: . normal  d difficult  X blocking  I impassable  P pit  - void"
+  ],
+  "tiles": [
+    {
+      "tile": "Core_19B",
+      "width": 6,
+      "height": 6,
+      "source": "hand-verified",
+      "grid": [
+        "..dddd",
+        "..dd..",
+        ".ddd..",
+        ".dddd.",
+        "dddddd",
+        "dd..dd"
+      ],
+      "difficult_cells": [
+        [2, 0], [3, 0], [4, 0], [5, 0],
+        [2, 1], [3, 1],
+        [1, 2], [2, 2], [3, 2],
+        [1, 3], [2, 3], [3, 3], [4, 3],
+        [0, 4], [1, 4], [2, 4], [3, 4], [4, 4], [5, 4],
+        [0, 5], [1, 5], [4, 5], [5, 5]
+      ],
+      "notes": [
+        "The difficult terrain is the flooded/swamp area. Its boundary is formed",
+        "by the BLACK WALLS together with the blue lines, not by the blue lines",
+        "alone -- reading the blue in isolation is what inverted the answer.",
+        "The detector's blue flood-fill component matched this exactly (23/23).",
+        "Regions B (n=6), C (n=5) and D (n=2) are the raised grating platforms",
+        "and are ordinary floor."
+      ]
+    },
+    {
+      "tile": "Core_33A",
+      "width": 2,
+      "height": 2,
+      "source": "hand-verified",
+      "grid": [
+        "..",
+        ".."
+      ],
+      "difficult_cells": [],
+      "notes": [
+        "NEGATIVE CONTROL. This tile is 14.9% red -- more red than any tile that",
+        "actually carries markings -- because it depicts a glowing vent. It has",
+        "no terrain markings at all. Any detector that classifies by hue without",
+        "requiring grid alignment fails here, and fails silently."
+      ]
+    }
+  ]
+}

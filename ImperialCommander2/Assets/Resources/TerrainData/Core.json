@@ -1,0 +1,1362 @@
+{
+	"schemaVersion": 1,
+	"expansion": "Core",
+	"_comment": [
+		"Shape ('-') is exact, from the art's alpha channel, and needs no review.",
+		"Terrain glyphs come from a reading of the art and carry a reason.",
+		"Entries with source 'shape-only' are UNREVIEWED for terrain: they are not",
+		"asserting the tile has no terrain, only that nobody has looked yet."
+	],
+	"tiles": [
+		{
+			"tileId": "10",
+			"side": "A",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"...",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "10",
+			"side": "B",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"...",
+				".d.",
+				"..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid BLUE box round the wreckage at the centre -- difficult, not blocking. A heap of machinery looks impassable, but the printed colour decides the terrain type.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "11",
+			"side": "A",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "11",
+			"side": "B",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "12",
+			"side": "A",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "12",
+			"side": "B",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "13",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "13",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "14",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "14",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "15",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "15",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "16",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "16",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "17",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "17",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "18",
+			"side": "A",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "18",
+			"side": "B",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "19",
+			"side": "A",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"......",
+				"......",
+				"......",
+				"...II.",
+				"...II.",
+				"......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A large dark chasm in the centre-right, outlined in DASHED red -- impassable, so figures cannot enter but the spaces stay adjacent and line of sight passes across it. The detector's region reports gaps=4.5, independently confirming the line is broken rather than solid. It reads visually as a pit; if a mission's rules treat it as one (figures may be pushed in) that belongs in a per-mission override, not here.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "19",
+			"side": "B",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"..dddd",
+				"..dd..",
+				".ddd..",
+				".dddd.",
+				"dddddd",
+				"dd..dd"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": true,
+			"why": "The flooded centre is the difficult terrain; its boundary is formed by the black walls TOGETHER with the blue lines. Hand-verified ground truth. Reading the blue in isolation inverts the answer, and both the detector heuristic and an unaided review got it backwards.",
+			"confidence": "verified",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "1",
+			"side": "A",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"......",
+				".XX.X.",
+				"...X..",
+				"......",
+				"......",
+				"......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red boxes ring the crashed-wreckage squares. Verified by eye and independently by the detector's red flood-fill regions.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "1",
+			"side": "B",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"......",
+				"..XX..",
+				"..XX.I",
+				".....I",
+				"......",
+				".X...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red box over the shuttle, a 2x2 block at (2,1)-(3,2), plus a small one at (1,5) -- matching the detector's 4-square and 1-square regions. A DASHED outline rings the vegetation: impassable squares, not blocking, so line of sight still passes through them. CORRECTED by edge_report -- the dashed run covers (5,2)N, (5,2)W and (5,3)W, so the region is TWO squares (5,2) and (5,3), bounded on the right by the tile edge. The by-eye pass saw only one.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "20",
+			"side": "A",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"....",
+				"X...",
+				"....",
+				"X...",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Two solid red boxes over the turbine units on the left wall. The 2.52% 'blue' is the cold ambient lighting of the tile's left half, not a marking -- region detection correctly finds no blue region, the same as on Core_23A.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "20",
+			"side": "B",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"..X.",
+				"...X",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red boxes over the debris at (2,3) and (3,4). NOT fully resolved: the detector also reports a region at (3,5), but the right-hand columns sit under a bright furnace glow that contaminates red detection, and the boundary there could not be confirmed against the art. (3,5) is omitted: it needs a second look at higher magnification.",
+			"confidence": "medium",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "21",
+			"side": "A",
+			"width": 5,
+			"height": 4,
+			"squares": [
+				".....",
+				".....",
+				".....",
+				"....."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. The 0.33% red is indicator lights on a scatter of small consoles across the floor. Nothing follows a grid edge.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "21",
+			"side": "B",
+			"width": 5,
+			"height": 4,
+			"squares": [
+				".....",
+				".....",
+				".....",
+				"....."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "22",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				".XX.",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red box over the 2x1 crate block. The detector reports gaps=0.0, the cleanest solid reading seen, independently confirming blocking rather than impassable.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "22",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "W",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "N",
+					"type": "blocking"
+				}
+			],
+			"why": "Solid red lines run along EDGES rather than round any square, tracing the lip of a raised shelf: vertical west of (2,1), horizontal across the top of (1,2) and (2,2). This is exactly why the tile reports 0 regions -- edge markings enclose nothing, so region detection cannot see them. CONFIRMED by edge_report: all three at coverage 0.99-1.00, gaps 0-1.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "23",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				".X..",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Single solid red box around the stacked crates at (1,2). The tile also reads 0.87% 'blue', but that is the cold ambient lighting of an interior tile, not a marking -- region detection correctly finds no blue region. Another way colour alone misleads: a whole tile tinted toward a marking colour.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "23",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				"..X.",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Single solid red box over the engine assembly at (2,2) in the workshop.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "24",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-...",
+				"....",
+				"....",
+				"...-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. The 3.75% blue is a glowing holographic projector table in the centre. It spans grid boundaries rather than following them, which is why it encloses no region. Corners (0,0) and (3,3) are void.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "24",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"...-",
+				"....",
+				"....",
+				"-..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. Ink is scattered workshop detail -- a blue tank at (3,1) and tools along the bench -- none of it on a grid edge. Corners (3,0) and (0,3) are void.",
+			"confidence": "high",
+			"triage": "ink-too-shredded"
+		},
+		{
+			"tileId": "25",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. The 0.46% red is accent striping on the wall panels plus machinery detail on the central console and equipment at the foot of the tile. Nothing follows a grid edge. Corners (0,0) and (3,0) are void.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "25",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain markings. Non-rectangular: (0,0) and (3,0) are void, which comes from the alpha channel rather than review.",
+			"confidence": "high",
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "26",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				"..X.",
+				"....",
+				"-..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Single solid red box round the crates and machinery at (2,1). Plus-shaped tile with four void corners from the alpha channel.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "26",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				".X..",
+				"....",
+				"-..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red box over the crate and droid at (1,1). Plus-shaped tile with four void corners.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "27",
+			"side": "A",
+			"width": 6,
+			"height": 2,
+			"squares": [
+				"......",
+				"......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. 13.5% red is a wall of glowing grilles spanning the whole tile -- the largest artwork false positive found so far, and the same family as Core_33A. No line follows any grid edge.",
+			"confidence": "high",
+			"triage": "ink-fills-squares"
+		},
+		{
+			"tileId": "27",
+			"side": "B",
+			"width": 6,
+			"height": 2,
+			"squares": [
+				"......",
+				"......"
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "28",
+			"side": "A",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"...",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. The 1.56% blue is cold ambient lighting plus lit floor panels and window strips; the 0.12% red is console indicator lights. Nothing follows a grid edge.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "28",
+			"side": "B",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"...",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. The 7.4% blue is a glowing orb at (2,2) -- artwork, not a marking. No blue line runs along any grid edge.",
+			"confidence": "high",
+			"triage": "ink-fills-squares"
+		},
+		{
+			"tileId": "29",
+			"side": "A",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. Wall strip lights and floor-panel indicators.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "29",
+			"side": "B",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. Same blast-door and signal-lamp family as Core_34B.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "2",
+			"side": "A",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"....",
+				"....",
+				"..X.",
+				"....",
+				"X...",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						5
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						5
+					],
+					"dir": "N",
+					"type": "impassable"
+				}
+			],
+			"why": "Two solid red boxes over the stone ruins at (2,2) and (0,4) -- blocking, and exactly the two single-square regions the detector found. Dashed red runs along the boundary between the raised stone pavement and the grass at the top and bottom of the tile -- impassable EDGES, which the region detector cannot see because a dashed line does not close.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "2",
+			"side": "B",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"....",
+				"..XX",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						4
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				}
+			],
+			"why": "Solid red over the crates at (2,4),(3,4) -- blocking, matching the detector's 2-square region. Separately, DASHED red traces a ridge across the tile: down the west side of column 1 and along the top of (2,2),(3,2). Those are impassable edges and are invisible to region detection because a dashed line never closes. VERIFIED against edge_report: 5 of 6 hand placements were right; (2,2)N was wrong and is corrected to (1,2)N.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "30",
+			"side": "A",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. Same interior lighting family as Core_29A: wall strips and console indicators.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "30",
+			"side": "B",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "31",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "31",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "32",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. A large blast door fills the tile; the only ink is indicator dots on the left-hand console.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "32",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "33",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": true,
+			"why": "NO terrain. 14.9% red is a glowing vent. Negative control for the detector: hue alone would mislabel the whole tile.",
+			"confidence": "verified",
+			"triage": "ink-fills-squares"
+		},
+		{
+			"tileId": "33",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. The 0.63% red is machinery panel lights scattered down both walls; no line follows any grid edge. Same family as the glowing vent and lit orb, and rejected by the same structural test.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "34",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. A plain interior room; the only ink is indicator dots on the wall consoles.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "34",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. Blast-door tile with red and green signal lamps at the corners. The lamps are the entire red reading.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "35",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "35",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "36",
+			"side": "A",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. Blue wall strip lights and red floor-panel indicators, the same lighting family as Core_37B and Core_38A.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "36",
+			"side": "B",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "37",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "37",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. The 0.96% blue is glowing strip lights along the right-hand wall. Nothing follows a grid edge.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "38",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. Same glowing strip-light family as Core_37B: blue lighting down the right-hand column only, none of it on a grid edge.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "38",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "39",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "39",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "3",
+			"side": "A",
+			"width": 6,
+			"height": 5,
+			"squares": [
+				"--..--",
+				"-....-",
+				"......",
+				"......",
+				"-....-"
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "3",
+			"side": "B",
+			"width": 6,
+			"height": 5,
+			"squares": [
+				"--..--",
+				"-....-",
+				"..X...",
+				"......",
+				"-....-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Single solid red box round the turbine at (2,2), matching the detector's 1-square region on a 6x5 tile.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "4",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				".Xd.",
+				".dd.",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Both conventions as real markings on one tile: a solid RED box round the stone statue at (1,1) -- blocking -- and a solid BLUE box round the pool at (2,1),(1,2),(2,2) -- difficult. The detector's red 1-square and blue 3-square regions match exactly, which is what a clean tile looks like.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "4",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "5",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"..dd",
+				".ddd",
+				"ddd."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A blue line splits the tile diagonally: forest floor to the upper left, a rock outcrop to the lower right. Two comparable regions of 8 and 7 squares, neither enclosed (boundary_perimeter 6 and 8), so the geometry cannot say which side is marked. Magnified, the marked squares are rough broken lichen-covered rock and the unmarked ones are leaf litter and ferns, so the outcrop is the awkward footing and the reading stands. (3,3) is NOT difficult despite being blue-bounded: (3,3)N and (3,3)W are the outcrop's own south-east corner, where it stops short of the tree roots, rather than a box round (3,3).",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "5",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				".X..",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				}
+			],
+			"why": "Solid red box over the circular hatch at (1,1) -- blocking. Two short DASHED segments also run along edges: north of (0,2) on the left and north of (3,3) on the right, marking small ledges. Neither forms a region, so only the visual pass finds them.",
+			"confidence": "medium",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "6",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-...",
+				".X..",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red box over the tree roots at (1,1). No dashed marks. (0,0) is void, from the alpha channel.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "6",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"...-",
+				"....",
+				"..X.",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				}
+			],
+			"why": "TWO red conventions on one tile. A SOLID red box rings the machinery at (2,2) -- blocking terrain. Separately, DASHED red lines run along square EDGES on the left flank and beside (3,1) -- impassable edges, which stop movement but leave the spaces adjacent and let line of sight through. Square-only authoring would have silently dropped the dashed edges. (3,0) is void, from the alpha channel. CORRECTED: the edge placements here were originally eyeballed and 2 of 3 were wrong -- they now come from edge_report, which measures coverage and gap count per edge exactly.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "7",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-...",
+				"....",
+				"..dd",
+				"..d-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Blue border encloses the water in the bottom-right corner. The detector reports a 4-square region including (3,3), but (3,3) is VOID from the alpha channel, so the real answer is 3 squares. A good reminder to apply shape before terrain: otherwise terrain gets authored onto squares that are not part of the tile.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "7",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"...-",
+				"....",
+				"....",
+				"-..."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "8",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				"....",
+				"..X.",
+				"-..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Single solid red box around the tree roots and rock at (2,2). No dashed edges. Plus-shaped tile: the four corners are void, from the alpha channel.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "8",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-..-",
+				".X..",
+				"....",
+				"-..-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Solid red box over the wrecked machinery at (1,1). Plus-shaped tile with four void corners.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "9",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"--..",
+				"--..",
+				".d..",
+				".dd."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "REAL terrain despite the tile reporting 0 regions. A blue border traces the stream across the lower-left. It reports no region because the marking closes against the TILE EDGE and the void quadrant rather than forming a loop inside the grid, so the flood fill leaks around it. This is a second, distinct reason region detection misses real markings -- and the second proof that the 'ink, no region' bucket cannot be auto-cleared.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "9",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"..--",
+				"..--",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		}
+	]
+}

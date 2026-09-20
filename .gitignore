@@ -69,3 +69,8 @@ crashlytics-build.properties
 
 # macOS Finder files
 .DS_Store
+# Board engine tooling and test build output
+tests/**/bin/
+tests/**/obj/
+tools/_overlays/
+tools/__pycache__/

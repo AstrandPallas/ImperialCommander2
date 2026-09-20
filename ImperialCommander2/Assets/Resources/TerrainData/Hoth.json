@@ -1,0 +1,1036 @@
+{
+	"schemaVersion": 1,
+	"expansion": "Hoth",
+	"_comment": [
+		"Shape ('-') is exact, from the art's alpha channel, and needs no review.",
+		"Terrain glyphs come from a reading of the art and carry a reason.",
+		"Entries with source 'shape-only' are UNREVIEWED for terrain: they are not",
+		"asserting the tile has no terrain, only that nobody has looked yet."
+	],
+	"tiles": [
+		{
+			"tileId": "10",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"...-",
+				"....",
+				"....",
+				"-..."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "10",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"d..-",
+				"....",
+				"....",
+				"-..X"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Two opposite corners, marked differently. (0,0) is boxed in solid blue by (1,0)W and (0,1)N, (3,3) in solid red by (3,3)N and (3,3)W, all four at 0.91-0.92 with 2 gaps, each closing against the tile edges. A snowdrift you wade through and a rock you do not.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "11",
+			"side": "A",
+			"width": 4,
+			"height": 3,
+			"squares": [
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "11",
+			"side": "B",
+			"width": 4,
+			"height": 3,
+			"squares": [
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "12",
+			"side": "A",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"...",
+				"...",
+				"..."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "12",
+			"side": "B",
+			"width": 3,
+			"height": 3,
+			"squares": [
+				"d..",
+				"..d",
+				".dd"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Snow piled against the walls of an Echo Base corridor. A solid blue box round the drift at (0,0), and a second line closing the L-shaped drift at (2,1),(1,2),(2,2) against the east and south tile edges. All six edges at 0.91-1.00 with 0-2 gaps. The middle of the tile is metal grating and carries no marking, which matches: that is the part you walk on.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "13",
+			"side": "A",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "13",
+			"side": "B",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "14",
+			"side": "A",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "No terrain. One edge at 0.33 coverage, under the floor. 3.9% blue is ice.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "14",
+			"side": "B",
+			"width": 4,
+			"height": 2,
+			"squares": [
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "15",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "15",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "16",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "16",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "17",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "17",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+ink-too-shredded",
+			"verified": false,
+			"triage": "ink-too-shredded"
+		},
+		{
+			"tileId": "18",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "18",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "19",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "19",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "1",
+			"side": "A",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"....",
+				"....",
+				".X..",
+				"dX..",
+				"d...",
+				"d..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "An ice formation at (1,2),(1,3) in a solid red box at 0.99-1.00 with 0-1 gaps, and a lavender ice column down the left edge in solid blue at 0.91-1.00. The tile is full of MIXED edges and this explains why: the two regions are ADJACENT, so (1,3)W is simultaneously the blue region's eastern boundary and the red box's western one, and both inks sit in the same sample band. Mixed does not mean ambiguous here -- it means two different terrains meet along that line, which is exactly what the art shows.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "1",
+			"side": "B",
+			"width": 4,
+			"height": 6,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "UNRESOLVED, left without terrain. The tile's 1.91% red comes from a large GLOWING GENERATOR at (3,3), and the two detected edges -- (3,3)N solid at 0.92 and (2,3)N dashed at 0.44 -- are as plausibly its housing and glow spill as they are markings. No box closes anywhere. Given Core_33A and Core_28B, glowing machinery is the single most reliable source of false positives, so this needs a closer look rather than a guess. Authoring it wrong would be invisible at runtime.",
+			"confidence": "unresolved",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "20",
+			"side": "A",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "NO terrain. A plain snow tile. The 1.03% 'blue' is the SNOW ITSELF -- Hoth tiles are inherently blue-white, so ambient tint will register across that entire expansion and must never be read as a marking. Nothing follows a grid edge.",
+			"confidence": "high",
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "20",
+			"side": "B",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "21",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+ink-too-shredded",
+			"verified": false,
+			"triage": "ink-too-shredded"
+		},
+		{
+			"tileId": "21",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "22",
+			"side": "A",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+ink-too-shredded",
+			"verified": false,
+			"triage": "ink-too-shredded"
+		},
+		{
+			"tileId": "22",
+			"side": "B",
+			"width": 2,
+			"height": 2,
+			"squares": [
+				"..",
+				".."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "23",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "23",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "24",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "24",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "25",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "25",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "26",
+			"side": "A",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "26",
+			"side": "B",
+			"width": 2,
+			"height": 1,
+			"squares": [
+				".."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "27",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "27",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "28",
+			"side": "A",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "28",
+			"side": "B",
+			"width": 1,
+			"height": 2,
+			"squares": [
+				".",
+				"."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "2",
+			"side": "A",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"-...--",
+				"......",
+				"....dd",
+				"....dd",
+				"....dd",
+				"--..d-"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				}
+			],
+			"why": "An ice cavern. The right-hand side is a lavender ice formation, visibly a different surface from the blue-white cavern floor, and it is ringed in solid blue at 0.92-1.00 with 0-1 gaps: difficult. Separately a dashed red line at 0.47-0.52 with 3-5 gaps traces a raised shelf down the left and across row 3. (4,2)W reports BOTH inks -- red dashed at 0.52 and blue solid at 1.00 -- and is taken as the blue region boundary only: the red there is the tail of the shelf line in the row above bleeding into the band, and 0.52 against a perfect 1.00 is not a close call. The blue readings at 6-10 gaps elsewhere are ice texture.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "2",
+			"side": "B",
+			"width": 6,
+			"height": 6,
+			"squares": [
+				"--...-",
+				"......",
+				"......",
+				"......",
+				"......",
+				"-...--"
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "3",
+			"side": "A",
+			"width": 4,
+			"height": 5,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				}
+			],
+			"why": "A narrow ice trench across the middle of a snowfield, its two lips printed as red dashed lines at 0.50-0.52 with 4 gaps each -- rows 1 and 3, columns 1-2. Impassable rather than blocking, so figures on opposite sides of the trench can still shoot each other. The blue reading at (2,2)W is the wrecked speeder lying in the trench.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "3",
+			"side": "B",
+			"width": 4,
+			"height": 5,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "4",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		},
+		{
+			"tileId": "4",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"....",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-ink",
+			"verified": false,
+			"triage": "no-ink"
+		},
+		{
+			"tileId": "5",
+			"side": "A",
+			"width": 8,
+			"height": 6,
+			"squares": [
+				"....----",
+				"....----",
+				"........",
+				"........",
+				"........",
+				"......--"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						6,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						4
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						4
+					],
+					"dir": "N",
+					"type": "impassable"
+				}
+			],
+			"why": "A stepped ridge marked in DASHED red -- impassable edges, placed from edge_report rather than by eye (coverage ~0.50, gaps 4-5 on every one). The tile also reports blue on many edges, but Hoth tiles are blue-white SNOW and that tint contaminates blue detection across the expansion; those readings are treated as noise, not markings. One exception is (2,4) W at coverage 0.97 gaps 1 -- genuinely solid blue -- which is left UNRESOLVED rather than guessed.",
+			"confidence": "medium",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "5",
+			"side": "B",
+			"width": 8,
+			"height": 6,
+			"squares": [
+				"----....",
+				"----....",
+				"........",
+				"........",
+				"...d....",
+				"--......"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						5,
+						2
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						6,
+						4
+					],
+					"dir": "N",
+					"type": "blocking"
+				},
+				{
+					"sq": [
+						7,
+						4
+					],
+					"dir": "N",
+					"type": "blocking"
+				}
+			],
+			"why": "An Echo Base armoury. Two equipment racks are printed as solid red edges at 0.92-1.00 with 0-1 gaps, and a single blue-boxed console at (3,4) comes back with boundary_perimeter 0. This tile reads 8.59% blue, nearly all of it the hangar's cold lighting, which is why most of its edges land at 0.33-0.86 with 3-9 gaps and are discarded.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "6",
+			"side": "A",
+			"width": 5,
+			"height": 7,
+			"squares": [
+				"dd.dd",
+				"dd.dd",
+				"dd.dd",
+				"..XX.",
+				"ddXX.",
+				"dd.dd",
+				"dd.dd"
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A crashed snowspeeder in a trench network. The wreck is a solid red 2x2 at 1.00 coverage with 0 gaps: blocking. The blue lines outline a plus-shaped TRENCH -- column 2 for its full height, widening across rows 3-4 at the crash site -- and the difficult terrain is everything OUTSIDE it: the four banks of undisturbed snow, 22 squares, exactly the four 6/6/6/4-square components the region fill returns. boundary_perimeter is 0-1 for the trench pieces and 5 for the outer banks, which is why it cannot decide this one: a trench is a CLEARED path, dug out and walked along, with the deep snow beside it. See the note on enclosure in triage().",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "6",
+			"side": "B",
+			"width": 5,
+			"height": 7,
+			"squares": [
+				".....",
+				".....",
+				"....X",
+				".X...",
+				".X...",
+				".....",
+				"....."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "Two solid red boxes: a 1x2 at (1,3),(1,4) with boundary_perimeter 0, every edge 0.99-1.00 at 0-1 gaps, and a single square at (4,2) closing against the tile edge. Several edges report blue as well, but all of it sits at 0.32-0.67 coverage -- below the 0.86 floor every confirmed solid marking clears -- and it is the cavern's ice texture, not a second marking.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "7",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-...",
+				"....",
+				"....",
+				"...-"
+			],
+			"source": "auto-shape+ink-fills-squares",
+			"verified": false,
+			"triage": "ink-fills-squares"
+		},
+		{
+			"tileId": "7",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"...-",
+				"....",
+				"....",
+				"-..."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "No terrain. A single edge clears the detector at 0.33 coverage with 6 gaps, under the 0.42 floor; the 4.88% blue is ice.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "8",
+			"side": "A",
+			"width": 4,
+			"height": 5,
+			"squares": [
+				"-..-",
+				"...-",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "No terrain. An ice cave floor with no printed marking anywhere; the 2.73% blue is the ice itself. Three edges clear the coverage floor along the bottom of the tile at 0.45-0.51, and magnification shows no line there. Voids at (0,0), (3,0), (3,1).",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "8",
+			"side": "B",
+			"width": 4,
+			"height": 5,
+			"squares": [
+				"-..-",
+				"-ddd",
+				".dd.",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"why": "A field of icy rubble in the upper middle, ringed in solid blue at 0.89-1.00 with 0-2 gaps. The strip above it at (1,0),(2,0) is the leftover floor between the marking and the tile edge, not a second region.",
+			"confidence": "high",
+			"triage": "needs-review"
+		},
+		{
+			"tileId": "9",
+			"side": "A",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"-...",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+reviewed",
+			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "W",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "N",
+					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "W",
+					"type": "impassable"
+				}
+			],
+			"why": "Three red dashed edges at 0.58-0.62 with 4-5 gaps tracing a ledge. The six blue readings on the same tile all sit at 0.31-0.40, below the 0.42 floor every confirmed dashed marking clears, and are ice texture.",
+			"confidence": "high",
+			"triage": "no-closed-region"
+		},
+		{
+			"tileId": "9",
+			"side": "B",
+			"width": 4,
+			"height": 4,
+			"squares": [
+				"...-",
+				"....",
+				"....",
+				"...."
+			],
+			"source": "auto-shape+no-inked-edge",
+			"verified": false,
+			"triage": "no-inked-edge"
+		}
+	]
+}
