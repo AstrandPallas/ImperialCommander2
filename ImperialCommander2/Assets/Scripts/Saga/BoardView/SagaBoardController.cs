@@ -83,6 +83,35 @@ namespace Saga
 			return match == null ? ((int, int)?)null : (match.width, match.height);
 		}
 
+		/// <summary>
+		/// Called once the mission's tiles and entities are in place.
+		/// </summary>
+		/// <remarks>
+		/// Heroes come from the session's party. Their stats are not in
+		/// heroes.json, so health falls back to the deployment card's value and
+		/// endurance to a default until herostats.json exists; neither affects
+		/// movement or line of sight, only how long a hero lasts.
+		/// </remarks>
+		public void OnMissionReady( IEnumerable<DeploymentCard> party,
+			Func<string, bool> isSectionActive = null )
+		{
+			if ( BuildBoard( isSectionActive ) == null ) return;
+
+			var heroes = new List<HeroCombatState>();
+			foreach ( var card in party ?? Enumerable.Empty<DeploymentCard>() )
+			{
+				if ( card == null ) continue;
+				heroes.Add( new HeroCombatState
+				{
+					CardId = card.id,
+					Name = card.name,
+					MaxHealth = card.health > 0 ? card.health : 10,
+				} );
+			}
+
+			SeedHeroes( heroes );
+		}
+
 		/// <summary>Seat the party at the mission entrance and show them.</summary>
 		public List<Sq> SeedHeroes( IEnumerable<HeroCombatState> heroes )
 		{

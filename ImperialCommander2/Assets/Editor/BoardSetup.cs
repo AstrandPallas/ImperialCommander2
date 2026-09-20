@@ -101,18 +101,10 @@ namespace Saga.EditorTools
 		/// world the tiles are laid out in. Parenting it anywhere else would
 		/// need a second transform nobody would remember to keep in step.
 		/// </remarks>
-		[MenuItem( "Imperial Commander/Board/Add Figure Layer To Scene" )]
+		[MenuItem( "Imperial Commander/Board/Add Board View To Scene" )]
 		public static void AddFigureLayerToScene()
 		{
 			var scene = EditorSceneManager.OpenScene( ScenePath, OpenSceneMode.Single );
-
-			var existing = Object.FindObjectOfType<FigureLayer>();
-			if ( existing != null )
-			{
-				Debug.Log( "BoardSetup: " + ScenePath + " already has a FigureLayer on "
-					+ existing.gameObject.name );
-				return;
-			}
 
 			var tileManager = Object.FindObjectOfType<TileManager>();
 			if ( tileManager == null )
@@ -122,17 +114,71 @@ namespace Saga.EditorTools
 				return;
 			}
 
-			var go = new GameObject( LayerName );
-			go.transform.SetParent( tileManager.transform.parent, false );
-			go.transform.localPosition = Vector3.zero;
-			go.transform.localRotation = Quaternion.identity;
-			go.transform.localScale = Vector3.one;
-			go.AddComponent<FigureLayer>();
+			// Idempotent on purpose: this gets re-run whenever a component is
+			// added, so it tops up what is missing rather than refusing once
+			// anything exists.
+			var layer = Object.FindObjectOfType<FigureLayer>();
+			GameObject host;
+			if ( layer != null )
+			{
+				host = layer.gameObject;
+			}
+			else
+			{
+				host = new GameObject( LayerName );
+				host.transform.SetParent( tileManager.transform.parent, false );
+				host.transform.localPosition = Vector3.zero;
+				host.transform.localRotation = Quaternion.identity;
+				host.transform.localScale = Vector3.one;
+				host.AddComponent<FigureLayer>();
+			}
+
+			// The controller and the dragger ride on the same object: they are
+			// one feature, and splitting them only creates references somebody
+			// has to reconnect by hand.
+			Ensure<SagaBoardController>( host );
+			Ensure<HeroPinDragger>( host );
+
+			AddTrackerPanel();
 
 			EditorSceneManager.MarkSceneDirty( scene );
 			EditorSceneManager.SaveScene( scene );
-			Debug.Log( "BoardSetup: added " + LayerName + " beside "
-				+ tileManager.gameObject.name + " in " + ScenePath );
+			Debug.Log( "BoardSetup: board view ready on " + host.name + " in " + ScenePath );
+		}
+
+		private static T Ensure<T>( GameObject go ) where T : Component
+		{
+			var existing = go.GetComponent<T>();
+			if ( existing != null ) return existing;
+			Debug.Log( "BoardSetup: added " + typeof( T ).Name + " to " + go.name );
+			return go.AddComponent<T>();
+		}
+
+		/// <summary>Put the tracker panel on a canvas, anchored to the right edge.</summary>
+		private static void AddTrackerPanel()
+		{
+			if ( Object.FindObjectOfType<TrackerPanel>() != null ) return;
+
+			var canvas = Object.FindObjectsOfType<Canvas>()
+				.FirstOrDefault( c => c.renderMode != RenderMode.WorldSpace );
+			if ( canvas == null )
+			{
+				Debug.LogWarning( "BoardSetup: no screen canvas, tracker panel not added" );
+				return;
+			}
+
+			var go = new GameObject( "TrackerPanel", typeof( RectTransform ) );
+			go.transform.SetParent( canvas.transform, false );
+
+			var rect = go.GetComponent<RectTransform>();
+			rect.anchorMin = new Vector2( 1f, 0.5f );
+			rect.anchorMax = new Vector2( 1f, 0.5f );
+			rect.pivot = new Vector2( 1f, 0.5f );
+			rect.anchoredPosition = new Vector2( -12f, 0f );
+			rect.sizeDelta = new Vector2( 900f, 500f );
+
+			go.AddComponent<TrackerPanel>();
+			Debug.Log( "BoardSetup: added TrackerPanel to " + canvas.name );
 		}
 
 		private static GameObject MakeSprite( string name, Transform parent, Sprite sprite,

@@ -3642,6 +3642,55 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 201438443}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &208396525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 208396526}
+  - component: {fileID: 208396527}
+  m_Layer: 0
+  m_Name: TrackerPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &208396526
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208396525}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 331787413}
+  m_RootOrder: 37
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -12, y: 0}
+  m_SizeDelta: {x: 900, y: 500}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &208396527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208396525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aede405f98c049b4088f02aea2d88ab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardController: {fileID: 0}
 --- !u!1001 &216435169
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6399,6 +6448,7 @@ RectTransform:
   - {fileID: 436146667}
   - {fileID: 1466483751}
   - {fileID: 963776838}
+  - {fileID: 208396526}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -28210,6 +28260,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1469365887}
   - component: {fileID: 1469365886}
+  - component: {fileID: 1469365889}
+  - component: {fileID: 1469365888}
   m_Layer: 0
   m_Name: FigureLayer
   m_TagString: Untagged
@@ -28247,6 +28299,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1469365888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469365885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc87509fdabd67946989b1e02a93df4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardController: {fileID: 0}
+  boardCamera: {fileID: 0}
+  liftHeight: 0.45
+  draggingColour: {r: 1, g: 0.72, b: 0.15, a: 1}
+--- !u!114 &1469365889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469365885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 888fe8bb08d498a46adcda0a1ecd1395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileManager: {fileID: 0}
+  mapEntityManager: {fileID: 0}
+  figureLayer: {fileID: 0}
 --- !u!1 &1476078964
 GameObject:
   m_ObjectHideFlags: 0

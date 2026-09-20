@@ -452,6 +452,8 @@ namespace Saga
 			StartCoroutine( "WaitForTilesLoaded" );
 		}
 
+		SagaBoardController boardController;
+
 		IEnumerator WaitForTilesLoaded()
 		{
 			while ( !tileManager.tilesLoaded )
@@ -465,6 +467,12 @@ namespace Saga
 
 		void DoStartupTasks( Tuple<List<string>, List<string>> tiles )
 		{
+			//build the board model and seat the party on it
+			if ( boardController == null )
+				boardController = FindObjectOfType<SagaBoardController>();
+			if ( boardController != null )
+				boardController.OnMissionReady( DataStore.sagaSessionData.MissionHeroes );
+
 			//if no tiles are initially shown, skip the placement window
 			if ( tiles.Item1.Count > 0 )
 			{

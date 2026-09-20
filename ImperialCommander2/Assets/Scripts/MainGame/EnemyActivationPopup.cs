@@ -28,6 +28,8 @@ public class EnemyActivationPopup : MonoBehaviour
 
 	CardInstruction cardInstruction;
 	DeploymentCard cardDescriptor;
+	Saga.SagaBoardController boardController;
+	Saga.Board.ActivationPlan boardPlan;
 	string rebel1;
 	bool spaceListen;
 	Action callback;
@@ -156,6 +158,11 @@ public class EnemyActivationPopup : MonoBehaviour
 					ParseInstructions( ovrd.changeInstructions.theText.Split( '\n' ).ToList() );
 			}
 		}
+
+		//board plan: work out where the figures should actually go, and show
+		//them moving there. The authored instruction text above stays: it says
+		//what the group is trying to do, this says which squares that means.
+		PlanOnBoard( cd );
 
 		//bonus
 		if ( cardDescriptor.hasActivated
@@ -376,6 +383,32 @@ public class EnemyActivationPopup : MonoBehaviour
 		}
 
 		return item;
+	}
+
+	/// <summary>Plan this activation on the board and animate it.</summary>
+	/// <remarks>
+	/// Silent when there is no board: the app is advisory, and a mission
+	/// running without terrain or without placed figures must still be
+	/// playable on the authored instruction text alone.
+	/// </remarks>
+	void PlanOnBoard( DeploymentCard cd )
+	{
+		boardPlan = null;
+		if ( boardController == null )
+			boardController = FindObjectOfType<Saga.SagaBoardController>();
+		if ( boardController == null || !boardController.IsReady ) return;
+
+		var group = boardController.Groups
+			.FirstOrDefault( g => g.CardId == cd.id && !g.IsDefeated );
+		if ( group == null ) return;
+
+		boardPlan = boardController.PlanActivation(
+			group, DataStore.sagaSessionData.gameVars.round );
+
+		if ( boardPlan == null ) return;
+
+		foreach ( var fp in boardPlan.Figures )
+			Debug.Log( "BOARD PLAN::" + fp );
 	}
 
 	DeploymentCard FindRebelSaga()
