@@ -1,7 +1,9 @@
 {
     "name": "Saga.Tracking",
     "rootNamespace": "Saga.Tracking",
-    "references": [],
+    "references": [
+        "Saga.Board"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

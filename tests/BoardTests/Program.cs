@@ -62,6 +62,7 @@ namespace Saga.Board.Tests
 			CorrectionTests.Register();
 			OverrideTests.Register();
 			ViewTests.Register();
+			TrackerBridgeTests.Register();
 			SimTests.Register();
 
 			return Run( filter );
