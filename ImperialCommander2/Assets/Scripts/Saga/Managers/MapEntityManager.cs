@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+using Saga.Board;
+
 namespace Saga
 {
 	public class MapEntityManager : MonoBehaviour
@@ -25,6 +27,54 @@ namespace Saga
 		/// <summary>
 		/// Builds ALL entities but does not SHOW or ACTIVATE them
 		/// </summary>
+		/// <summary>Doors as the board model needs them.</summary>
+		/// <remarks>
+		/// A door's stored position is not where it sits: DoorPrefab offsets it
+		/// diagonally by one square, so the engine works out the lattice point
+		/// itself and only needs the raw values passed through.
+		/// </remarks>
+		public List<SagaBoardBridge.DoorInput> CollectBoardDoors()
+		{
+			var doors = new List<SagaBoardBridge.DoorInput>();
+			foreach ( var e in mapEntities )
+			{
+				if ( e == null || e.entityType != EntityType.Door ) continue;
+				float x = e.entityPosition.X, y = e.entityPosition.Y;
+				if ( x % 10 != 0 || y % 10 != 0 || e.entityRotation % 90 != 0 )
+				{
+					Utils.LogWarning( $"CollectBoardDoors()::door {e.name} is off the grid "
+						+ $"at ({x},{y}) rotation {e.entityRotation} -- skipped" );
+					continue;
+				}
+
+				doors.Add( new SagaBoardBridge.DoorInput
+				{
+					X = (int)(x / 10f),
+					Y = (int)(y / 10f),
+					Rotation = ((int)e.entityRotation % 360 + 360) % 360,
+					// isActive is the open/closed flag for a door, which is how
+					// the mission fixtures read it too.
+					Open = e.entityProperties == null || e.entityProperties.isActive,
+				} );
+			}
+			return doors;
+		}
+
+		/// <summary>Active highlight markers, which is where Rebels start.</summary>
+		public List<(string Name, int C, int R)> CollectHighlights()
+		{
+			var found = new List<(string, int, int)>();
+			foreach ( var e in mapEntities )
+			{
+				if ( e == null || e.entityType != EntityType.Highlight ) continue;
+				if ( e.entityProperties != null && !e.entityProperties.isActive ) continue;
+				float x = e.entityPosition.X, y = e.entityPosition.Y;
+				if ( x % 10 != 0 || y % 10 != 0 ) continue;
+				found.Add( (e.name ?? "", (int)(x / 10f), (int)(y / 10f)) );
+			}
+			return found;
+		}
+
 		public void InstantiateEntities( List<IMapEntity> entities, bool restoring )
 		{
 			foreach ( IMapEntity e in entities )
