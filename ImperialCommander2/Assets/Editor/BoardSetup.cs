@@ -1,5 +1,7 @@
 using System.IO;
+using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace Saga.EditorTools
@@ -49,6 +51,50 @@ namespace Saga.EditorTools
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
 			Debug.Log( "BoardSetup: wrote " + PrefabPath );
+		}
+
+		private const string ScenePath = "Assets/Scenes/Saga.unity";
+		private const string LayerName = "FigureLayer";
+
+		/// <summary>Put a FigureLayer in the Saga scene, beside the tiles.</summary>
+		/// <remarks>
+		/// The layer has to share the tiles' coordinate space, because a figure
+		/// on square (c, r) is placed at (c + 0.5, y, -(r + 0.5)) in the same
+		/// world the tiles are laid out in. Parenting it anywhere else would
+		/// need a second transform nobody would remember to keep in step.
+		/// </remarks>
+		[MenuItem( "Imperial Commander/Board/Add Figure Layer To Scene" )]
+		public static void AddFigureLayerToScene()
+		{
+			var scene = EditorSceneManager.OpenScene( ScenePath, OpenSceneMode.Single );
+
+			var existing = Object.FindObjectOfType<FigureLayer>();
+			if ( existing != null )
+			{
+				Debug.Log( "BoardSetup: " + ScenePath + " already has a FigureLayer on "
+					+ existing.gameObject.name );
+				return;
+			}
+
+			var tileManager = Object.FindObjectOfType<TileManager>();
+			if ( tileManager == null )
+			{
+				Debug.LogError( "BoardSetup: no TileManager in " + ScenePath
+					+ ", so there is nothing to sit the figures beside" );
+				return;
+			}
+
+			var go = new GameObject( LayerName );
+			go.transform.SetParent( tileManager.transform.parent, false );
+			go.transform.localPosition = Vector3.zero;
+			go.transform.localRotation = Quaternion.identity;
+			go.transform.localScale = Vector3.one;
+			go.AddComponent<FigureLayer>();
+
+			EditorSceneManager.MarkSceneDirty( scene );
+			EditorSceneManager.SaveScene( scene );
+			Debug.Log( "BoardSetup: added " + LayerName + " beside "
+				+ tileManager.gameObject.name + " in " + ScenePath );
 		}
 
 		private static GameObject MakeSprite( string name, Transform parent, Sprite sprite,
