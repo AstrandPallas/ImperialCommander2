@@ -166,6 +166,11 @@ namespace Saga
 
 			//add it to deployed enemies
 			DataStore.deployedEnemies.Add( cardDescriptor );
+
+			//put the group on the board model so it can be planned and shown
+			var boardController = FindObjectOfType<SagaBoardController>();
+			if ( boardController != null )
+				boardController.DeployGroup( cardDescriptor );
 			//if it's FROM the dep hand, remove it
 			//should have already been removed *IF* it's from DeploymentPopup
 			//otherwise it just got (up/down)graded to/from Elite or it's from the event action

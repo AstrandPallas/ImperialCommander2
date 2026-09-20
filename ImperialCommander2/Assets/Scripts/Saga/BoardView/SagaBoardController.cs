@@ -121,7 +121,7 @@ namespace Saga
 
 			var highlights = mapEntityManager != null
 				? mapEntityManager.CollectHighlights()
-				: new List<(string, int, int)>();
+				: new List<(string Name, int C, int R)>();
 
 			var starts = HeroPlacement.SuggestStarts( Board, highlights, _heroes.Count );
 			if ( starts.Count == 0 )
@@ -138,6 +138,57 @@ namespace Saga
 
 			RefreshTokens();
 			return starts;
+		}
+
+		/// <summary>
+		/// Put a newly deployed group on the board and start tracking it.
+		/// </summary>
+		/// <remarks>
+		/// Figures land on the free squares nearest an active deployment point,
+		/// walking outward over CanStep so a group arrives together and on the
+		/// near side of a wall. Which point a mission means is often decided by
+		/// its rules text, so the first active one is a starting guess the
+		/// players correct by dragging -- the same as a hero's position.
+		/// </remarks>
+		public GroupCombatState DeployGroup( DeploymentCard card )
+		{
+			if ( card == null || !IsReady ) return null;
+
+			int figures = card.currentSize > 0 ? card.currentSize : Math.Max( 1, card.size );
+			var group = GroupCombatState.Create(
+				card.id + ":" + Guid.NewGuid().ToString( "N" ).Substring( 0, 6 ),
+				card.id, card.name, figures,
+				card.health > 0 ? card.health : 3, card.isElite );
+
+			var points = mapEntityManager != null
+				? mapEntityManager.CollectDeploymentPoints()
+				: new List<(string Name, int C, int R)>();
+
+			if ( points.Count == 0 )
+			{
+				Utils.LogWarning( "SagaBoardController::" + card.name
+					+ " deployed with no active deployment point, so it has no position yet" );
+				Track( group );
+				return group;
+			}
+
+			var occupied = HeroPlacement.OccupiedSquares( _heroes, _groups );
+			// SuggestStarts takes any named markers, so the deployment points
+			// are passed through under a name it recognises as a start.
+			var asStarts = points
+				.Select( p => (Name: "Entrance", p.C, p.R) )
+				.ToList();
+			var squares = HeroPlacement.SuggestStarts( Board, asStarts, figures, occupied );
+
+			for ( int i = 0; i < squares.Count && i < figures; i++ )
+				TrackerBridge.SetFigurePosition( group, i, squares[i] );
+
+			if ( squares.Count < figures )
+				Utils.LogWarning( "SagaBoardController::" + card.name + " only seated "
+					+ squares.Count + " of " + figures + " figures" );
+
+			Track( group );
+			return group;
 		}
 
 		public void Track( GroupCombatState group )

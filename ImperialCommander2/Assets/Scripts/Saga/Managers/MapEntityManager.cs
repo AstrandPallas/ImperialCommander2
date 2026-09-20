@@ -60,10 +60,25 @@ namespace Saga
 			return doors;
 		}
 
+		/// <summary>Active deployment points, which is where Imperials arrive.</summary>
+		public List<(string Name, int C, int R)> CollectDeploymentPoints()
+		{
+			var found = new List<(string Name, int C, int R)>();
+			foreach ( var e in mapEntities )
+			{
+				if ( e == null || e.entityType != EntityType.DeploymentPoint ) continue;
+				if ( e.entityProperties != null && !e.entityProperties.isActive ) continue;
+				float x = e.entityPosition.X, y = e.entityPosition.Y;
+				if ( x % 10 != 0 || y % 10 != 0 ) continue;
+				found.Add( (e.name ?? "", (int)(x / 10f), (int)(y / 10f)) );
+			}
+			return found;
+		}
+
 		/// <summary>Active highlight markers, which is where Rebels start.</summary>
 		public List<(string Name, int C, int R)> CollectHighlights()
 		{
-			var found = new List<(string, int, int)>();
+			var found = new List<(string Name, int C, int R)>();
 			foreach ( var e in mapEntities )
 			{
 				if ( e == null || e.entityType != EntityType.Highlight ) continue;
