@@ -81,3 +81,6 @@ ImperialCommander2/Assets/Screenshots.meta
 
 # Per-machine editor window layout
 ImperialCommander2/UserSettings/
+
+# Standalone player output
+Build/

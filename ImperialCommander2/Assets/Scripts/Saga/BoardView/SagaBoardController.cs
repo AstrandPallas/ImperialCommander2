@@ -82,9 +82,53 @@ namespace Saga
 					Utils.LogWarning( "SagaBoardController::" + w );
 			}
 
+			RefreshObjectives();
+
 			Utils.LogWarning( $"SagaBoardController::board is {board?.Count ?? 0} squares from "
-				+ $"{tiles.Count} tiles and {doors.Count} doors" );
+				+ $"{tiles.Count} tiles and {doors.Count} doors, "
+				+ $"{Tracker.Tokens.Count} objective token(s)" );
 			return board;
+		}
+
+		/// <summary>
+		/// Take the mission's crates, terminals and tokens into the tracker.
+		/// </summary>
+		/// <remarks>
+		/// Without this the objective map is always empty and the planner's
+		/// positioning preference never fires -- the feature would be live in
+		/// the tests and dead in the game, which is the failure this project
+		/// has hit before by checking that code exists rather than that
+		/// something calls it.
+		///
+		/// Re-read rather than merged, because a mission may reveal or remove
+		/// tokens as it runs. State the players have already recorded against
+		/// a token is preserved by guid.
+		/// </remarks>
+		public void RefreshObjectives()
+		{
+			if ( mapEntityManager == null ) return;
+
+			var previous = Tracker.Tokens
+				.Where( t => !string.IsNullOrEmpty( t.EntityGuid ) )
+				.GroupBy( t => t.EntityGuid )
+				.ToDictionary( g => g.Key, g => g.First() );
+
+			Tracker.Tokens.Clear();
+			foreach ( var (name, kind, guid, c, r) in mapEntityManager.CollectObjectiveTokens() )
+			{
+				previous.TryGetValue( guid, out var was );
+				Tracker.Tokens.Add( new MissionTokenState
+				{
+					EntityGuid = guid,
+					Name = name,
+					Kind = Enum.TryParse( kind, true, out TokenKind k ) ? k : TokenKind.Other,
+					State = was?.State ?? "unopened",
+					Counter = was?.Counter ?? 0,
+					ClaimedBy = was?.ClaimedBy,
+					PosC = c,
+					PosR = r,
+				} );
+			}
 		}
 
 		private static (int w, int h)? LookupDimensions( string expansion, string tileId )

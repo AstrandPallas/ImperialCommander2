@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -471,7 +471,12 @@ namespace Saga
 			if ( boardController == null )
 				boardController = FindObjectOfType<SagaBoardController>();
 			if ( boardController != null )
-				boardController.OnMissionReady( DataStore.sagaSessionData.MissionHeroes );
+				// The campaign's own heroes carry the gains a party has earned.
+				// Passing null here would seat everybody on their printed sheet
+				// every mission, which is the whole thing carry-over exists to
+				// prevent.
+				boardController.OnMissionReady( DataStore.sagaSessionData.MissionHeroes,
+					null, RunningCampaign.sagaCampaign?.campaignHeroes );
 
 			//if no tiles are initially shown, skip the placement window
 			if ( tiles.Item1.Count > 0 )

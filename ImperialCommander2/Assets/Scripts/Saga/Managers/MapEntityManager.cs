@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,6 +86,33 @@ namespace Saga
 				float x = e.entityPosition.X, y = e.entityPosition.Y;
 				if ( x % 10 != 0 || y % 10 != 0 ) continue;
 				found.Add( (e.name ?? "", (int)(x / 10f), (int)(y / 10f)) );
+			}
+			return found;
+		}
+
+		/// <summary>
+		/// Crates, terminals and mission tokens still on the board, which are
+		/// the squares a mission is actually fought over.
+		/// </summary>
+		/// <remarks>
+		/// Doors are left out deliberately: they are modelled as edges, not as
+		/// objectives, and standing on one is not a thing a figure does.
+		/// </remarks>
+		public List<(string Name, string Kind, string Guid, int C, int R)> CollectObjectiveTokens()
+		{
+			var found = new List<(string, string, string, int, int)>();
+			foreach ( var e in mapEntities )
+			{
+				if ( e == null ) continue;
+				if ( e.entityType != EntityType.Crate
+					&& e.entityType != EntityType.Terminal
+					&& e.entityType != EntityType.Token ) continue;
+				if ( e.entityProperties != null && !e.entityProperties.isActive ) continue;
+
+				float x = e.entityPosition.X, y = e.entityPosition.Y;
+				if ( x % 10 != 0 || y % 10 != 0 ) continue;
+				found.Add( (e.name ?? "", e.entityType.ToString(), e.GUID.ToString(),
+					(int)(x / 10f), (int)(y / 10f)) );
 			}
 			return found;
 		}
