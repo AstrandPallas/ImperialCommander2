@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Utilities;
 using Saga;
@@ -22,6 +22,13 @@ public class AotTypeEnforcer : MonoBehaviour
 		AotHelper.EnsureList<Trigger>();
 		AotHelper.EnsureList<MissionEvent>();
 		AotHelper.EnsureList<IMapEntity>();
+		//Tracker state, or IL2CPP strips these and the save loads as null
+		//only on device -- never in the editor, where it would be noticed.
+		AotHelper.EnsureType<Saga.Tracking.TrackerStateData>();
+		AotHelper.EnsureList<Saga.Tracking.GroupStateData>();
+		AotHelper.EnsureList<Saga.Tracking.HeroStateData>();
+		AotHelper.EnsureList<Saga.Tracking.TokenStateData>();
+		AotHelper.EnsureList<Saga.Tracking.FigureSlotData>();
 		AotHelper.EnsureList<EnemyGroupData>();
 		AotHelper.EnsureList<EventGroup>();
 		AotHelper.EnsureList<EntityGroup>();

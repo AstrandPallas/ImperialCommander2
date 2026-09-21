@@ -6,7 +6,11 @@ namespace Saga
 {
 	public class SagaSession
 	{
-		public int stateManagementVersion = 2;
+		/// <summary>
+		/// 3 adds trackerstate.json. Version 2 sessions still load; they
+		/// simply have no tracking to restore.
+		/// </summary>
+		public int stateManagementVersion = 3;
 		public SagaSetupOptions setupOptions;
 		public DeploymentCard selectedAlly, fixedAlly;
 		public SagaGameVars gameVars;

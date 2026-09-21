@@ -205,6 +205,31 @@ namespace Saga.Board.Tests
 				Eq( 4, reloaded.Heroes[0].Speed, "and the hero's speed" );
 			} );
 
+			Test( "a session saved before tracking existed still loads", () =>
+			{
+				// stateManagementVersion 2 has no trackerstate.json, so the
+				// restore is handed nothing. Refusing to load would strand
+				// anybody mid-campaign; an empty board that the players
+				// correct by dragging is the right degradation.
+				var t = Tracked();
+				Eq( 1, t.Groups.Count, "something is tracked to begin with" );
+
+				t.Restore( null );
+				Eq( 0, t.Groups.Count, "the board comes back empty" );
+				Eq( 0, t.Heroes.Count, "with nobody on it" );
+				Eq( 0, t.Tokens.Count, "and no objectives" );
+			} );
+
+			Test( "an empty capture round-trips to an empty tracker", () =>
+			{
+				var empty = new TrackerManager();
+				var reloaded = new TrackerManager();
+				reloaded.Restore( empty.Capture() );
+				Eq( TrackerManager.Fingerprint( empty.Capture() ),
+					TrackerManager.Fingerprint( reloaded.Capture() ),
+					"nothing in, nothing out" );
+			} );
+
 			Test( "the fingerprint actually notices a dropped profile", () =>
 			{
 				// If it did not, the round-trip test above would pass while

@@ -488,7 +488,11 @@ public class TitleController : MonoBehaviour
 			}
 			SagaSession session = JsonConvert.DeserializeObject<SagaSession>( json );
 
-			return session.stateManagementVersion == 2;
+			//2 predates figure tracking and 3 adds it. Both are resumable:
+			//a version 2 session loads with an empty board rather than
+			//being rejected, which would strand anybody mid-campaign.
+			return session.stateManagementVersion == 2
+				|| session.stateManagementVersion == 3;
 		}
 		catch ( Exception e )
 		{

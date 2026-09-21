@@ -642,6 +642,15 @@ namespace Saga
 			tileManager.CamToSection( 0, true );
 			tileManager.RestoreTiles();
 
+			//The board is derived from the tiles, so it can only be built once
+			//they are back. A restored session never went through
+			//DoStartupTasks, so without this the board simply did not exist
+			//and every figure order was dead for the rest of the mission.
+			if ( boardController == null )
+				boardController = FindObjectOfType<SagaBoardController>();
+			if ( boardController != null )
+				boardController.RestoreTrackerState( state.managerStates.trackerState );
+
 			GlowEngine.FindUnityObject<QuickMessage>().Show( DataStore.uiLanguage.uiMainApp.restoredMsgUC );
 		}
 

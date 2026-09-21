@@ -143,6 +143,21 @@ namespace Saga
 					stream.Write( output );
 				}
 
+				//figure tracking: who is where, how hurt, what conditions.
+				//Written last and guarded on its own, because a board this
+				//fork added must never be the reason an otherwise good session
+				//fails to save.
+				var board = GlowEngine.FindUnityObject<Saga.SagaBoardController>();
+				if ( board != null )
+				{
+					outpath = Path.Combine( basePath, "trackerstate.json" );
+					output = board.GetState();
+					using ( var stream = File.CreateText( outpath ) )
+					{
+						stream.Write( output );
+					}
+				}
+
 				Debug.Log( $"***SESSION SAVED (Mode = {sessionMode})***" );
 			}
 			catch ( Exception e )
@@ -249,6 +264,19 @@ namespace Saga
 				}
 				managerStates.tileManagerState = JsonConvert.DeserializeObject<TileManagerState>( json );
 
+				//figure tracking. Read defensively: a session saved before
+				//this existed simply has no file, and must still load.
+				path = Path.Combine( basePath, "trackerstate.json" );
+				if ( File.Exists( path ) )
+				{
+					using ( StreamReader sr = new StreamReader( path ) )
+					{
+						json = sr.ReadToEnd();
+					}
+					managerStates.trackerState =
+						JsonConvert.DeserializeObject<Saga.Tracking.TrackerStateData>( json );
+				}
+
 				//set card text translations
 				DataStore.SetCardTranslations( DataStore.deploymentHand );
 				DataStore.SetCardTranslations( DataStore.manualDeploymentList );
@@ -272,5 +300,8 @@ namespace Saga
 		public TriggerManagerState triggerManagerState;
 		public EntityManagerState entityManagerState;
 		public TileManagerState tileManagerState;
+
+		/// <summary>Null for a session saved before figure tracking existed.</summary>
+		public Saga.Tracking.TrackerStateData trackerState;
 	}
 }

@@ -312,6 +312,45 @@ namespace Saga
 			return group;
 		}
 
+		/// <summary>Serialised tracker state, in the shape the other managers use.</summary>
+		public string GetState()
+			=> Newtonsoft.Json.JsonConvert.SerializeObject(
+				Tracker.Capture(), Newtonsoft.Json.Formatting.Indented );
+
+		/// <summary>
+		/// Rebuild the board and put the tracked figures back on it.
+		/// </summary>
+		/// <remarks>
+		/// The board itself is derived from the tiles and is rebuilt rather
+		/// than saved, so only the things that cannot be derived -- who is
+		/// where, how hurt they are, what conditions they carry -- come out of
+		/// the file.
+		///
+		/// A null state is a session saved before tracking existed. Those load
+		/// as a fresh board with the party seated at the entrance, which is
+		/// wrong about where the party currently stands but is correctable by
+		/// dragging, and is a great deal better than refusing to load.
+		/// </remarks>
+		public void RestoreTrackerState( TrackerStateData state,
+			Func<string, bool> isSectionActive = null )
+		{
+			if ( BuildBoard( isSectionActive ) == null ) return;
+
+			if ( state == null )
+			{
+				Utils.LogWarning( "SagaBoardController::this session predates figure "
+					+ "tracking, so the board starts empty and positions must be set by hand" );
+				RefreshTokens();
+				return;
+			}
+
+			Tracker.Restore( state );
+			Undo?.Clear();
+			RefreshTokens();
+			Utils.LogWarning( "SagaBoardController::restored " + Tracker.Groups.Count
+				+ " group(s) and " + Tracker.Heroes.Count + " hero/heroes from the save" );
+		}
+
 		public void Track( GroupCombatState group )
 		{
 			if ( group == null || _groups.Any( g => g.InstanceId == group.InstanceId ) ) return;
