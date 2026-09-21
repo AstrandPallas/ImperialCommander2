@@ -68,6 +68,7 @@ namespace Saga.Board.Tests
 			HeroStatsTests.Register();
 			PlayerQueryTests.Register();
 			UndoTests.Register();
+			ObjectiveTests.Register();
 			SimTests.Register();
 
 			return Run( filter );

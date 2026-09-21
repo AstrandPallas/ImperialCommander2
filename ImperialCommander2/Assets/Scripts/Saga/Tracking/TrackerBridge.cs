@@ -29,6 +29,28 @@ namespace Saga.Tracking
 	/// <summary>Turns tracked state into planner inputs, and plan results back into state.</summary>
 	public static class TrackerBridge
 	{
+		/// <summary>
+		/// The squares this mission is fought over, for the planner's
+		/// positioning preference.
+		/// </summary>
+		/// <remarks>
+		/// Only tokens still in play and still on the board count. A resolved
+		/// crate is not worth standing on, and a token with no recorded
+		/// position cannot be stood on at all.
+		/// </remarks>
+		public static ObjectiveMap ObjectivesFrom( IEnumerable<MissionTokenState> tokens )
+		{
+			var map = new ObjectiveMap();
+			foreach ( var t in tokens ?? Enumerable.Empty<MissionTokenState>() )
+			{
+				if ( t == null || t.IsResolved ) continue;
+				if ( t.Kind == TokenKind.Door || t.Kind == TokenKind.Other ) continue;
+				if ( t.PosC == null || t.PosR == null ) continue;
+				map.Add( new Sq( t.PosC.Value, t.PosR.Value ) );
+			}
+			return map;
+		}
+
 		/// <summary>A hero position this many rounds old is treated as stale.</summary>
 		public const int StaleAfterRounds = 2;
 

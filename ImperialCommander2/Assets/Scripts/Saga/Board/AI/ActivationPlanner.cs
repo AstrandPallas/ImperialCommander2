@@ -80,7 +80,8 @@ namespace Saga.Board
 			IEnumerable<TargetCandidate> rebels,
 			string[] preferredTraits = null,
 			IEnumerable<FigureVisibility> allFigures = null,
-			PlanOverride overrides = null )
+			PlanOverride overrides = null,
+			ObjectiveMap objectives = null )
 		{
 			var plan = new ActivationPlan();
 			var figures = group.Where( f => f != null ).ToList();
@@ -157,7 +158,8 @@ namespace Saga.Board
 					? HeldWherePlayersPutIt( board, fig, plan.GroupTarget.Chosen, targets,
 						visibility, overrides )
 					: PlanFigure( board, fig, plan.GroupTarget.Chosen, targets,
-						rebelSquares, groupSquares, massiveSquares, visibility );
+						rebelSquares, groupSquares, massiveSquares, visibility,
+						objectives ?? ObjectiveMap.Empty );
 				plan.Figures.Add( fp );
 
 				// Commit this figure's destination so later figures path around
@@ -248,7 +250,8 @@ namespace Saga.Board
 			BoardModel board, EnemyFigure fig, TargetCandidate groupTarget,
 			List<TargetCandidate> allTargets,
 			HashSet<Sq> rebelSquares, HashSet<Sq> groupSquares,
-			HashSet<Sq> massiveSquares, List<FigureVisibility> visibility )
+			HashSet<Sq> massiveSquares, List<FigureVisibility> visibility,
+			ObjectiveMap objectives = null )
 		{
 			var fp = new FigurePlan
 			{
@@ -297,10 +300,11 @@ namespace Saga.Board
 				fig.AttackKind, canEnd, blockers, visOf( groupTarget ), fig.HasReach );
 			if ( spots.Count > 0 )
 			{
-				var best = ChooseSpot( spots );
+				var best = ChooseSpot( spots, objectives );
 				Commit( fp, reach, best.square, best.moveCost, best.attack );
 				fp.Trace.Add( $"attacks the group target {groupTarget.Name} from {best.square} "
-					+ $"for {best.moveCost} movement" );
+					+ $"for {best.moveCost} movement"
+					+ ContestNote( objectives, best.square ) );
 				return fp;
 			}
 			fp.Trace.Add( $"cannot reach a position to attack {groupTarget.Name}" );
@@ -311,7 +315,7 @@ namespace Saga.Board
 				var altSpots = AttackEvaluator.FiringPositions( board, reach, alt.Position,
 					fig.AttackKind, canEnd, blockers, visOf( alt ), fig.HasReach );
 				if ( altSpots.Count == 0 ) continue;
-				var best = ChooseSpot( altSpots );
+				var best = ChooseSpot( altSpots, objectives );
 				fp.Target = alt;
 				Commit( fp, reach, best.square, best.moveCost, best.attack );
 				fp.Trace.Add( $"falls back to {alt.Name}, reachable from {best.square}" );
@@ -343,36 +347,64 @@ namespace Saga.Board
 				return Sq.Chebyshev( sq, goal );
 			};
 
+			var map = objectives ?? ObjectiveMap.Empty;
 			Sq bestSq = fig.Position;
 			int bestDist = progress( fig.Position );
 			int bestCost = 0;
+			int bestContest = map.Contest( fig.Position );
 
 			foreach ( var sq in advance.EndSquares( canEnd ) )
 			{
 				int d = progress( sq );
 				int cost = advance.CostTo( sq );
-				if ( d < bestDist || (d == bestDist && cost < bestCost) )
-				{
-					bestDist = d;
-					bestSq = sq;
-					bestCost = cost;
-				}
+				int contest = map.Contest( sq );
+
+				// Closing on the target comes first, then spending less to do
+				// it; contesting an objective only breaks what is left, which
+				// is where a figure would otherwise have stopped arbitrarily.
+				bool better = d < bestDist
+					|| (d == bestDist && cost < bestCost)
+					|| (d == bestDist && cost == bestCost && contest > bestContest);
+				if ( !better ) continue;
+
+				bestDist = d;
+				bestSq = sq;
+				bestCost = cost;
+				bestContest = contest;
 			}
 			Commit( fp, advance, bestSq, bestCost, null );
-			fp.Trace.Add( countable
+			fp.Trace.Add( (countable
 				? $"advances toward {groupTarget.Name}, ending {bestDist} spaces away"
 				: $"{groupTarget.Name} is sealed off; advances on straight-line distance, "
-				  + $"ending {bestDist} spaces away" );
+				  + $"ending {bestDist} spaces away")
+				+ ContestNote( map, bestSq ) );
 			return fp;
+		}
+
+		/// <summary>Says so in the trace when the square was chosen for an objective.</summary>
+		private static string ContestNote( ObjectiveMap objectives, Sq square )
+		{
+			var map = objectives ?? ObjectiveMap.Empty;
+			int contest = map.Contest( square );
+			if ( contest >= 2 ) return ", standing on an objective";
+			if ( contest == 1 ) return ", beside an objective";
+			return "";
 		}
 
 		/// <summary>Among positions that can attack, prefer the easiest shot, then the least movement.</summary>
 		private static (Sq square, int moveCost, AttackAssessment attack) ChooseSpot(
-			List<(Sq square, int moveCost, AttackAssessment attack)> spots )
+			List<(Sq square, int moveCost, AttackAssessment attack)> spots,
+			ObjectiveMap objectives = null )
 		{
+			var map = objectives ?? ObjectiveMap.Empty;
+			// The shot and the movement still decide it. Contesting an
+			// objective only separates squares that were otherwise equal, and
+			// used to be separated by column and then row -- that is, by
+			// nothing. The final two keys stay so the choice is deterministic.
 			return spots
 				.OrderBy( s => s.attack.RequiredAccuracy )
 				.ThenBy( s => s.moveCost )
+				.ThenByDescending( s => map.Contest( s.square ) )
 				.ThenBy( s => s.square.C )
 				.ThenBy( s => s.square.R )
 				.First();

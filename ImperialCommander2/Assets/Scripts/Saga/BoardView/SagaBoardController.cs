@@ -290,7 +290,8 @@ namespace Saga
 			}
 
 			var plan = ActivationPlanner.Plan( Board, snapshot.Enemies, snapshot.Rebels,
-				null, snapshot.Visibility, overrides );
+				null, snapshot.Visibility, overrides,
+				TrackerBridge.ObjectivesFrom( Tracker.Tokens ) );
 
 			TrackerBridge.Commit( plan, group );
 			figureLayer?.Play( plan, Board, () =>

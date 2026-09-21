@@ -83,7 +83,7 @@ Sources: [Rules Reference Guide](https://images-cdn.fantasyflightgames.com/filer
 
 | Rule | Status | Source | Code |
 |---|---|---|---|
-| Melee can only target an **adjacent** figure | **verified** | "Melee attacks can only target figures adjacent to the attacker" | `AttackEvaluator.Assess` |
+| Melee targets a figure **adjacent to or in the same space as** the attacker, and needs no Accuracy | **verified** | Consolidated Rules p.41: "Melee attacks can target a hostile figure or object adjacent to or in the same space as the attacker. Accuracy is not required while performing melee attacks." Note it states NO line-of-sight requirement, unlike Reach. The same-space case arises only under Massive and is not yet modelled | `AttackEvaluator.Assess` |
 | Ranged attacks require line of sight | **verified** | "To declare the attack, the target figure must be in line of sight of the attacking figure" | `AttackEvaluator.Assess` |
 | Ranged attacks have **no maximum range** | **verified** | "ranged attacks can target any hostile figure that the figure can see" | `AttackEvaluator.Assess` |
 | Accuracy must meet or exceed **distance in spaces** | **verified** | "the amount of accuracy ... must be equal to or greater than the number of spaces the target is away from the attacker" | `AttackAssessment.RequiredAccuracy` |
@@ -146,6 +146,9 @@ Sources: [Rules Reference Guide](https://images-cdn.fantasyflightgames.com/filer
 | Unresolvable ties are handed to the players | **verified** (upstream) | "If there are still multiple figures that satisfy all those criteria, the players decide" | `TargetDecision.NeedsPlayerDecision` |
 | "Closest" means **true path distance** | **house rule** | Upstream has no position awareness at all, so there is nothing to preserve. Straight-line distance would send enemies charging at walls | `TargetSelector.PathDistance` |
 | Figures are planned one at a time, nearest first, committing each end square | **house rule** | Not a game rule. Prevents orders that contradict each other | `ActivationPlanner.Plan` |
+| Among EQUALLY good squares, prefer one contesting an unresolved objective | **house rule** | Not a game rule, and no claim is made that it is. The Rules Reference says nothing about where a good Imperial player stands. It replaces the previous final tie-break, which was column and then row -- that is, arbitrary. Ordered strictly after accuracy and movement cost, so it can never cost a shot or spend a point | `ObjectiveMap.Contest`, `ActivationPlanner.ChooseSpot` |
+| Objectives never change WHICH Rebel is targeted | **verified** (upstream) | The documented priority chain and its "players decide" tie are preserved exactly; objectives influence only the square a figure ends on. Pinned by a test that plans the same board with and without objectives | `ActivationPlanner.Plan` |
+| A resolved objective token is not worth contesting | **house rule** | Not a game rule. An opened crate confers nothing, so standing on it is not a preference worth expressing | `TrackerBridge.ObjectivesFrom` |
 | Prefer the easiest shot, then the least movement | **house rule** | Not a game rule. Unspent movement is worth nothing at end of activation | `ActivationPlanner.ChooseSpot` |
 
 ---
