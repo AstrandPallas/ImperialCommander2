@@ -170,6 +170,13 @@ namespace Saga.Tracking
 		public string Name;
 		public int MaxHealth = 10;
 		public int Endurance = 4;
+
+		/// <summary>Spaces per move action, from the hero sheet.</summary>
+		/// <remarks>
+		/// The app never moves a hero -- the players do -- so this is carried for
+		/// the player-side range and reachability queries rather than for the AI.
+		/// </remarks>
+		public int Speed = 4;
 		public int Damage;
 		public int Strain;
 		public bool IsWounded;

@@ -1,0 +1,235 @@
+{
+ "schemaVersion": 1,
+ "note": "Printed hero sheet statistics, which heroes.json does not carry. Defense is the sheet's die colour, not a number. Campaign upgrades change these, so the tracker treats them as starting values a session may override.",
+ "heroes": [
+  {
+   "id": "H1",
+   "name": "Diala Passil",
+   "health": 12,
+   "endurance": 5,
+   "speed": 4,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Diala_Passil_(Hero)"
+  },
+  {
+   "id": "H2",
+   "name": "Fenn Signis",
+   "health": 12,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Fenn_Signis_(Hero)"
+  },
+  {
+   "id": "H3",
+   "name": "Gaarkhan",
+   "health": 14,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Gaarkhan_(Hero)"
+  },
+  {
+   "id": "H4",
+   "name": "Gideon Argus",
+   "health": 10,
+   "endurance": 5,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Gideon_Argus_(Hero)"
+  },
+  {
+   "id": "H5",
+   "name": "Jyn Odan",
+   "health": 10,
+   "endurance": 4,
+   "speed": 5,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Jyn_Odan_(Hero)"
+  },
+  {
+   "id": "H6",
+   "name": "Mak Eshka'rey",
+   "health": 10,
+   "endurance": 5,
+   "speed": 4,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Mak_Eshka%27rey_(Hero)"
+  },
+  {
+   "id": "H7",
+   "name": "Biv Bodhrik",
+   "health": 13,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Biv_Bodhrik_(Hero)"
+  },
+  {
+   "id": "H8",
+   "name": "Saska Teft",
+   "health": 11,
+   "endurance": 4,
+   "speed": 5,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Saska_Teft_(Hero)"
+  },
+  {
+   "id": "H9",
+   "name": "Loku Kanoloa",
+   "health": 10,
+   "endurance": 5,
+   "speed": 5,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Loku_Kanoloa_(Hero)"
+  },
+  {
+   "id": "H10",
+   "name": "MHD-19",
+   "health": 12,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/MHD-19_(Hero)"
+  },
+  {
+   "id": "H11",
+   "name": "Verena Talos",
+   "health": 12,
+   "endurance": 5,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Verena_Talos_(Hero)"
+  },
+  {
+   "id": "H12",
+   "name": "Davith Elso",
+   "health": 11,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Davith_Elso_(Hero)"
+  },
+  {
+   "id": "H13",
+   "name": "Murne Rin",
+   "health": 12,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Murne_Rin_(Hero)"
+  },
+  {
+   "id": "H14",
+   "name": "Onar Koma",
+   "health": 20,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [],
+   "source": "https://imperial-assault.fandom.com/wiki/Onar_Koma_(Hero)"
+  },
+  {
+   "id": "H15",
+   "name": "Shyla Varad",
+   "health": 12,
+   "endurance": 4,
+   "speed": 5,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Shyla_Varad_(Hero)"
+  },
+  {
+   "id": "H16",
+   "name": "Vinto Hreeda",
+   "health": 11,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Vinto_Hreeda_(Hero)"
+  },
+  {
+   "id": "H17",
+   "name": "Drokkatta",
+   "health": 13,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Drokkatta_(Hero)"
+  },
+  {
+   "id": "H18",
+   "name": "Jarrod Kelvin",
+   "health": 10,
+   "endurance": 5,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Jarrod_Kelvin_(Hero)"
+  },
+  {
+   "id": "H19",
+   "name": "Ko-Tun Feralo",
+   "health": 12,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Ko-Tun_Feralo_(Hero)"
+  },
+  {
+   "id": "H20",
+   "name": "CT-1701",
+   "health": 12,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "Black"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/CT-1701_(Hero)"
+  },
+  {
+   "id": "H21",
+   "name": "Tress Hacnua",
+   "health": 11,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "White"
+   ],
+   "source": "https://imperial-assault.fandom.com/wiki/Tress_Hacnua_(Hero)"
+  }
+ ]
+}

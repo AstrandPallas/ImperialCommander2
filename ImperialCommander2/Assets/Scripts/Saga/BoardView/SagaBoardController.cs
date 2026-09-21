@@ -87,26 +87,37 @@ namespace Saga
 		/// Called once the mission's tiles and entities are in place.
 		/// </summary>
 		/// <remarks>
-		/// Heroes come from the session's party. Their stats are not in
-		/// heroes.json, so health falls back to the deployment card's value and
-		/// endurance to a default until herostats.json exists; neither affects
-		/// movement or line of sight, only how long a hero lasts.
+		/// Heroes come from the session's party, and their sheets from
+		/// herostats.json, because heroes.json carries no combat numbers. This
+		/// is not only cosmetic: the Imperial priority chain ranks Rebels by
+		/// health remaining and by total health, so tracking every hero on the
+		/// same numbers changes which one the AI attacks.
 		/// </remarks>
 		public void OnMissionReady( IEnumerable<DeploymentCard> party,
 			Func<string, bool> isSectionActive = null )
 		{
 			if ( BuildBoard( isSectionActive ) == null ) return;
 
+			var sheets = HeroStatsLoader.Stats;
 			var heroes = new List<HeroCombatState>();
 			foreach ( var card in party ?? Enumerable.Empty<DeploymentCard>() )
 			{
 				if ( card == null ) continue;
-				heroes.Add( new HeroCombatState
+				var hero = new HeroCombatState { CardId = card.id, Name = card.name };
+
+				// The printed sheet wins where we have it. The deployment card's
+				// health is the ALLY version of that character and does not
+				// match the hero sheet, so it is only a last resort.
+				if ( sheets.Knows( card.id ) )
+					sheets.For( card.id ).ApplyTo( hero );
+				else
 				{
-					CardId = card.id,
-					Name = card.name,
-					MaxHealth = card.health > 0 ? card.health : 10,
-				} );
+					hero.MaxHealth = card.health > 0 ? card.health : 10;
+					Utils.LogWarning( "SagaBoardController::no hero sheet for " + card.name
+						+ " (" + card.id + "), tracking it on defaults" );
+				}
+
+				heroes.Add( hero );
 			}
 
 			SeedHeroes( heroes );
