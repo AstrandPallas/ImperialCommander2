@@ -79,8 +79,9 @@ tools/__pycache__/
 ImperialCommander2/Assets/Screenshots/
 ImperialCommander2/Assets/Screenshots.meta
 
-# Per-machine editor window layout
-ImperialCommander2/UserSettings/
+# Per-machine editor window layout. Narrow on purpose: UserSettings also
+# holds EditorUserSettings.asset, which upstream tracks.
+ImperialCommander2/UserSettings/Layouts/
 
 # Standalone player output
 Build/
