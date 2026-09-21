@@ -73,6 +73,7 @@ namespace Saga.Board.Tests
 			CampaignTests.Register();
 			LukeTests.Register();
 			NarrationTests.Register();
+			RuntimeCoordinateTests.Register();
 			Dispute_Example.Register();
 			SimTests.Register();
 

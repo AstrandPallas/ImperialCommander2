@@ -21,6 +21,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CARDS = os.path.join(ROOT, "ImperialCommander2", "Assets", "Resources", "CardData")
 LANGS = os.path.join(ROOT, "ImperialCommander2", "Assets", "Resources", "Languages")
 FILES = ("heroes.json", "enemies.json", "allies.json", "villains.json")
+THUMBS = os.path.join(ROOT, "ImperialCommander2", "Assets", "Resources", "CardThumbnails")
 
 TRAILING_COMMA = re.compile(r",(\s*[}\]])")
 
@@ -39,6 +40,36 @@ def load(path):
 
 def ids(path):
     return {c.get("id") for c in load(path) if c.get("id")}
+
+
+def digits(card_id):
+    """DataStore derives the thumbnail with GetDigits, which drops leading zeros."""
+    return "".join(ch for ch in (card_id or "") if ch.isdigit()).lstrip("0")
+
+
+def missing_thumbnails():
+    """Every card resolves its portrait by name; a missing file is a blank token.
+
+    DataStore.LoadCards builds the path as
+    CardThumbnails/Stock<characterType><digits of id>, so adding a card without
+    the matching image gives it no portrait at all. Nothing in the test suite
+    can see that either -- it is a card-data-to-asset mismatch, and it only
+    shows as an empty circle once somebody is playing.
+    """
+    gaps = []
+    for name in FILES:
+        path = os.path.join(CARDS, name)
+        if not os.path.exists(path):
+            continue
+        for card in load(path):
+            cid, ctype = card.get("id"), card.get("characterType")
+            if not cid or not ctype:
+                continue
+            asset = "Stock%s%s.png" % (ctype, digits(cid))
+            if not os.path.exists(os.path.join(THUMBS, asset)):
+                gaps.append("%s (%s) has no portrait at CardThumbnails/%s"
+                            % (card.get("name") or cid, cid, asset))
+    return gaps
 
 
 def main():
@@ -67,14 +98,16 @@ def main():
                 problems.append("%s/%s has no entry for %s"
                                 % (lang, name, ", ".join(missing)))
 
+    problems.extend(missing_thumbnails())
+
     if problems:
-        print("%d translation gap(s):" % len(problems))
+        print("%d card data gap(s):" % len(problems))
         for p in problems:
             print("   ", p)
         return 1
 
-    print("%d card files across %d languages, every card translated"
-          % (checked, len(languages)))
+    print("%d card files across %d languages, every card translated "
+          "and every portrait present" % (checked, len(languages)))
     return 0
 
 

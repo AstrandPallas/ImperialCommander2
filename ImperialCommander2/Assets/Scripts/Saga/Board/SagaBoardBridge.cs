@@ -82,6 +82,38 @@ namespace Saga.Board
 		public static Sq WorldToSquare( float x, float z )
 			=> new Sq( (int)Math.Floor( x ), (int)Math.Floor( -z ) );
 
+		/// <summary>
+		/// The offset a door prefab adds to its stored position, by rotation.
+		/// </summary>
+		/// <remarks>
+		/// A door's stored position is not where it renders: the prefab shifts
+		/// it diagonally by one space to the lattice point -- the shared corner
+		/// of four squares -- that the door actually sits on. BoardBuilder
+		/// applies the same shift itself, so anything reading a door back off
+		/// the board has to take it away again first or the door lands one
+		/// space out along both axes.
+		/// </remarks>
+		public static (int x, int y) DoorOffset( int rotation )
+		{
+			int r = (rotation % 360 + 360) % 360;
+			return (r == 90 || r == 180 ? -1 : 1,
+					r == 180 || r == 270 ? -1 : 1);
+		}
+
+		/// <summary>Recover a door's stored position from the lattice point it renders on.</summary>
+		public static (int x, int y) DoorLatticeToPlacement( int latticeC, int latticeR, int rotation )
+		{
+			var (xmod, ymod) = DoorOffset( rotation );
+			return (latticeC - xmod, latticeR - ymod);
+		}
+
+		/// <summary>The lattice point a door renders on, from its stored position.</summary>
+		public static (int c, int r) DoorPlacementToLattice( int x, int y, int rotation )
+		{
+			var (xmod, ymod) = DoorOffset( rotation );
+			return (x + xmod, y + ymod);
+		}
+
 		/// <summary>A figure's path as world positions, for animating the move.</summary>
 		public static List<(float x, float y, float z)> PathToWorld(
 			IEnumerable<Sq> path, float height = 0f )

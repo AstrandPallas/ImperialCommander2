@@ -33,28 +33,81 @@ namespace Saga
 		/// diagonally by one square, so the engine works out the lattice point
 		/// itself and only needs the raw values passed through.
 		/// </remarks>
+		/// <summary>
+		/// The board square an entity stands on, read from its position AFTER
+		/// the prefab has placed it.
+		/// </summary>
+		/// <remarks>
+		/// This is the trap that made every one of these collectors silently
+		/// return nothing. A mission file stores entityPosition in MISSION
+		/// UNITS -- "980,1000", always multiples of 10 -- but every prefab's
+		/// Init ends with
+		///
+		///     mapEntity.entityPosition = transform.position.ToSagaVector();
+		///
+		/// so from then on it holds WORLD coordinates instead: x/10 (+0.5 for
+		/// anything centred in a space), y = 0, z negative. Code written
+		/// against the mission-file convention therefore rejects everything,
+		/// and the headless tests cannot see it because they read the JSON
+		/// directly and never run a prefab.
+		/// </remarks>
+		private static bool TrySquareOf( IMapEntity e, out int c, out int r )
+		{
+			c = r = 0;
+			if ( e == null ) return false;
+
+			float x = e.entityPosition.X, z = e.entityPosition.Z;
+
+			// A value this large is still in mission units, which means this
+			// was called before the entity was placed. Say so rather than
+			// returning a square a thousand columns off the board.
+			if ( Mathf.Abs( x ) > 500f || Mathf.Abs( z ) > 500f )
+			{
+				Utils.LogWarning( $"MapEntityManager::{e.name} is still in mission units "
+					+ $"({x},{z}); its square was asked for before it was placed" );
+				return false;
+			}
+
+			var sq = SagaBoardBridge.WorldToSquare( x, z );
+			c = sq.C;
+			r = sq.R;
+			return true;
+		}
+
 		public List<SagaBoardBridge.DoorInput> CollectBoardDoors()
 		{
 			var doors = new List<SagaBoardBridge.DoorInput>();
 			foreach ( var e in mapEntities )
 			{
 				if ( e == null || e.entityType != EntityType.Door ) continue;
-				float x = e.entityPosition.X, y = e.entityPosition.Y;
-				if ( x % 10 != 0 || y % 10 != 0 || e.entityRotation % 90 != 0 )
+				if ( e.entityRotation % 90 != 0 )
 				{
-					Utils.LogWarning( $"CollectBoardDoors()::door {e.name} is off the grid "
-						+ $"at ({x},{y}) rotation {e.entityRotation} -- skipped" );
+					Utils.LogWarning( $"CollectBoardDoors()::door {e.name} has rotation "
+						+ $"{e.entityRotation}, which is not a quarter turn -- skipped" );
 					continue;
 				}
+				if ( !TrySquareOf( e, out int latticeC, out int latticeR ) ) continue;
+
+				// DoorPrefab has already applied the rotation offset that turns
+				// a door's stored position into the lattice point it renders
+				// at, and BoardBuilder applies that same offset itself. So the
+				// offset is taken back off here, or it lands one space out
+				// along both axes.
+				int rotation = ((int)e.entityRotation % 360 + 360) % 360;
+				var placement = SagaBoardBridge.DoorLatticeToPlacement(
+					latticeC, latticeR, rotation );
 
 				doors.Add( new SagaBoardBridge.DoorInput
 				{
-					X = (int)(x / 10f),
-					Y = (int)(y / 10f),
-					Rotation = ((int)e.entityRotation % 360 + 360) % 360,
-					// isActive is the open/closed flag for a door, which is how
-					// the mission fixtures read it too.
-					Open = e.entityProperties == null || e.entityProperties.isActive,
+					X = placement.x,
+					Y = placement.y,
+					Rotation = rotation,
+					// DoorPrefab forces entityProperties.isActive true once it
+					// has read the open state out of it, so asking that field
+					// now reports EVERY door open -- and an open door is a hole
+					// in a wall the players can see is shut.
+					Open = e is Door door ? door.doorOpen
+						: (e.entityProperties == null || e.entityProperties.isActive),
 				} );
 			}
 			return doors;
@@ -68,9 +121,8 @@ namespace Saga
 			{
 				if ( e == null || e.entityType != EntityType.DeploymentPoint ) continue;
 				if ( e.entityProperties != null && !e.entityProperties.isActive ) continue;
-				float x = e.entityPosition.X, y = e.entityPosition.Y;
-				if ( x % 10 != 0 || y % 10 != 0 ) continue;
-				found.Add( (e.name ?? "", (int)(x / 10f), (int)(y / 10f)) );
+				if ( !TrySquareOf( e, out int c, out int r ) ) continue;
+				found.Add( (e.name ?? "", c, r) );
 			}
 			return found;
 		}
@@ -83,9 +135,8 @@ namespace Saga
 			{
 				if ( e == null || e.entityType != EntityType.Highlight ) continue;
 				if ( e.entityProperties != null && !e.entityProperties.isActive ) continue;
-				float x = e.entityPosition.X, y = e.entityPosition.Y;
-				if ( x % 10 != 0 || y % 10 != 0 ) continue;
-				found.Add( (e.name ?? "", (int)(x / 10f), (int)(y / 10f)) );
+				if ( !TrySquareOf( e, out int c, out int r ) ) continue;
+				found.Add( (e.name ?? "", c, r) );
 			}
 			return found;
 		}
@@ -109,10 +160,8 @@ namespace Saga
 					&& e.entityType != EntityType.Token ) continue;
 				if ( e.entityProperties != null && !e.entityProperties.isActive ) continue;
 
-				float x = e.entityPosition.X, y = e.entityPosition.Y;
-				if ( x % 10 != 0 || y % 10 != 0 ) continue;
-				found.Add( (e.name ?? "", e.entityType.ToString(), e.GUID.ToString(),
-					(int)(x / 10f), (int)(y / 10f)) );
+				if ( !TrySquareOf( e, out int c, out int r ) ) continue;
+				found.Add( (e.name ?? "", e.entityType.ToString(), e.GUID.ToString(), c, r) );
 			}
 			return found;
 		}
