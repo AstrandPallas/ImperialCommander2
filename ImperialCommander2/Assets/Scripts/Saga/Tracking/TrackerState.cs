@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Saga.Board;
 
 namespace Saga.Tracking
 {
@@ -29,6 +30,17 @@ namespace Saga.Tracking
 		public string[] conditions = Array.Empty<string>();
 		public FigureSlotData[] figures = Array.Empty<FigureSlotData>();
 		public bool hasActivated;
+
+		// The board profile. Without these a reload rebuilds every group on
+		// the defaults, which silently puts each figure back to a ranged 1x1
+		// at speed 4 -- the exact defect UnitProfile exists to close, and one
+		// that would reappear on every save, load and undo.
+		public int speed = 4;
+		public string attackType = "Ranged";
+		public string footprint = "Small1x1";
+		public bool massive;
+		public bool mobile;
+		public bool reach;
 	}
 
 	[Serializable]
@@ -48,6 +60,9 @@ namespace Saga.Tracking
 		public int posR = int.MinValue;
 		public int posRound;
 		public string posConfidence;
+
+		/// <summary>From the hero sheet; used by the player-side range queries.</summary>
+		public int speed = 4;
 	}
 
 	[Serializable]
@@ -129,6 +144,12 @@ namespace Saga.Tracking
 			engagedFigureIndex = g.EngagedFigureIndex,
 			currentFigureDamage = g.CurrentFigureDamage,
 			conditions = g.Conditions.Select( c => c.ToString() ).OrderBy( s => s ).ToArray(),
+			speed = (g.Profile ?? UnitProfile.Default).Speed,
+			attackType = (g.Profile ?? UnitProfile.Default).AttackKind.ToString(),
+			footprint = (g.Profile ?? UnitProfile.Default).Footprint.ToString(),
+			massive = (g.Profile ?? UnitProfile.Default).Massive,
+			mobile = (g.Profile ?? UnitProfile.Default).Mobile,
+			reach = (g.Profile ?? UnitProfile.Default).HasReach,
 			hasActivated = g.HasActivated,
 			figures = g.Figures.Select( f => new FigureSlotData
 			{
@@ -151,6 +172,7 @@ namespace Saga.Tracking
 			isWithdrawn = h.IsWithdrawn,
 			defeatCount = h.DefeatCount,
 			conditions = h.Conditions.Select( c => c.ToString() ).OrderBy( s => s ).ToArray(),
+			speed = h.Speed,
 			posC = h.PosC ?? int.MinValue,
 			posR = h.PosR ?? int.MinValue,
 			posRound = h.PosRound,
@@ -188,6 +210,17 @@ namespace Saga.Tracking
 				g.EngagedFigureIndex = d.engagedFigureIndex;
 				g.CurrentFigureDamage = d.currentFigureDamage;
 				g.HasActivated = d.hasActivated;
+				g.Profile = new UnitProfile
+				{
+					Speed = d.speed > 0 ? d.speed : 4,
+					AttackKind = Enum.TryParse( d.attackType, true, out AttackKind ak )
+						? ak : AttackKind.Ranged,
+					Footprint = Enum.TryParse( d.footprint, true, out Footprint fp )
+						? fp : Footprint.Small1x1,
+					Massive = d.massive,
+					Mobile = d.mobile,
+					HasReach = d.reach,
+				};
 				g.Conditions.Clear();
 				foreach ( var c in d.conditions ?? Array.Empty<string>() )
 					if ( Enum.TryParse( c, out Condition parsed ) ) g.Conditions.Add( parsed );
@@ -224,6 +257,7 @@ namespace Saga.Tracking
 					PosR = d.posR == int.MinValue ? (int?)null : d.posR,
 					PosRound = d.posRound,
 					PosConfidence = d.posConfidence,
+					Speed = d.speed > 0 ? d.speed : 4,
 				};
 				foreach ( var c in d.conditions ?? Array.Empty<string>() )
 					if ( Enum.TryParse( c, out Condition parsed ) ) h.Conditions.Add( parsed );
@@ -261,7 +295,15 @@ namespace Saga.Tracking
 				  .Append( " eng=" ).Append( g.engagedFigureIndex )
 				  .Append( " dmg=" ).Append( g.currentFigureDamage )
 				  .Append( " act=" ).Append( g.hasActivated )
-				  .Append( " cond=[" ).Append( string.Join( ",", g.conditions ) ).Append( ']' );
+				  .Append( " cond=[" ).Append( string.Join( ",", g.conditions ) ).Append( ']' )
+				  // The profile belongs in the fingerprint too: without it a
+				  // round trip could drop every figure back to a ranged 1x1
+				  // and the test asserting nothing changed would still pass.
+				  .Append( " spd=" ).Append( g.speed )
+				  .Append( ' ' ).Append( g.attackType ).Append( ' ' ).Append( g.footprint )
+				  .Append( g.massive ? " Massive" : "" )
+				  .Append( g.mobile ? " Mobile" : "" )
+				  .Append( g.reach ? " Reach" : "" );
 				foreach ( var f in (g.figures ?? Array.Empty<FigureSlotData>()).OrderBy( x => x.index ) )
 					sb.Append( " f" ).Append( f.index ).Append( ':' ).Append( f.alive ? "a" : "d" )
 					  .Append( '@' ).Append( f.posC ).Append( ',' ).Append( f.posR );
@@ -277,6 +319,7 @@ namespace Saga.Tracking
 				  .Append( " defeats=" ).Append( h.defeatCount )
 				  .Append( " pos=" ).Append( h.posC ).Append( ',' ).Append( h.posR )
 				  .Append( '@' ).Append( h.posRound )
+				  .Append( " spd=" ).Append( h.speed )
 				  .Append( " cond=[" ).Append( string.Join( ",", h.conditions ) ).Append( "]\n" );
 			}
 			foreach ( var t in (d.tokens ?? Array.Empty<TokenStateData>()).OrderBy( x => x.entityGuid ?? x.name ) )

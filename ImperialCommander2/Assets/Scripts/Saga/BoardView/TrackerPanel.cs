@@ -32,6 +32,17 @@ namespace Saga
 
 		private void OnEnable() => Refresh();
 
+		/// <summary>
+		/// Record the state before an edit, so it can be taken back.
+		/// </summary>
+		/// <remarks>
+		/// Every control on this panel goes through here. It is one call per
+		/// control rather than a mechanism each one has to implement, which is
+		/// why a control added later is undoable without anybody remembering
+		/// to make it so.
+		/// </remarks>
+		private void Before( string what ) => boardController?.Undo?.Record( what );
+
 		/// <summary>Rebuild the rows from what is currently tracked.</summary>
 		public void Refresh()
 		{
@@ -40,11 +51,46 @@ namespace Saga
 			_rows.Clear();
 			if ( boardController == null ) return;
 
+			_rows.Add( HeaderRow() );
+
 			foreach ( var hero in boardController.Heroes )
 				_rows.Add( HeroRow( hero ) );
 
 			foreach ( var group in boardController.Groups )
 				_rows.Add( GroupRow( group ) );
+		}
+
+		/// <summary>The undo control, and what it would take back.</summary>
+		private GameObject HeaderRow()
+		{
+			var row = Row();
+			var undo = boardController?.Undo;
+			string next = undo?.NextUndo;
+
+			Label( row, "TRACKER", 120, new Color( 0.75f, 0.78f, 0.85f ) );
+
+			// Naming the change is what makes the button safe to press at a
+			// table: you can see what is about to come back before you do it.
+			Label( row, next == null ? "nothing to undo" : "undo: " + next, 330,
+				next == null ? new Color( 0.5f, 0.52f, 0.56f ) : Color.white );
+
+			Button( row, "UNDO", () =>
+			{
+				if ( boardController?.Undo?.Undo() == null ) return;
+				boardController.RefreshTokens();
+				Refresh();
+			}, 90, next == null
+				? new Color( 0.18f, 0.19f, 0.22f ) : new Color( 0.55f, 0.35f, 0.12f ) );
+
+			Button( row, "REDO", () =>
+			{
+				if ( boardController?.Undo?.Redo() == null ) return;
+				boardController.RefreshTokens();
+				Refresh();
+			}, 90, undo != null && undo.CanRedo
+				? new Color( 0.22f, 0.36f, 0.5f ) : new Color( 0.18f, 0.19f, 0.22f ) );
+
+			return row;
 		}
 
 		private void Build()
@@ -85,9 +131,15 @@ namespace Saga
 			// Damage is the number that changes most, so it gets the widest
 			// controls and sits first.
 			var damage = Label( row, DamageText( hero ), 120, Color.white );
-			Button( row, "-", () => { hero.Heal( 1 ); damage.text = DamageText( hero ); } );
+			Button( row, "-", () =>
+			{
+				Before( hero.Name + " damage -1" );
+				hero.Heal( 1 );
+				damage.text = DamageText( hero );
+			} );
 			Button( row, "+", () =>
 			{
+				Before( hero.Name + " damage +1" );
 				hero.ApplyDamage( 1 );
 				damage.text = DamageText( hero );
 				Refresh();
@@ -97,11 +149,13 @@ namespace Saga
 			var strain = Label( row, hero.Strain + "/" + hero.Endurance, 70, Color.white );
 			Button( row, "-", () =>
 			{
+				Before( hero.Name + " strain -1" );
 				hero.Strain = Math.Max( 0, hero.Strain - 1 );
 				strain.text = hero.Strain + "/" + hero.Endurance;
 			} );
 			Button( row, "+", () =>
 			{
+				Before( hero.Name + " strain +1" );
 				hero.Strain = Math.Min( hero.Endurance, hero.Strain + 1 );
 				strain.text = hero.Strain + "/" + hero.Endurance;
 			} );
@@ -137,12 +191,14 @@ namespace Saga
 
 			Button( row, "-", () =>
 			{
+				Before( group.CardName + " damage -1" );
 				group.Heal( 1 );
 				damage.text = "fig " + (group.EngagedFigureIndex + 1) + ": "
 					+ group.CurrentFigureDamage + "/" + group.PerFigureHealth;
 			} );
 			Button( row, "+", () =>
 			{
+				Before( group.CardName + " damage +1" );
 				group.ApplyDamage( 1 );
 				alive.text = group.FiguresAlive + "/" + group.MaxFigures + " alive";
 				damage.text = "fig " + (group.EngagedFigureIndex + 1) + ": "
@@ -153,6 +209,7 @@ namespace Saga
 
 			Button( row, "next figure", () =>
 			{
+				Before( group.CardName + " next figure" );
 				group.SetEngaged( (group.EngagedFigureIndex + 1) % Math.Max( 1, group.MaxFigures ) );
 				Refresh();
 			}, 120 );
@@ -169,6 +226,7 @@ namespace Saga
 				bool on = conditions.Contains( value );
 				Button( row, value.ToString().Substring( 0, 2 ).ToUpperInvariant(), () =>
 				{
+					Before( (conditions.Contains( value ) ? "remove " : "apply ") + value );
 					if ( conditions.Contains( value ) ) conditions.Remove( value );
 					else conditions.Add( value );
 					Refresh();

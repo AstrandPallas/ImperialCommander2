@@ -139,6 +139,9 @@ namespace Saga
 				return;
 			}
 
+			// Recorded only once the drop is known to be legal, so an abandoned
+			// drag leaves no step behind.
+			boardController.Undo?.Record( hero.Name + " moved to " + landed.Value );
 			TrackerBridge.SetHeroPosition( hero, landed.Value, CurrentRound );
 			token.Place( landed.Value );
 			HeroMoved?.Invoke( hero, landed.Value );

@@ -25,8 +25,19 @@ namespace Saga
 
 		public bool IsReady => Board != null && Board.Count > 0;
 
-		private readonly List<GroupCombatState> _groups = new List<GroupCombatState>();
-		private readonly List<HeroCombatState> _heroes = new List<HeroCombatState>();
+		/// <summary>
+		/// All tracked state. Owning a TrackerManager rather than loose lists
+		/// is what lets undo and the save file work on the same objects the
+		/// board is drawn from -- a restore replaces the contents of these
+		/// lists in place, so nothing holds a stale reference afterwards.
+		/// </summary>
+		public readonly TrackerManager Tracker = new TrackerManager();
+
+		/// <summary>Takes back a mis-tap on the tracker panel.</summary>
+		public UndoStack Undo { get; private set; }
+
+		private List<GroupCombatState> _groups => Tracker.Groups;
+		private List<HeroCombatState> _heroes => Tracker.Heroes;
 
 		public IReadOnlyList<GroupCombatState> Groups => _groups;
 		public IReadOnlyList<HeroCombatState> Heroes => _heroes;
@@ -36,6 +47,7 @@ namespace Saga
 			if ( tileManager == null ) tileManager = FindObjectOfType<TileManager>();
 			if ( mapEntityManager == null ) mapEntityManager = FindObjectOfType<MapEntityManager>();
 			if ( figureLayer == null ) figureLayer = FindObjectOfType<FigureLayer>();
+			if ( Undo == null ) Undo = new UndoStack( Tracker );
 		}
 
 		/// <summary>
