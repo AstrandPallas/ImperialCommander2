@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using Saga.Board;
+using Saga.Tracking;
 using UnityEngine;
 
 namespace Saga.EditorTools
@@ -195,6 +196,86 @@ namespace Saga.EditorTools
 		/// world the tiles are laid out in. Parenting it anywhere else would
 		/// need a second transform nobody would remember to keep in step.
 		/// </remarks>
+		/// <summary>
+		/// Run CORE1's entities through the real prefabs and ask the collectors
+		/// what they see.
+		/// </summary>
+		/// <remarks>
+		/// The headless suite cannot reach this. Its fixtures read the mission
+		/// JSON directly, so they only ever see entityPosition in mission
+		/// units -- while at runtime every prefab's Init overwrites it with
+		/// world coordinates. That gap let every collector return nothing in
+		/// the built game while 300-odd tests stayed green.
+		///
+		/// So this opens the real scene, instantiates the real entities and
+		/// checks the answers, which is the only place that disagreement can
+		/// actually be observed.
+		/// </remarks>
+		[MenuItem( "Imperial Commander/Board/Verify Runtime Entities (CORE1)" )]
+		public static void VerifyRuntimeEntities()
+		{
+			var scene = EditorSceneManager.OpenScene( ScenePath, OpenSceneMode.Single );
+
+			var manager = Object.FindObjectOfType<MapEntityManager>();
+			if ( manager == null )
+			{
+				Debug.LogError( "RUNTIME ENTITIES: no MapEntityManager in " + ScenePath );
+				return;
+			}
+
+			var asset = Resources.Load<TextAsset>( "SagaMissions/Core/CORE1" );
+			if ( asset == null )
+			{
+				Debug.LogError( "RUNTIME ENTITIES: CORE1 could not be loaded" );
+				return;
+			}
+
+			var mission = FileManager.LoadMissionFromString( asset.text );
+			if ( mission == null )
+			{
+				Debug.LogError( "RUNTIME ENTITIES: CORE1 did not parse" );
+				return;
+			}
+
+			DataStore.mission = mission;
+			manager.InstantiateEntities( mission.mapEntities, false );
+
+			var highlights = manager.CollectHighlights();
+			var points = manager.CollectDeploymentPoints();
+			var tokens = manager.CollectObjectiveTokens();
+			var doors = manager.CollectBoardDoors();
+
+			Debug.Log( $"RUNTIME ENTITIES: {highlights.Count} highlight(s), "
+				+ $"{points.Count} deployment point(s), {tokens.Count} objective token(s), "
+				+ $"{doors.Count} door(s)" );
+
+			foreach ( var h in highlights )
+				Debug.Log( $"RUNTIME ENTITIES:   highlight '{h.Name}' at ({h.C},{h.R})" );
+			foreach ( var t in tokens )
+				Debug.Log( $"RUNTIME ENTITIES:   {t.Kind} '{t.Name}' at ({t.C},{t.R})" );
+			foreach ( var d in doors )
+				Debug.Log( $"RUNTIME ENTITIES:   door at ({d.X},{d.Y}) rot {d.Rotation} "
+					+ (d.Open ? "open" : "CLOSED") );
+
+			// CORE1 is the mission every other check is anchored to, so its
+			// numbers are known and stated rather than merely printed.
+			bool ok = true;
+			if ( highlights.Count != 1 ) { Debug.LogError( "RUNTIME ENTITIES: expected 1 highlight" ); ok = false; }
+			if ( tokens.Count != 7 ) { Debug.LogError( "RUNTIME ENTITIES: expected 7 objective tokens (4 crates + 3 terminals)" ); ok = false; }
+			if ( doors.Count != 3 ) { Debug.LogError( "RUNTIME ENTITIES: expected 3 doors" ); ok = false; }
+			if ( points.Count == 0 ) { Debug.LogError( "RUNTIME ENTITIES: expected deployment points" ); ok = false; }
+
+			var entrance = highlights.FirstOrDefault( h => HeroPlacement.IsEntrance( h.Name ) );
+			if ( entrance.Name == null || entrance.C != 98 || entrance.R != 100 )
+			{
+				Debug.LogError( "RUNTIME ENTITIES: the entrance must be at (98,100), got "
+					+ $"'{entrance.Name}' ({entrance.C},{entrance.R})" );
+				ok = false;
+			}
+
+			Debug.Log( ok ? "RUNTIME ENTITIES: OK" : "RUNTIME ENTITIES: FAILED" );
+		}
+
 		[MenuItem( "Imperial Commander/Board/Add Board View To Scene" )]
 		public static void AddFigureLayerToScene()
 		{
