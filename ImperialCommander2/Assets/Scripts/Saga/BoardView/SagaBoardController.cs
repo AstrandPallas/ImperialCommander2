@@ -202,12 +202,26 @@ namespace Saga
 			}
 
 			var occupied = HeroPlacement.OccupiedSquares( _heroes, _groups );
-			// SuggestStarts takes any named markers, so the deployment points
-			// are passed through under a name it recognises as a start.
-			var asStarts = points
-				.Select( p => (Name: "Entrance", p.C, p.R) )
-				.ToList();
-			var squares = HeroPlacement.SuggestStarts( Board, asStarts, figures, occupied );
+
+			// Which point a mission means is often set by its own rules text,
+			// which the app cannot read, so this is a suggestion the players
+			// correct by dragging. It replaces taking whichever point happened
+			// to come first, which was not a choice at all.
+			var ranked = DeploymentPlanner.RankPoints( Board, points, _heroes,
+				TrackerBridge.ObjectivesFrom( Tracker.Tokens ) );
+			var chosen = ranked.FirstOrDefault();
+			if ( chosen == null )
+			{
+				Track( group );
+				return group;
+			}
+
+			Utils.LogWarning( "SagaBoardController::" + card.name + " deploys at "
+				+ chosen.Name + " -- " + chosen.Reason
+				+ (ranked.Count > 1 ? " (" + (ranked.Count - 1) + " other point(s) available)" : "") );
+
+			var squares = DeploymentPlanner.PlaceGroup( Board, chosen.Square, figures,
+				occupied, _heroes );
 
 			for ( int i = 0; i < squares.Count && i < figures; i++ )
 				TrackerBridge.SetFigurePosition( group, i, squares[i] );
