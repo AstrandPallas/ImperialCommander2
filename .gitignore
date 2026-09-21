@@ -78,3 +78,6 @@ tools/__pycache__/
 # Editor screenshots from MCP-driven testing
 ImperialCommander2/Assets/Screenshots/
 ImperialCommander2/Assets/Screenshots.meta
+
+# Per-machine editor window layout
+ImperialCommander2/UserSettings/
