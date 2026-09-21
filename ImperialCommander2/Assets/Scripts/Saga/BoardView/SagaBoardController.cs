@@ -20,6 +20,27 @@ namespace Saga
 		public MapEntityManager mapEntityManager;
 		public FigureLayer figureLayer;
 
+		/// <summary>Where the Strict/Classic choice is remembered.</summary>
+		public const string AiModePref = "Saga.BoardAiMode";
+
+		/// <summary>
+		/// Switch between board-aware orders and upstream's abstract text.
+		/// </summary>
+		/// <remarks>
+		/// Kept permanently rather than as a migration aid. A named square
+		/// derived from terrain read off a picture can be specifically wrong in
+		/// a way "Move 4 to attack Gaarkhan" never is, so there has to be a way
+		/// back that costs a sentence of vagueness rather than the evening.
+		/// </remarks>
+		public void SetAiMode( AiMode mode )
+		{
+			BoardAiSettings.Mode = mode;
+			if ( mode == AiMode.StrictRules ) BoardAiSettings.UseStrictRules();
+			PlayerPrefs.SetInt( AiModePref, mode == AiMode.Classic ? 1 : 0 );
+			PlayerPrefs.Save();
+			Utils.LogWarning( "SagaBoardController::AI mode is now " + mode );
+		}
+
 		/// <summary>Null until a mission has been set up.</summary>
 		public BoardModel Board => SagaBoardBridge.Current;
 
@@ -48,6 +69,10 @@ namespace Saga
 			if ( mapEntityManager == null ) mapEntityManager = FindObjectOfType<MapEntityManager>();
 			if ( figureLayer == null ) figureLayer = FindObjectOfType<FigureLayer>();
 			if ( Undo == null ) Undo = new UndoStack( Tracker );
+
+			// The toggle is the players', so it outlives a session.
+			BoardAiSettings.Mode = PlayerPrefs.GetInt( AiModePref, 0 ) == 1
+				? AiMode.Classic : AiMode.StrictRules;
 		}
 
 		/// <summary>
@@ -351,6 +376,87 @@ namespace Saga
 				+ " group(s) and " + Tracker.Heroes.Count + " hero/heroes from the save" );
 		}
 
+		/// <summary>
+		/// The landmarks a plan can be described against: the mission's own
+		/// tokens, which are the things physically on the table.
+		/// </summary>
+		public List<Landmark> Landmarks()
+		{
+			var marks = new List<Landmark>();
+			foreach ( var t in Tracker.Tokens )
+			{
+				if ( t == null || t.PosC == null || t.PosR == null ) continue;
+				marks.Add( new Landmark(
+					string.IsNullOrEmpty( t.Name ) ? t.Kind.ToString().ToLowerInvariant() : t.Name,
+					new Sq( t.PosC.Value, t.PosR.Value ) ) );
+			}
+			return marks;
+		}
+
+		/// <summary>
+		/// The last orders, said in terms of things visible on the table.
+		/// </summary>
+		/// <remarks>
+		/// The sliding token is the real instruction; this is the caption, and
+		/// the fallback when the animation cannot speak -- a dispute, a stale
+		/// position, or somebody who looked away.
+		/// </remarks>
+		public List<string> NarrateLastPlan()
+			=> PlanNarrator.Narrate( LastPlan, Landmarks(),
+				SagaBoardBridge.LastBuild?.TileOf );
+
+		/// <summary>The last plan given, for a dispute raised about it.</summary>
+		public ActivationPlan LastPlan { get; private set; }
+
+		private BoardSnapshot _lastSnapshot;
+
+		/// <summary>
+		/// Write out everything needed to argue about the last order.
+		/// </summary>
+		/// <remarks>
+		/// Simulation cannot see the cardboard, so terrain read wrong off a
+		/// picture stays wrong until somebody at the table notices -- once,
+		/// mid-mission, while trying to get on with the game. One tap has to
+		/// capture the whole thing or it will not be captured at all.
+		/// </remarks>
+		public string CaptureDispute( string reason, string folder = null )
+		{
+			if ( Board == null ) return null;
+
+			var snap = DisputeSnapshot.Capture(
+				Board, LastPlan,
+				_lastSnapshot?.Enemies, _lastSnapshot?.Rebels,
+				DataStore.mission?.missionProperties?.missionID,
+				Tracker.Round, reason );
+
+			try
+			{
+				string dir = folder ?? System.IO.Path.Combine(
+					Application.persistentDataPath, "Disputes" );
+				System.IO.Directory.CreateDirectory( dir );
+				string file = System.IO.Path.Combine( dir,
+					"dispute-" + DateTime.UtcNow.ToString( "yyyyMMdd-HHmmss" ) + ".json" );
+
+				var json = Newtonsoft.Json.JsonConvert.SerializeObject(
+					snap, Newtonsoft.Json.Formatting.Indented );
+				System.IO.File.WriteAllText( file, json );
+
+				Utils.LogWarning( "SagaBoardController::dispute written to " + file );
+				Utils.LogWarning( snap.Describe() );
+				return file;
+			}
+			catch ( Exception e )
+			{
+				// Losing the report the players stopped the game to make is
+				// worse than any write error, so the reasoning still reaches
+				// the log even when the file cannot be created.
+				Utils.LogWarning( "SagaBoardController::could not write the dispute file ("
+					+ e.Message + "), so it goes to the log instead" );
+				Utils.LogWarning( snap.Describe() );
+				return null;
+			}
+		}
+
 		public void Track( GroupCombatState group )
 		{
 			if ( group == null || _groups.Any( g => g.InstanceId == group.InstanceId ) ) return;
@@ -409,6 +515,19 @@ namespace Saga
 		{
 			if ( !IsReady || group == null ) return null;
 
+			// The way back. A named square derived from terrain read off a
+			// picture can be confidently, specifically wrong, in a way
+			// upstream's "Move 4 to attack Gaarkhan" never is -- so returning
+			// null here hands the popup back to that text rather than arguing
+			// with the table.
+			if ( !BoardAiSettings.UseBoardAi )
+			{
+				Utils.LogWarning( "SagaBoardController::board AI is off"
+					+ (string.IsNullOrEmpty( BoardAiSettings.ClassicReason )
+						? "" : " -- " + BoardAiSettings.ClassicReason) );
+				return null;
+			}
+
 			var snapshot = TrackerBridge.Snapshot( group, _heroes, _groups, round );
 			foreach ( var gap in snapshot.Gaps )
 				Utils.LogWarning( "SagaBoardController::" + gap );
@@ -424,6 +543,8 @@ namespace Saga
 				null, snapshot.Visibility, overrides,
 				TrackerBridge.ObjectivesFrom( Tracker.Tokens ) );
 
+			LastPlan = plan;
+			_lastSnapshot = snapshot;
 			TrackerBridge.Commit( plan, group );
 			figureLayer?.Play( plan, Board, () =>
 			{

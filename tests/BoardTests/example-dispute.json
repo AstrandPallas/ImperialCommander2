@@ -1,0 +1,100 @@
+{
+ "schemaVersion": 1,
+ "capturedUtc": "2026-09-21T12:00:00Z",
+ "missionId": "CORE1",
+ "round": 3,
+ "reason": "the trooper walked through the wall",
+ "squares": [
+  {
+   "c": 0,
+   "r": 0,
+   "flags": "None"
+  },
+  {
+   "c": 0,
+   "r": 1,
+   "flags": "None"
+  },
+  {
+   "c": 0,
+   "r": 2,
+   "flags": "None"
+  },
+  {
+   "c": 1,
+   "r": 0,
+   "flags": "None"
+  },
+  {
+   "c": 1,
+   "r": 1,
+   "flags": "None"
+  },
+  {
+   "c": 1,
+   "r": 2,
+   "flags": "None"
+  },
+  {
+   "c": 2,
+   "r": 0,
+   "flags": "None"
+  },
+  {
+   "c": 2,
+   "r": 1,
+   "flags": "None"
+  },
+  {
+   "c": 2,
+   "r": 2,
+   "flags": "None"
+  },
+  {
+   "c": 3,
+   "r": 0,
+   "flags": "None"
+  },
+  {
+   "c": 3,
+   "r": 1,
+   "flags": "None"
+  },
+  {
+   "c": 3,
+   "r": 2,
+   "flags": "None"
+  }
+ ],
+ "edges": [
+  {
+   "c": 2,
+   "r": 1,
+   "dir": "W",
+   "type": "Wall"
+  }
+ ],
+ "figures": [
+  {
+   "id": "e1",
+   "name": "Stormtrooper #1",
+   "c": 0,
+   "r": 1,
+   "hostile": false
+  },
+  {
+   "id": "H1",
+   "name": "Diala",
+   "c": 3,
+   "r": 1,
+   "hostile": true
+  }
+ ],
+ "orders": [
+  "Stormtrooper #1: move 3 to (2,1), attack Diala"
+ ],
+ "trace": [
+  "target: rule 1 closest healthy"
+ ],
+ "render": "(board)"
+}

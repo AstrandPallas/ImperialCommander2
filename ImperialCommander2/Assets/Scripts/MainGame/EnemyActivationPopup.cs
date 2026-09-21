@@ -407,8 +407,11 @@ public class EnemyActivationPopup : MonoBehaviour
 
 		if ( boardPlan == null ) return;
 
-		foreach ( var fp in boardPlan.Figures )
-			Debug.Log( "BOARD PLAN::" + fp );
+		// Said in terms of the crates and terminals on the table rather than
+		// in coordinates, because the players are looking at cardboard and not
+		// at a grid.
+		foreach ( var line in boardController.NarrateLastPlan() )
+			Debug.Log( "BOARD PLAN::" + line );
 	}
 
 	DeploymentCard FindRebelSaga()

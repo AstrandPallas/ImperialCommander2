@@ -72,6 +72,8 @@ namespace Saga.Board.Tests
 			DeploymentTests.Register();
 			CampaignTests.Register();
 			LukeTests.Register();
+			NarrationTests.Register();
+			Dispute_Example.Register();
 			SimTests.Register();
 
 			return Run( filter );
