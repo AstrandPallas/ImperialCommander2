@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using Saga.Board;
 using UnityEngine;
 
 namespace Saga.EditorTools
@@ -89,6 +91,98 @@ namespace Saga.EditorTools
 					+ "between authoring and runtime." );
 			else
 				Debug.Log( summary + " -- matches the authored data" );
+		}
+
+		/// <summary>Build a real mission's board in the editor and report it.</summary>
+		/// <remarks>
+		/// The headless suite proves the engine against generated fixtures; this
+		/// proves the RUNTIME path -- the game's own mission loader, tile
+		/// descriptors and terrain loader -- produces the same board. A mistake
+		/// in that seam would leave every test green and the game wrong.
+		/// </remarks>
+		[MenuItem( "Imperial Commander/Board/Verify Board Builds (CORE1)" )]
+		public static void VerifyBoardBuilds()
+		{
+			const string missionPath = "Assets/Resources/SagaMissions/Core/CORE1.json";
+			var asset = AssetDatabase.LoadAssetAtPath<TextAsset>( missionPath );
+			if ( asset == null )
+			{
+				Debug.LogError( "BoardSetup: could not load " + missionPath );
+				return;
+			}
+
+			var mission = FileManager.LoadMissionFromString( asset.text );
+			if ( mission == null )
+			{
+				Debug.LogError( "BoardSetup: mission did not parse" );
+				return;
+			}
+
+			var tiles = new List<SagaBoardBridge.TileInput>();
+			foreach ( var section in mission.mapSections )
+			{
+				foreach ( var tile in section.mapTiles )
+				{
+					tiles.Add( new SagaBoardBridge.TileInput
+					{
+						Expansion = tile.expansion.ToString(),
+						TileId = tile.tileID,
+						Side = tile.tileSide,
+						X = (int)(tile.entityPosition.X / 10f),
+						Y = (int)(tile.entityPosition.Y / 10f),
+						Rotation = ((int)tile.entityRotation % 360 + 360) % 360,
+						SectionGuid = section.GUID.ToString(),
+					} );
+				}
+			}
+
+			var doors = new List<SagaBoardBridge.DoorInput>();
+			var highlights = new List<(string Name, int C, int R)>();
+			foreach ( var e in mission.mapEntities )
+			{
+				int c = (int)(e.entityPosition.X / 10f);
+				int r = (int)(e.entityPosition.Y / 10f);
+				if ( e.entityType == EntityType.Door )
+					doors.Add( new SagaBoardBridge.DoorInput
+					{
+						X = c, Y = r,
+						Rotation = ((int)e.entityRotation % 360 + 360) % 360,
+						Open = e.entityProperties == null || e.entityProperties.isActive,
+					} );
+				else if ( e.entityType == EntityType.Highlight )
+					highlights.Add( (e.name ?? "", c, r) );
+			}
+
+			var descriptors = TileDescriptor.LoadData();
+			var board = SagaBoardBridge.Rebuild( tiles, doors,
+				( exp, id ) =>
+				{
+					var d = descriptors.FirstOrDefault(
+						x => x.expansion == exp && x.id.ToString() == id );
+					return d == null ? ((int, int)?)null : (d.width, d.height);
+				},
+				TerrainLoader.Library, _ => true );
+
+			int difficult = 0, blocking = 0, impassable = 0;
+			foreach ( var sq in board.Squares )
+			{
+				var f = board.Flags( sq );
+				if ( (f & SquareFlags.Difficult) != 0 ) difficult++;
+				if ( (f & SquareFlags.Blocking) != 0 ) blocking++;
+				if ( (f & SquareFlags.Impassable) != 0 ) impassable++;
+			}
+
+			var starts = Saga.Tracking.HeroPlacement.SuggestStarts( board, highlights, 4 );
+			var build = SagaBoardBridge.LastBuild;
+
+			Debug.Log( "BoardSetup: CORE1 -> " + tiles.Count + " tiles, " + doors.Count
+				+ " doors, " + board.Count + " squares | difficult " + difficult
+				+ ", blocking " + blocking + ", impassable " + impassable
+				+ " | overlaps " + build.Overlaps.Count
+				+ " | hero starts " + string.Join( ", ", starts ) );
+
+			foreach ( var w in build.Warnings.Take( 5 ) )
+				Debug.LogWarning( "BoardSetup: " + w );
 		}
 
 		private const string ScenePath = "Assets/Scenes/Saga.unity";
