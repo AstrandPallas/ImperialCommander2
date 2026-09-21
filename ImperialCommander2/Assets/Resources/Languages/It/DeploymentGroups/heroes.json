@@ -1,292 +1,307 @@
 [
-	{
-		"id": "H1",
-		"name": "Diala Passil",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Fruitore della Forza",
-			"Lottatore"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H2",
-		"name": "Fenn Signis",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Soldato",
-			"Leader"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H3",
-		"name": "Gaarkhan",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Wookiee",
-			"Guardiano",
-			"Lottatore"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H4",
-		"name": "Gideon Argus",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Leader"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H5",
-		"name": "Jyn Odan",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Contrabbandiere"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H6",
-		"name": "Mak Eshka'rey",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Spia"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H7",
-		"name": "Biv Bodhrik",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Cacciatore",
-			"Lottatore"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H8",
-		"name": "Saska Teft",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Contrabbandiere",
-			"Spia"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H9",
-		"name": "Loku Kanoloa",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Spia"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H10",
-		"name": "MHD-19",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Droide"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H11",
-		"name": "Verena Talos",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Spia",
-			"Lottatore"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H12",
-		"name": "Davith Elso",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Spia",
-			"Fruitore della Forza"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H13",
-		"name": "Murne Rin",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Leader",
-			"Spia"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H14",
-		"name": "Onar Koma",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Guardiano",
-			"Cacciatore"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H15",
-		"name": "Shyla Varad",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Lottatore",
-			"Cacciatore"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H16",
-		"name": "Vinto Hreeda",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Cacciatore",
-			"Contrabbandiere"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H17",
-		"name": "Drokkatta",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Wookiee",
-			"Arma Pesante"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H18",
-		"name": "Jarrod Kelvin",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Lottatore",
-			"Leader",
-			"Spia"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H19",
-		"name": "Ko-Tun Feralo",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Leader",
-			"Soldato"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H20",
-		"name": "CT-1701",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Soldato",
-			"Guardiano"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	},
-	{
-		"id": "H21",
-		"name": "Tress Hacnua",
-		"subname": "",
-		"ignored": "",
-		"traits": [
-			"Eroe",
-			"Lottatore"
-		],
-		"keywords": [],
-		"surges": [],
-		"abilities": []			
-	}
+ {
+  "id": "H1",
+  "name": "Diala Passil",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Fruitore della Forza",
+   "Lottatore"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H2",
+  "name": "Fenn Signis",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Soldato",
+   "Leader"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H3",
+  "name": "Gaarkhan",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Wookiee",
+   "Guardiano",
+   "Lottatore"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H4",
+  "name": "Gideon Argus",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Leader"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H5",
+  "name": "Jyn Odan",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Contrabbandiere"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H6",
+  "name": "Mak Eshka'rey",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Spia"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H7",
+  "name": "Biv Bodhrik",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Cacciatore",
+   "Lottatore"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H8",
+  "name": "Saska Teft",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Contrabbandiere",
+   "Spia"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H9",
+  "name": "Loku Kanoloa",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Spia"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H10",
+  "name": "MHD-19",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Droide"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H11",
+  "name": "Verena Talos",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Spia",
+   "Lottatore"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H12",
+  "name": "Davith Elso",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Spia",
+   "Fruitore della Forza"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H13",
+  "name": "Murne Rin",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Leader",
+   "Spia"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H14",
+  "name": "Onar Koma",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Guardiano",
+   "Cacciatore"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H15",
+  "name": "Shyla Varad",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Lottatore",
+   "Cacciatore"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H16",
+  "name": "Vinto Hreeda",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Cacciatore",
+   "Contrabbandiere"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H17",
+  "name": "Drokkatta",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Wookiee",
+   "Arma Pesante"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H18",
+  "name": "Jarrod Kelvin",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Lottatore",
+   "Leader",
+   "Spia"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H19",
+  "name": "Ko-Tun Feralo",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Leader",
+   "Soldato"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H20",
+  "name": "CT-1701",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Soldato",
+   "Guardiano"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H21",
+  "name": "Tress Hacnua",
+  "subname": "",
+  "ignored": "",
+  "traits": [
+   "Eroe",
+   "Lottatore"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ },
+ {
+  "id": "H22",
+  "name": "Luke Skywalker (Jedi Knight)",
+  "subname": "JEDI KNIGHT",
+  "ignored": "",
+  "traits": [
+   "Hero",
+   "Force User",
+   "Leader",
+   "Brawler"
+  ],
+  "keywords": [],
+  "surges": [],
+  "abilities": []
+ }
 ]

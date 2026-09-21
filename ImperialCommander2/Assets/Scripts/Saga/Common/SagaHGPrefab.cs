@@ -60,6 +60,13 @@ namespace Saga
 			SetHealth( cd.heroState );
 			SetActivation();
 
+			// Dragging the portrait onto a square is the gesture people reach
+			// for, and it is the only way to place a hero in the two shipped
+			// missions that carry no entrance marker. Added here rather than
+			// baked into the prefab so the scene asset is left alone.
+			if ( !cd.isDummy && GetComponent<HeroTileDragger>() == null )
+				gameObject.AddComponent<HeroTileDragger>();
+
 			Transform tf = transform.GetChild( 0 );
 			tf.localScale = Vector3.zero;
 			tf.DOScale( 1, 1f ).SetEase( Ease.OutBounce );

@@ -20,6 +20,7 @@ STEPS = [
     ("enemy card fixture", [sys.executable, "tools/gen_enemy_fixture.py"], ROOT),
     ("hero sheet fixture", [sys.executable, "tools/gen_herostats_fixture.py"], ROOT),
     ("class deck fixture", [sys.executable, "tools/gen_skills_fixture.py"], ROOT),
+    ("card translations", [sys.executable, "tools/check_card_translations.py"], ROOT),
     # Compiles the engine the way Unity 2020.3 will: C# 8.0, netstandard2.1.
     # The test runner uses LangVersion latest, so without this a C# 9 feature
     # or a post-2.1 BCL call passes here and fails on import into the editor.
