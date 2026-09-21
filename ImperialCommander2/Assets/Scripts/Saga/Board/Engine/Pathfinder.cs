@@ -15,6 +15,15 @@ namespace Saga.Board
 		/// <summary>The Massive keyword.</summary>
 		public bool Massive;
 
+		/// <summary>
+		/// The Mobile keyword, which carries Massive's terrain rules and none of
+		/// its rules about figures.
+		/// </summary>
+		public bool Mobile;
+
+		/// <summary>Terrain is ignored for movement by both keywords.</summary>
+		public bool IgnoresTerrain => Massive || Mobile;
+
 		/// <summary>Spaces held by OTHER Massive figures.</summary>
 		public Func<Sq, bool> OtherMassive = _ => false;
 
@@ -228,9 +237,11 @@ namespace Saga.Board
 		{
 			// "Massive figures can enter spaces containing hostile figures
 			//  and/or difficult terrain at no additional movement cost."
-			//  (Consolidated Rules p.41). Both surcharges are waived, so every
-			//  step costs the base 1.
-			if ( opt.Massive ) return 1;
+			//  (Consolidated Rules p.41), and Mobile figures "ignore additional
+			//  movement point costs when entering difficult terrain and spaces
+			//  containing hostile figures" (p.47). Both surcharges are waived, so
+			//  every step costs the base 1.
+			if ( opt.IgnoresTerrain ) return 1;
 
 			int cost = b.LargeFigurePaysWorstSpace ? 1 : int.MaxValue;
 			bool hostile = false;
@@ -252,10 +263,19 @@ namespace Saga.Board
 				if ( !b.Exists( c ) || !b.IsActive( c ) ) return false;
 				var f = b.Flags( c );
 				if ( (f & SquareFlags.Void) != 0 ) return false;
-				if ( !opt.Massive )
+				if ( !opt.IgnoresTerrain )
 				{
 					if ( (f & (SquareFlags.Blocking | SquareFlags.Impassable | SquareFlags.Pit)) != 0 )
 						return false;
+				}
+				else if ( !opt.Massive )
+				{
+					// Mobile "can move through and enter impassable and blocking
+					//  terrain" (Consolidated Rules p.47) and names nothing else, so
+					//  a pit still stops it. Pits appear nowhere in that rulebook, so
+					//  reading the general "ignore terrain" clause as covering them
+					//  would be inventing a permission.
+					if ( (f & SquareFlags.Pit) != 0 ) return false;
 				}
 				else if ( opt.OtherMassive( c ) )
 				{
@@ -279,6 +299,12 @@ namespace Saga.Board
 				{
 					if ( !b.Exists( ca ) || !b.Exists( ct ) ) return false;
 					var e = b.Edge( ca, ct );
+					// Massive alone, not IgnoresTerrain: "They can also move through
+					// and end movement on blocked or impassable terrain edges"
+					// (Consolidated Rules p.41) is said of Massive only. Mobile's entry
+					// (p.47) names spaces and never edges. Withholding it can only make
+					// a Mobile figure take a longer legal route, where granting it could
+					// produce a move that is not legal at all.
 					if ( opt.Massive && (e == EdgeType.Blocking || e == EdgeType.Impassable) ) continue;
 					if ( BoardModel.EdgeBlocksMovement( e ) ) return false;
 				}
@@ -352,6 +378,15 @@ namespace Saga.Board
 				return s => b.Exists( s ) && b.IsActive( s )
 					&& (b.Flags( s ) & SquareFlags.Void) == 0
 					&& !opt.OtherMassive( s );
+
+			// Mobile figures "can end movement in a space containing impassable or
+			// blocking terrain" (Consolidated Rules p.47), but nothing there lets
+			// one finish on top of another figure the way Massive may, so the
+			// ordinary bar on ending in an occupied space still applies.
+			if ( opt != null && opt.Mobile )
+				return s => b.Exists( s ) && b.IsActive( s )
+					&& (b.Flags( s ) & (SquareFlags.Void | SquareFlags.Pit)) == 0
+					&& !opt.Friendly( s ) && !opt.Hostile( s );
 
 			return s => b.IsEnterable( s )
 				&& !(opt != null && opt.Friendly( s ))

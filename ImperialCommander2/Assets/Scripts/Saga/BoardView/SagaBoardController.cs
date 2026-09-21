@@ -160,6 +160,12 @@ namespace Saga
 				card.id, card.name, figures,
 				card.health > 0 ? card.health : 3, card.isElite );
 
+			// The board engine is only as right as the card it is given. Speed,
+			// attack type and footprint all reach the planner from here, and
+			// until they did every figure was planned as a ranged 1x1 moving 4.
+			group.Profile = UnitProfile.From(
+				card.attackType.ToString(), card.miniSize.ToString(), card.speed, card.keywords );
+
 			var points = mapEntityManager != null
 				? mapEntityManager.CollectDeploymentPoints()
 				: new List<(string Name, int C, int R)>();

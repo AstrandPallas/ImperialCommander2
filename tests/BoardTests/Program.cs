@@ -64,6 +64,7 @@ namespace Saga.Board.Tests
 			ViewTests.Register();
 			TrackerBridgeTests.Register();
 			HeroPlacementTests.Register();
+			KeywordTests.Register();
 			SimTests.Register();
 
 			return Run( filter );

@@ -35,6 +35,17 @@ namespace Saga.Tracking
 		public int MaxFigures = 1;
 		public int PerFigureHealth = 1;
 
+		/// <summary>
+		/// Speed, attack type, footprint and keywords, taken from the deployment
+		/// card when the group is deployed.
+		/// </summary>
+		/// <remarks>
+		/// Never null. A group deployed without a card still plans, using the
+		/// defaults, because an advisory app that refuses to plan is worse at the
+		/// table than one that plans cautiously.
+		/// </remarks>
+		public UnitProfile Profile = UnitProfile.Default;
+
 		public int FiguresAlive;
 		public int EngagedFigureIndex;
 		public int CurrentFigureDamage;

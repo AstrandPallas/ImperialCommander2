@@ -92,12 +92,22 @@ namespace Saga.Tracking
 					continue;
 				}
 
+				// Without the card's own profile every figure plans as a ranged
+				// 1x1 at speed 4, which is wrong for the 17 melee cards, the 12
+				// large ones and every unit that does not happen to move 4.
+				var profile = activating.Profile ?? UnitProfile.Default;
 				snap.Enemies.Add( new EnemyFigure
 				{
 					Id = id,
 					Name = activating.CardName + " #" + (slot.Index + 1),
 					Position = new Sq( slot.PosC.Value, slot.PosR.Value ),
 					Stunned = activating.Has( Condition.Stunned ),
+					Speed = profile.Speed,
+					AttackKind = profile.AttackKind,
+					Footprint = profile.Footprint,
+					Massive = profile.Massive,
+					Mobile = profile.Mobile,
+					HasReach = profile.HasReach,
 				} );
 			}
 
@@ -146,10 +156,15 @@ namespace Saga.Tracking
 				foreach ( var slot in group.Figures )
 				{
 					if ( !slot.Alive || !slot.HasPosition ) continue;
+					var other = group.Profile ?? UnitProfile.Default;
 					snap.Visibility.Add( new FigureVisibility
 					{
 						Id = FigureId( group.InstanceId, slot.Index ),
 						Position = new Sq( slot.PosC.Value, slot.PosR.Value ),
+						// A bystander standing on blocking terrain can still be seen
+						// and counted to if it carries either keyword.
+						Massive = other.Massive,
+						Mobile = other.Mobile,
 					} );
 				}
 			}

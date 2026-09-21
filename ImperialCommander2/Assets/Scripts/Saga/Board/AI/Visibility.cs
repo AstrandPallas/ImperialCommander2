@@ -17,10 +17,25 @@ namespace Saga.Board
 		/// <summary>The Massive keyword.</summary>
 		public bool Massive;
 
+		/// <summary>The Mobile keyword.</summary>
+		public bool Mobile;
+
+		/// <summary>
+		/// Standing on blocking terrain does not put this figure out of reach.
+		/// </summary>
+		/// <remarks>
+		/// Both keywords carry the same sentence -- "line of sight can be traced
+		/// to that figure, spaces can be counted to that figure, and adjacent
+		/// figures can attack that figure" (Consolidated Rules p.41 and p.47).
+		/// Only Massive also gets "figures do not block line of sight to or from",
+		/// which is why that one stays a separate test.
+		/// </remarks>
+		public bool CountableOnBlockingTerrain => Massive || Mobile;
+
 		public bool IsHiddenFrom( BoardModel board, Sq observer )
 		{
 			if ( HiddenAtOrBeyond < 0 ) return false;
-			int d = Distance.Count( board, observer, Position, 60, Massive );
+			int d = Distance.Count( board, observer, Position, 60, CountableOnBlockingTerrain );
 			if ( d < 0 ) return true;               // cannot even be counted to
 			return d >= HiddenAtOrBeyond;
 		}

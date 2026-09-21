@@ -15,6 +15,12 @@ namespace Saga.Board
 		public Footprint Footprint = Footprint.Small1x1;
 		public bool Massive;
 
+		/// <summary>The Mobile keyword, which shares Massive's terrain rules but none of its rules about figures.</summary>
+		public bool Mobile;
+
+		/// <summary>The Reach keyword. Named so it cannot be read as <see cref="Saga.Board.Reach"/>.</summary>
+		public bool HasReach;
+
 		/// <summary>A Stunned figure must spend one action to remove the condition, leaving it only one action this activation.</summary>
 		public bool Stunned;
 	}
@@ -196,7 +202,7 @@ namespace Saga.Board
 
 			// Can it attack the group target from where it now stands?
 			var best = AttackEvaluator.Assess( board, fig.Position, groupTarget.Position,
-				fig.AttackKind );
+				fig.AttackKind, null, null, fig.HasReach );
 			if ( best.CanDeclare )
 			{
 				fp.Attack = best;
@@ -210,7 +216,7 @@ namespace Saga.Board
 			{
 				if ( other == groupTarget || !other.InPlay ) continue;
 				var alt = AttackEvaluator.Assess( board, fig.Position, other.Position,
-					fig.AttackKind );
+					fig.AttackKind, null, null, fig.HasReach );
 				if ( !alt.CanDeclare ) continue;
 				fp.Target = other;
 				fp.Attack = alt;
@@ -231,6 +237,7 @@ namespace Saga.Board
 				Friendly = allies.Contains,
 				Footprint = f.Footprint,
 				Massive = f.Massive,
+				Mobile = f.Mobile,
 				// Its own square is excluded by the caller, so this is strictly
 				// the OTHER Massive figures.
 				OtherMassive = massive == null ? (Func<Sq, bool>)(_ => false)
@@ -287,7 +294,7 @@ namespace Saga.Board
 
 			// Prefer a position that attacks the group's target.
 			var spots = AttackEvaluator.FiringPositions( board, reach, groupTarget.Position,
-				fig.AttackKind, canEnd, blockers, visOf( groupTarget ) );
+				fig.AttackKind, canEnd, blockers, visOf( groupTarget ), fig.HasReach );
 			if ( spots.Count > 0 )
 			{
 				var best = ChooseSpot( spots );
@@ -302,7 +309,7 @@ namespace Saga.Board
 			foreach ( var alt in allTargets.Where( t => t != groupTarget ) )
 			{
 				var altSpots = AttackEvaluator.FiringPositions( board, reach, alt.Position,
-					fig.AttackKind, canEnd, blockers, visOf( alt ) );
+					fig.AttackKind, canEnd, blockers, visOf( alt ), fig.HasReach );
 				if ( altSpots.Count == 0 ) continue;
 				var best = ChooseSpot( altSpots );
 				fp.Target = alt;
