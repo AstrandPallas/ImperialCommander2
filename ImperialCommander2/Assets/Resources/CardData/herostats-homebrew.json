@@ -1,0 +1,17 @@
+{
+ "schemaVersion": 1,
+ "note": "HOMEBREW. Not an FFG conversion and not printed on any card. Luke Skywalker ships as an ally (A011) with no hero sheet and no class deck, so both were designed for this fork. Kept separate from herostats.json so sourced data stays sourced and homebrew stays labelled; the loader merges this on top.",
+ "heroes": [
+  {
+   "id": "H22",
+   "name": "Luke Skywalker (Jedi Knight)",
+   "health": 11,
+   "endurance": 4,
+   "speed": 4,
+   "defense": [
+    "White"
+   ],
+   "source": "homebrew: see docs/luke-jedi-knight-homebrew.md"
+  }
+ ]
+}

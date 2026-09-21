@@ -15,6 +15,16 @@ namespace Saga
 	{
 		public const string ResourcePath = "CardData/herostats";
 
+		/// <summary>
+		/// Homebrew sheets, merged on top of the sourced ones.
+		/// </summary>
+		/// <remarks>
+		/// Kept in a separate file so provenance survives: everything in
+		/// herostats.json was read off a printed sheet, everything here was
+		/// designed. Mixing them would make the sourced file unverifiable.
+		/// </remarks>
+		public const string HomebrewResourcePath = "CardData/herostats-homebrew";
+
 		private static HeroStats _cached;
 
 		private sealed class HeroStatsFile
@@ -41,12 +51,24 @@ namespace Saga
 		private static HeroStats Load()
 		{
 			var stats = new HeroStats();
-			var asset = Resources.Load<TextAsset>( ResourcePath );
+			int printed = Merge( stats, ResourcePath, required: true );
+			int homebrew = Merge( stats, HomebrewResourcePath, required: false );
+
+			Utils.LogWarning( "HeroStatsLoader::" + printed + " printed hero sheets"
+				+ (homebrew > 0 ? " and " + homebrew + " homebrew" : "") + " loaded" );
+			return stats;
+		}
+
+		/// <summary>Read one file into the set, returning how many sheets it held.</summary>
+		private static int Merge( HeroStats stats, string path, bool required )
+		{
+			var asset = Resources.Load<TextAsset>( path );
 			if ( asset == null )
 			{
-				Utils.LogWarning( "HeroStatsLoader::" + ResourcePath
-					+ " is missing, so heroes fall back to 10 health and 4 endurance" );
-				return stats;
+				if ( required )
+					Utils.LogWarning( "HeroStatsLoader::" + path
+						+ " is missing, so heroes fall back to 10 health and 4 endurance" );
+				return 0;
 			}
 
 			HeroStatsFile file = null;
@@ -56,10 +78,10 @@ namespace Saga
 			}
 			catch ( System.Exception e )
 			{
-				Utils.LogWarning( "HeroStatsLoader::could not read " + ResourcePath
-					+ ": " + e.Message );
+				Utils.LogWarning( "HeroStatsLoader::could not read " + path + ": " + e.Message );
 			}
 
+			int n = 0;
 			foreach ( var row in file?.heroes ?? new List<HeroRow>() )
 			{
 				if ( row == null || string.IsNullOrEmpty( row.id ) ) continue;
@@ -72,10 +94,9 @@ namespace Saga
 					Speed = row.speed > 0 ? row.speed : 4,
 					Defense = row.defense ?? System.Array.Empty<string>(),
 				} );
+				n++;
 			}
-
-			Utils.LogWarning( "HeroStatsLoader::" + stats.Count + " hero sheets loaded" );
-			return stats;
+			return n;
 		}
 	}
 }
