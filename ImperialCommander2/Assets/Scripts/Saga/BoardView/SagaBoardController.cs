@@ -106,11 +106,13 @@ namespace Saga
 		/// same numbers changes which one the AI attacks.
 		/// </remarks>
 		public void OnMissionReady( IEnumerable<DeploymentCard> party,
-			Func<string, bool> isSectionActive = null )
+			Func<string, bool> isSectionActive = null,
+			IEnumerable<CampaignHero> campaignHeroes = null )
 		{
 			if ( BuildBoard( isSectionActive ) == null ) return;
 
 			var sheets = HeroStatsLoader.Stats;
+			var carry = CarryOverFrom( campaignHeroes );
 			var heroes = new List<HeroCombatState>();
 			foreach ( var card in party ?? Enumerable.Empty<DeploymentCard>() )
 			{
@@ -121,18 +123,50 @@ namespace Saga
 				// health is the ALLY version of that character and does not
 				// match the hero sheet, so it is only a last resort.
 				if ( sheets.Knows( card.id ) )
-					sheets.For( card.id ).ApplyTo( hero );
+					carry.Seat( hero, sheets );
 				else
 				{
 					hero.MaxHealth = card.health > 0 ? card.health : 10;
+					carry.For( card.id ).ApplyTo( hero );
 					Utils.LogWarning( "SagaBoardController::no hero sheet for " + card.name
 						+ " (" + card.id + "), tracking it on defaults" );
 				}
+
+				var gains = carry.For( card.id );
+				if ( !gains.IsEmpty )
+					Utils.LogWarning( "SagaBoardController::" + card.name
+						+ " carries campaign gains, " + gains );
 
 				heroes.Add( hero );
 			}
 
 			SeedHeroes( heroes );
+		}
+
+		/// <summary>
+		/// The party's campaign gains, taken from the campaign record.
+		/// </summary>
+		/// <remarks>
+		/// A campaign this fork has never touched has these at zero, which
+		/// means the printed sheet, so an existing save loads as a party with
+		/// no gains rather than as a party with no health.
+		/// </remarks>
+		private static CampaignCarryOver CarryOverFrom( IEnumerable<CampaignHero> campaignHeroes )
+		{
+			var carry = new CampaignCarryOver();
+			foreach ( var ch in campaignHeroes ?? Enumerable.Empty<CampaignHero>() )
+			{
+				if ( ch == null || string.IsNullOrEmpty( ch.heroID ) ) continue;
+				carry.Set( new CampaignAdjustment
+				{
+					CardId = ch.heroID,
+					BonusHealth = ch.bonusHealth,
+					BonusEndurance = ch.bonusEndurance,
+					BonusSpeed = ch.bonusSpeed,
+					Reason = ch.bonusReason ?? "",
+				} );
+			}
+			return carry;
 		}
 
 		/// <summary>Seat the party at the mission entrance and show them.</summary>

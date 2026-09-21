@@ -70,6 +70,7 @@ namespace Saga.Board.Tests
 			UndoTests.Register();
 			ObjectiveTests.Register();
 			DeploymentTests.Register();
+			CampaignTests.Register();
 			SimTests.Register();
 
 			return Run( filter );
