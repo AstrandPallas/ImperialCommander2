@@ -64,6 +64,12 @@ namespace Saga
 			var fitter = gameObject.GetComponent<ContentSizeFitter>()
 				?? gameObject.AddComponent<ContentSizeFitter>();
 			fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+			// The widest row is a hero who has not been placed yet: name, damage,
+			// strain, the staleness note and five condition chips. Fitting the
+			// panel to that rather than to a chosen number is what stops the rows
+			// being squeezed, because the columns carry no minimum width and so
+			// compress silently instead of overflowing where it would be noticed.
+			fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
 
 			_list = GetComponent<RectTransform>();
 		}
