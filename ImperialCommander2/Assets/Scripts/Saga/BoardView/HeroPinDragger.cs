@@ -35,12 +35,28 @@ namespace Saga
 		private HeroCombatState _hero;
 		private Color _originalColour;
 		private Sq _origin;
+		private CameraController _camera;
+		private bool _heldCamera;
 
 		private void Awake()
 		{
 			if ( boardController == null ) boardController = FindObjectOfType<SagaBoardController>();
 			if ( boardCamera == null ) boardCamera = Camera.main;
+			if ( _camera == null ) _camera = FindObjectOfType<CameraController>();
 		}
+
+		// The camera pans on left-drag with the same guard this does, so without
+		// this the board slides under the token and the square you drop on is not
+		// the one you aimed at. ToggleNavigation is the seam the game already uses
+		// to hold the camera still during an interaction.
+		private void HoldCamera( bool held )
+		{
+			if ( _camera == null || held == _heldCamera ) return;
+			_heldCamera = held;
+			_camera.ToggleNavigation( !held );
+		}
+
+		private void OnDisable() => HoldCamera( false );
 
 		private void Update()
 		{
@@ -76,6 +92,7 @@ namespace Saga
 				_hero = hero;
 				_dragging = token;
 				_origin = square;
+				HoldCamera( true );
 				if ( token.body != null )
 				{
 					_originalColour = token.body.color;
@@ -99,6 +116,7 @@ namespace Saga
 			var hero = _hero;
 			_dragging = null;
 			_hero = null;
+			HoldCamera( false );
 
 			if ( token == null || hero == null ) return;
 			if ( token.body != null ) token.body.color = _originalColour;
