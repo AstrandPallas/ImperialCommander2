@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -79,6 +79,8 @@ namespace Saga.EditorTools
 		{
 			const int expectedFaces = 276;
 			const int expectedTerrainSquares = 332;
+			// 195 blocking and impassable edges plus 2,124 printed walls.
+			const int expectedEdges = 2319;
 
 			TerrainLoader.Reload();
 			var library = TerrainLoader.Library;
@@ -97,10 +99,11 @@ namespace Saga.EditorTools
 			string summary = "TerrainLoader: " + library.Count + " faces, " + terrain
 				+ " terrain squares, " + edges + " edges";
 
-			if ( library.Count != expectedFaces || terrain != expectedTerrainSquares )
-				Debug.LogError( summary + " -- EXPECTED " + expectedFaces + " faces and "
-					+ expectedTerrainSquares + " terrain squares. Terrain has been lost "
-					+ "between authoring and runtime." );
+			if ( library.Count != expectedFaces || terrain != expectedTerrainSquares
+				|| edges != expectedEdges )
+				Debug.LogError( summary + " -- EXPECTED " + expectedFaces + " faces, "
+					+ expectedTerrainSquares + " terrain squares and " + expectedEdges
+					+ " edges. Terrain has been lost between authoring and runtime." );
 			else
 				Debug.Log( summary + " -- matches the authored data" );
 		}
