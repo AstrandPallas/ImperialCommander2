@@ -4,6 +4,7 @@ using System.Linq;
 using Saga.Board;
 using Saga.Tracking;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Saga
@@ -25,12 +26,40 @@ namespace Saga
 		private readonly List<GameObject> _rows = new List<GameObject>();
 		private bool _built;
 
+		/// <summary>Folded down to its header, so it stops covering the map.</summary>
+		public bool Collapsed { get; private set; }
+
+		private const string CollapsedPref = "Saga.Tracker.Collapsed";
+		private const string PosXPref = "Saga.Tracker.X";
+		private const string PosYPref = "Saga.Tracker.Y";
+
 		private void Awake()
 		{
 			if ( boardController == null ) boardController = FindObjectOfType<SagaBoardController>();
 		}
 
 		private void OnEnable() => Refresh();
+
+		/// <summary>Fold the panel to its header, or open it again.</summary>
+		/// <remarks>
+		/// The panel is wide, and most of the time the players want the map.
+		/// Folded, it is one row that still shows undo and can be dragged out
+		/// of the way; open, it is the full list.
+		/// </remarks>
+		public void SetCollapsed( bool collapsed )
+		{
+			Collapsed = collapsed;
+			PlayerPrefs.SetInt( CollapsedPref, collapsed ? 1 : 0 );
+			Refresh();
+		}
+
+		/// <summary>Remember where the players put it.</summary>
+		private void SavePosition()
+		{
+			var rect = GetComponent<RectTransform>();
+			PlayerPrefs.SetFloat( PosXPref, rect.anchoredPosition.x );
+			PlayerPrefs.SetFloat( PosYPref, rect.anchoredPosition.y );
+		}
 
 		/// <summary>
 		/// Record the state before an edit, so it can be taken back.
@@ -52,6 +81,7 @@ namespace Saga
 			if ( boardController == null ) return;
 
 			_rows.Add( HeaderRow() );
+			if ( Collapsed ) return;
 
 			foreach ( var hero in boardController.Heroes )
 				_rows.Add( HeroRow( hero ) );
@@ -67,7 +97,18 @@ namespace Saga
 			var undo = boardController?.Undo;
 			string next = undo?.NextUndo;
 
-			Label( row, "TRACKER", 120, new Color( 0.75f, 0.78f, 0.85f ) );
+			// The header is the handle: drag it to move the panel. It needs an
+			// image to be hit, so it gets one the colour of the panel.
+			var grab = row.AddComponent<Image>();
+			grab.color = new Color( 0.12f, 0.13f, 0.16f, 1f );
+			var handle = row.AddComponent<PanelDragHandle>();
+			handle.target = _list;
+			handle.onMoved = SavePosition;
+
+			Button( row, Collapsed ? "\u25B6" : "\u25BC", () => SetCollapsed( !Collapsed ), 40 );
+			Label( row, Collapsed ? "TRACKER (" + (boardController?.Heroes.Count ?? 0) + " heroes, "
+					+ (boardController?.Groups.Count ?? 0) + " groups)" : "TRACKER",
+				Collapsed ? 300 : 120, new Color( 0.75f, 0.78f, 0.85f ) );
 
 			// Naming the change is what makes the button safe to press at a
 			// table: you can see what is about to come back before you do it.
@@ -118,6 +159,11 @@ namespace Saga
 			fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
 
 			_list = GetComponent<RectTransform>();
+
+			Collapsed = PlayerPrefs.GetInt( CollapsedPref, 0 ) == 1;
+			if ( PlayerPrefs.HasKey( PosXPref ) )
+				_list.anchoredPosition = new Vector2(
+					PlayerPrefs.GetFloat( PosXPref ), PlayerPrefs.GetFloat( PosYPref ) );
 		}
 
 		private GameObject HeroRow( HeroCombatState hero )
@@ -285,6 +331,57 @@ namespace Saga
 			rect.anchorMax = Vector2.one;
 			rect.offsetMin = Vector2.zero;
 			rect.offsetMax = Vector2.zero;
+		}
+	}
+
+	/// <summary>Drag a panel around by its header, keeping it on screen.</summary>
+	public class PanelDragHandle : MonoBehaviour,
+		IBeginDragHandler, IDragHandler, IEndDragHandler
+	{
+		public RectTransform target;
+		public Action onMoved;
+
+		private Canvas _canvas;
+
+		public void OnBeginDrag( PointerEventData e )
+		{
+			_canvas = GetComponentInParent<Canvas>();
+		}
+
+		public void OnDrag( PointerEventData e )
+		{
+			if ( target == null ) return;
+			// Pointer deltas are screen pixels; the canvas may be scaled.
+			float scale = _canvas != null && _canvas.scaleFactor > 0f ? _canvas.scaleFactor : 1f;
+			target.anchoredPosition += e.delta / scale;
+			Clamp();
+		}
+
+		public void OnEndDrag( PointerEventData e ) => onMoved?.Invoke();
+
+		/// <summary>Never let the panel be dragged fully off the screen, where it could not be dragged back.</summary>
+		private void Clamp()
+		{
+			var parent = target.parent as RectTransform;
+			if ( parent == null ) return;
+			var size = target.rect.size;
+			var half = parent.rect.size / 2f;
+
+			// Position of the pivot in parent space, from anchors + offset.
+			var anchorCentre = (target.anchorMin + target.anchorMax) / 2f;
+			var pivotPos = new Vector2(
+				(anchorCentre.x - 0.5f) * parent.rect.width,
+				(anchorCentre.y - 0.5f) * parent.rect.height ) + target.anchoredPosition;
+
+			var min = pivotPos - Vector2.Scale( target.pivot, size );
+			var max = min + size;
+			var shift = Vector2.zero;
+			const float keep = 60f;                // at least this much stays visible
+			if ( max.x < -half.x + keep ) shift.x = -half.x + keep - max.x;
+			if ( min.x > half.x - keep ) shift.x = half.x - keep - min.x;
+			if ( max.y < -half.y + keep ) shift.y = -half.y + keep - max.y;
+			if ( min.y > half.y - keep ) shift.y = half.y - keep - min.y;
+			target.anchoredPosition += shift;
 		}
 	}
 }

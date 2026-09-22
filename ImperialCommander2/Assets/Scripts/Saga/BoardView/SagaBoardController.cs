@@ -604,6 +604,8 @@ namespace Saga
 		}
 
 		/// <summary>Make the tokens on screen match what is tracked.</summary>
+		private bool _refreshPending;
+
 		public void RefreshTokens()
 		{
 			// The panel is a view of the same state, and refreshing only on
@@ -613,15 +615,29 @@ namespace Saga
 				if ( panel.isActiveAndEnabled ) panel.Refresh();
 
 			if ( figureLayer == null ) return;
-			figureLayer.Clear();
+
+			// A refresh during playback would destroy the moving token and
+			// respawn it at its destination, which reads as a teleport. Wait
+			// for the slide to finish; Play's callback refreshes.
+			if ( figureLayer.IsPlaying )
+			{
+				_refreshPending = true;
+				return;
+			}
+			_refreshPending = false;
+
+			// Reconcile, never clear: a token already on its square is left
+			// alone, so a refresh is invisible unless something changed.
+			var keep = new HashSet<string>();
 
 			foreach ( var hero in _heroes )
 			{
 				if ( !hero.InPlay || hero.PosC == null || hero.PosR == null ) continue;
 				var face = FaceFor( hero.CardId );
-				var token = figureLayer.Spawn( hero.CardId, new Sq( hero.PosC.Value, hero.PosR.Value ),
+				var token = figureLayer.Ensure( hero.CardId, new Sq( hero.PosC.Value, hero.PosR.Value ),
 					false, face != null ? "" : Initial( hero.Name ), face );
 				token?.SetSpent( HasActed( hero.CardId, true ) );
+				keep.Add( hero.CardId );
 			}
 
 			foreach ( var group in _groups )
@@ -630,8 +646,8 @@ namespace Saga
 				foreach ( var slot in group.Figures )
 				{
 					if ( !slot.Alive || !slot.HasPosition ) continue;
-					var token = figureLayer.Spawn(
-						TrackerBridge.FigureId( group.InstanceId, slot.Index ),
+					string id = TrackerBridge.FigureId( group.InstanceId, slot.Index );
+					var token = figureLayer.Ensure( id,
 						new Sq( slot.PosC.Value, slot.PosR.Value ),
 						true,
 						// The number still matters for a group: it is how a
@@ -639,8 +655,10 @@ namespace Saga
 						group.MaxFigures > 1 ? (slot.Index + 1).ToString() : "",
 						face, group.Profile.Footprint );
 					token?.SetSpent( HasActed( group.CardId, false ) );
+					keep.Add( id );
 				}
 			}
+			figureLayer.Prune( keep );
 		}
 
 		private static string Initial( string name )
