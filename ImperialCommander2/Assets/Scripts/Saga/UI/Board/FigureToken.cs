@@ -141,6 +141,23 @@ namespace Saga
 			} );
 		}
 
+		/// <summary>Dim a figure that has already acted this round.</summary>
+		public void SetSpent( bool spent )
+		{
+			float a = spent ? 0.38f : 1f;
+			foreach ( var r in new[] { portrait, body, ring } )
+			{
+				if ( r == null ) continue;
+				var c = r.color;
+				r.color = new Color( c.r, c.g, c.b, a );
+			}
+			if ( label != null )
+			{
+				var c = label.color;
+				label.color = new Color( c.r, c.g, c.b, a );
+			}
+		}
+
 		/// <summary>Draw attention to this figure before it acts.</summary>
 		public void Highlight( bool on )
 		{

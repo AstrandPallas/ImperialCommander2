@@ -261,6 +261,8 @@ namespace Saga
 				var pf = c.GetComponent<SagaHGPrefab>();
 				pf.ResetActivation();
 			}
+			//everyone is ready again, so the tokens brighten back up
+			FindObjectOfType<SagaBoardController>()?.RefreshTokens();
 		}
 
 		/// <summary>

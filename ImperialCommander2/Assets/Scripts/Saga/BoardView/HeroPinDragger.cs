@@ -42,6 +42,10 @@ namespace Saga
 		private Sq _origin;
 		private CameraController _camera;
 		private bool _heldCamera;
+		private Vector3 _downAt;
+
+		/// <summary>Pointer travel below this is a tap, not a drag.</summary>
+		public float tapPixels = 8f;
 
 		private void Awake()
 		{
@@ -67,7 +71,7 @@ namespace Saga
 		{
 			if ( boardController == null || !boardController.IsReady ) return;
 
-			if ( Input.GetMouseButtonDown( 0 ) && !IsOverUI() ) TryPickUp();
+			if ( Input.GetMouseButtonDown( 0 ) && !IsOverUI() ) { _downAt = Input.mousePosition; TryPickUp(); }
 			else if ( _dragging != null && Input.GetMouseButton( 0 ) ) DragTo();
 			else if ( _dragging != null && Input.GetMouseButtonUp( 0 ) ) Drop();
 		}
@@ -155,6 +159,22 @@ namespace Saga
 
 			if ( token == null || (hero == null && group == null) ) return;
 			if ( token.ring != null ) token.ring.color = _originalColour;
+
+			// A tap on a token opens its card -- health, strain, conditions --
+			// rather than moving it. Finding a figure's row in the tracker
+			// list after every hit is the friction that stops a tracker being
+			// used; tapping the figure that was hit is not.
+			if ( Vector3.Distance( _downAt, Input.mousePosition ) < tapPixels )
+			{
+				token.Place( _origin );
+				var card = boardController.FigureCard;
+				if ( card != null )
+				{
+					if ( hero != null ) card.Show( hero );
+					else card.Show( group );
+				}
+				return;
+			}
 
 			if ( !PointerSquare( out var wanted ) )
 			{

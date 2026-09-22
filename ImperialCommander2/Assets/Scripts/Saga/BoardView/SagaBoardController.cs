@@ -57,6 +57,54 @@ namespace Saga
 		/// <summary>Takes back a mis-tap on the tracker panel.</summary>
 		public UndoStack Undo { get; private set; }
 
+		private FigureCardPopup _card;
+
+		/// <summary>The one-figure card, created on the UI canvas the first time it is needed.</summary>
+		public FigureCardPopup FigureCard
+		{
+			get
+			{
+				if ( _card != null ) return _card;
+				_card = FindObjectOfType<FigureCardPopup>();
+				if ( _card != null ) return _card;
+
+				var canvas = FindObjectsOfType<Canvas>()
+					.FirstOrDefault( c => c.renderMode != RenderMode.WorldSpace );
+				if ( canvas == null ) return null;
+				var go = new GameObject( "FigureCardPopup", typeof( RectTransform ) );
+				go.transform.SetParent( canvas.transform, false );
+				_card = go.AddComponent<FigureCardPopup>();
+				_card.boardController = this;
+				return _card;
+			}
+		}
+
+		/// <summary>Whether a figure has spent its activation this round, for dimming its token.</summary>
+		/// <remarks>
+		/// Upstream already tracks this -- two activation toggles per hero in
+		/// the strip, and an exhausted state per group -- but nothing on the
+		/// board showed it. A dimmed token is how the table sees at a glance
+		/// who is still to act, the way the official app does.
+		/// </remarks>
+		private static bool HasActed( string cardId, bool hero )
+		{
+			if ( hero )
+			{
+				var card = DataStore.deployedHeroes?.FirstOrDefault( c => c != null && c.id == cardId );
+				var acted = card?.heroState?.hasActivated;
+				if ( acted == null || acted.Length == 0 ) return false;
+				// A hero has two activations only in a 2-hero game; the strip
+				// shows the second toggle only then. Spent means every toggle
+				// that is shown is on.
+				int shown = DataStore.sagaSessionData?.MissionHeroes?.Count <= 2 ? 2 : 1;
+				for ( int i = 0; i < Math.Min( shown, acted.Length ); i++ )
+					if ( !acted[i] ) return false;
+				return true;
+			}
+			var enemy = DataStore.deployedEnemies?.FirstOrDefault( c => c != null && c.id == cardId );
+			return enemy != null && enemy.hasActivated;
+		}
+
 		private List<GroupCombatState> _groups => Tracker.Groups;
 		private List<HeroCombatState> _heroes => Tracker.Heroes;
 
@@ -504,8 +552,9 @@ namespace Saga
 			{
 				if ( !hero.InPlay || hero.PosC == null || hero.PosR == null ) continue;
 				var face = FaceFor( hero.CardId );
-				figureLayer.Spawn( hero.CardId, new Sq( hero.PosC.Value, hero.PosR.Value ),
+				var token = figureLayer.Spawn( hero.CardId, new Sq( hero.PosC.Value, hero.PosR.Value ),
 					false, face != null ? "" : Initial( hero.Name ), face );
+				token?.SetSpent( HasActed( hero.CardId, true ) );
 			}
 
 			foreach ( var group in _groups )
@@ -514,7 +563,7 @@ namespace Saga
 				foreach ( var slot in group.Figures )
 				{
 					if ( !slot.Alive || !slot.HasPosition ) continue;
-					figureLayer.Spawn(
+					var token = figureLayer.Spawn(
 						TrackerBridge.FigureId( group.InstanceId, slot.Index ),
 						new Sq( slot.PosC.Value, slot.PosR.Value ),
 						true,
@@ -522,6 +571,7 @@ namespace Saga
 						// token maps onto one of three identical minis.
 						group.MaxFigures > 1 ? (slot.Index + 1).ToString() : "",
 						face, group.Profile.Footprint );
+					token?.SetSpent( HasActed( group.CardId, false ) );
 				}
 			}
 		}
@@ -616,6 +666,10 @@ namespace Saga
 			figureLayer?.Play( plan, Board, () =>
 			{
 				RefreshTokens();
+				// The app cannot know what the dice said, but it can put the
+				// right hero's card up the moment the attack lands, with the
+				// attacker named, so the damage goes in while it is remembered.
+				FigureCard?.PromptForAttacks( plan );
 				onPlayed?.Invoke();
 			} );
 			return plan;

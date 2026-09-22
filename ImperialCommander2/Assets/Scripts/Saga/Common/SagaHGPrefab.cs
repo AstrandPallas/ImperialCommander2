@@ -114,6 +114,7 @@ namespace Saga
 			if ( !activationToggle1.gameObject.activeInHierarchy )
 				return;
 			cardDescriptor.heroState.hasActivated[0] = activationToggle1.isOn;
+			FindObjectOfType<SagaBoardController>()?.RefreshTokens();
 		}
 
 		public void OnActivation2()
@@ -121,6 +122,7 @@ namespace Saga
 			if ( !activationToggle2.gameObject.activeInHierarchy )
 				return;
 			cardDescriptor.heroState.hasActivated[1] = activationToggle2.isOn;
+			FindObjectOfType<SagaBoardController>()?.RefreshTokens();
 		}
 
 		//popup menu for wound/defeat

@@ -246,6 +246,8 @@ namespace Saga
 				cardDescriptor.bonusText = null;
 			}
 			exhaustedOverlay.SetActive( isExhausted );
+			//the board dims a group that has acted, the same as the strip does
+			FindObjectOfType<SagaBoardController>()?.RefreshTokens();
 		}
 
 		///Group was right clicked or double clicked/tapped
