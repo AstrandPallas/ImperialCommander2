@@ -131,6 +131,25 @@ namespace Saga
 			}, 90, undo != null && undo.CanRedo
 				? new Color( 0.22f, 0.36f, 0.5f ) : new Color( 0.18f, 0.19f, 0.22f ) );
 
+			// One tap writes the whole board, the last orders and the reasoning
+			// to a file. Simulation cannot see the cardboard; the people at the
+			// table can, and they see a wrong move exactly once.
+			Button( row, "FLAG ORDER", () =>
+			{
+				var file = boardController?.CaptureDispute( "flagged at the table" );
+				FindObjectOfType<QuickMessage>()?.Show( file != null
+					? "Flagged. Saved to " + System.IO.Path.GetFileName( file )
+					: "Flagged to the log" );
+			}, 120, new Color( 0.5f, 0.3f, 0.15f ) );
+
+			// The way back, permanently: board orders or the plain text.
+			bool strict = Board.BoardAiSettings.UseBoardAi;
+			Button( row, strict ? "AI: BOARD" : "AI: TEXT", () =>
+			{
+				boardController?.SetAiMode( strict ? Board.AiMode.Classic : Board.AiMode.StrictRules );
+				Refresh();
+			}, 100, strict ? new Color( 0.2f, 0.4f, 0.3f ) : new Color( 0.4f, 0.3f, 0.2f ) );
+
 			return row;
 		}
 

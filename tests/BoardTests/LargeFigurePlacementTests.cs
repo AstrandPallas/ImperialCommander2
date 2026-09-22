@@ -82,6 +82,40 @@ namespace Saga.Board.Tests
 				True( HeroPlacement.Fits( b, snapped.Value, Footprint.Large2x2 ), "all four squares" );
 			} );
 
+			Test( "a 2x2 never ends with part of its base on top of a hero", () =>
+			{
+				// Pounce lands adjacent to the target. For a 2x2 the anchor can
+				// be adjacent while another square of the base sits ON the hero,
+				// which from the table looks like the Nexu went through her.
+				var b = new BoardModel();
+				for ( int c = 0; c < 10; c++ )
+					for ( int r = 0; r < 6; r++ )
+						b.SetSquare( new Sq( c, r ), SquareFlags.None );
+
+				var hero = new Sq( 5, 2 );
+				var nexu = new List<EnemyFigure>
+				{
+					new EnemyFigure { Id = "n", Name = "Nexu", Position = new Sq( 1, 2 ), Speed = 6,
+						AttackKind = AttackKind.Melee, Footprint = Footprint.Large2x2, Mobile = true },
+				};
+				var rebels = new List<TargetCandidate>
+				{
+					new TargetCandidate { Id = "H1", Name = "Jyn", Position = hero, MaxHealth = 10 },
+					new TargetCandidate { Id = "H2", Name = "Gaarkhan", Position = new Sq( 5, 3 ), MaxHealth = 14 },
+				};
+				var lines = new[]
+				{
+					"{Q} POUNCE: Place this figure in an empty space within 6 spaces and adjacent to {R1}. Then attack {R1}.",
+					"{A} Move 6 to attack {R1}.",
+				};
+				var plan = ActivationPlanner.Plan( b, nexu, rebels, null, null, null, null, lines );
+				var fp = plan.Figures[0];
+				var cells = Pathfinder.Cells( new MoveState( fp.End, Facing.NorthSouth ), Footprint.Large2x2 ).ToList();
+				False( cells.Contains( hero ), "no square of the base is on Jyn: ended at " + fp.End );
+				False( cells.Contains( new Sq( 5, 3 ) ), "nor on Gaarkhan" );
+				True( fp.WillAttack, "and it still attacks: " + string.Join( " | ", fp.Trace ) );
+			} );
+
 			Test( "a 2x2 token is drawn on the corner its four squares share", () =>
 			{
 				var (x, _, z) = SagaBoardBridge.FootprintCenter( new Sq( 4, 4 ), Footprint.Large2x2 );

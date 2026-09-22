@@ -285,7 +285,26 @@ namespace Saga.Board
 			var others = new HashSet<Sq>( massiveSquares );
 			others.Remove( fig.Position );
 			var opt = OptionsFor( fig, rebelSquares, allies, others );
-			var canEnd = Pathfinder.CanEndOn( board, opt );
+			var canEndAnchor = Pathfinder.CanEndOn( board, opt );
+
+			// A large figure ends on EVERY square of its base. Checking only the
+			// anchor let a 2x2 finish with three of its squares on top of
+			// heroes, which from the table looks like it went straight through
+			// them. Its own starting squares do not count as occupied.
+			var ownCells = new HashSet<Sq>( Pathfinder.Cells(
+				new MoveState( fig.Position, Facing.NorthSouth ), fig.Footprint ) );
+			Func<Sq, bool> canEnd = sq =>
+			{
+				if ( !canEndAnchor( sq ) ) return false;
+				if ( fig.Footprint == Footprint.Small1x1 ) return true;
+				foreach ( var cell in Pathfinder.Cells( new MoveState( sq, Facing.NorthSouth ), fig.Footprint ) )
+				{
+					if ( !board.IsEnterable( cell ) ) return false;
+					if ( ownCells.Contains( cell ) ) continue;
+					if ( rebelSquares.Contains( cell ) || allies.Contains( cell ) ) return false;
+				}
+				return true;
+			};
 
 			// One action attacks, so the rest are available for movement.
 			int moveActions = System.Math.Max( 0, fp.ActionsAvailable - 1 );
