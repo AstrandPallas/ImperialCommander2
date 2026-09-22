@@ -81,9 +81,13 @@ namespace Saga.Board
 			string[] preferredTraits = null,
 			IEnumerable<FigureVisibility> allFigures = null,
 			PlanOverride overrides = null,
-			ObjectiveMap objectives = null )
+			ObjectiveMap objectives = null,
+			IEnumerable<string> instructions = null )
 		{
 			var plan = new ActivationPlan();
+			// The card's own lines, tried in order. Null means the caller has
+			// none, and the generic move-and-attack is used throughout.
+			var intents = instructions == null ? null : Instructions.ParseAll( instructions );
 			var figures = group.Where( f => f != null ).ToList();
 			var targets = rebels.Where( r => r != null && r.InPlay ).ToList();
 			if ( figures.Count == 0 || targets.Count == 0 ) return plan;
@@ -127,7 +131,9 @@ namespace Saga.Board
 				var forced = targets.FirstOrDefault( t => t.Id == overrides.TargetId );
 				if ( forced != null )
 				{
-					plan.GroupTarget.Trace.Add( "OVERRIDDEN by the players: target is "
+					// Either the players or the card ({R1}) can force the target;
+					// the reason says which.
+					plan.GroupTarget.Trace.Add( "OVERRIDDEN: target is "
 						+ forced.Name
 						+ (string.IsNullOrEmpty( overrides.Reason )
 							? "" : " -- " + overrides.Reason) );
@@ -159,7 +165,7 @@ namespace Saga.Board
 						visibility, overrides )
 					: PlanFigure( board, fig, plan.GroupTarget.Chosen, targets,
 						rebelSquares, groupSquares, massiveSquares, visibility,
-						objectives ?? ObjectiveMap.Empty );
+						objectives ?? ObjectiveMap.Empty, intents );
 				plan.Figures.Add( fp );
 
 				// Commit this figure's destination so later figures path around
@@ -251,7 +257,7 @@ namespace Saga.Board
 			List<TargetCandidate> allTargets,
 			HashSet<Sq> rebelSquares, HashSet<Sq> groupSquares,
 			HashSet<Sq> massiveSquares, List<FigureVisibility> visibility,
-			ObjectiveMap objectives = null )
+			ObjectiveMap objectives = null, List<ActivationIntent> intents = null )
 		{
 			var fp = new FigurePlan
 			{
@@ -294,6 +300,13 @@ namespace Saga.Board
 			// reach the attack evaluation, not just the blocker set.
 			System.Func<TargetCandidate, FigureVisibility> visOf = t => visibility?
 				.FirstOrDefault( v => v.Id == t.Id || v.Position == t.Position );
+
+			// The card's own lines come first. A group does the FIRST line it
+			// can; only when none applies does the generic plan below decide.
+			if ( intents != null && intents.Count > 0
+				&& TryIntents( board, fp, fig, groupTarget, allTargets, opt, canEnd,
+					blockers, visOf, objectives, intents ) )
+				return fp;
 
 			// Prefer a position that attacks the group's target.
 			var spots = AttackEvaluator.FiringPositions( board, reach, groupTarget.Position,
@@ -408,6 +421,207 @@ namespace Saga.Board
 				.ThenBy( s => s.square.C )
 				.ThenBy( s => s.square.R )
 				.First();
+		}
+
+		/// <summary>
+		/// Walk the card's lines in order and carry out the first the board can.
+		/// </summary>
+		/// <remarks>
+		/// Each kind is judged by whether it is ACHIEVABLE on this board, which
+		/// is what the players are doing at the table when they read "Pounce 6
+		/// on Jyn" and decide whether the Nexu can. A movement line is always
+		/// achievable, since standing still is a legal move; an attack line is
+		/// achievable only if a firing position exists; a placement line only
+		/// if an empty legal square within reach is adjacent to what it asks
+		/// for. Lines the board cannot judge are skipped and said so.
+		/// </remarks>
+		private static bool TryIntents(
+			BoardModel board, FigurePlan fp, EnemyFigure fig, TargetCandidate groupTarget,
+			List<TargetCandidate> allTargets, MoveOptions opt, Func<Sq, bool> canEnd,
+			HashSet<Sq> blockers, Func<TargetCandidate, FigureVisibility> visOf,
+			ObjectiveMap objectives, List<ActivationIntent> intents )
+		{
+			var map = objectives ?? ObjectiveMap.Empty;
+			foreach ( var intent in intents )
+			{
+				if ( intent.Kind == IntentKind.Passive ) continue;
+				if ( intent.Kind == IntentKind.Unparsed )
+				{
+					fp.Trace.Add( $"line {intent.Line + 1} is for the players to judge: "
+						+ Instructions.Plain( intent.Raw ) );
+					continue;
+				}
+
+				switch ( intent.Kind )
+				{
+					case IntentKind.AttackOnly:
+					{
+						var here = AttackEvaluator.Assess( board, fig.Position, groupTarget.Position,
+							fig.AttackKind, blockers, visOf( groupTarget ), fig.HasReach );
+						if ( !here.CanDeclare )
+						{
+							fp.Trace.Add( $"line {intent.Line + 1} (attack): cannot attack "
+								+ $"{groupTarget.Name} from here -- {here.Reason}" );
+							continue;
+						}
+						fp.Path = new List<Sq> { fp.Start };
+						fp.Attack = here;
+						fp.Trace.Add( $"line {intent.Line + 1}: attacks {groupTarget.Name} without moving" );
+						return true;
+					}
+
+					case IntentKind.MoveAttack:
+					case IntentKind.Engage:
+					{
+						var reach = Pathfinder.Compute( board, fig.Position, intent.Move, opt );
+						if ( intent.Kind == IntentKind.Engage && intent.Minimum > 1 )
+						{
+							// End adjacent to as many Rebels as possible, at
+							// least the minimum. Then attack whoever it can.
+							var best = reach.EndSquares( canEnd )
+								.Select( sq => (sq, n: allTargets.Count( t => t.InPlay
+									&& board.AreAdjacent( sq, t.Position ) )) )
+								.Where( x => x.n >= intent.Minimum )
+								.OrderByDescending( x => x.n )
+								.ThenBy( x => reach.CostTo( x.sq ) )
+								.ThenBy( x => x.sq.C ).ThenBy( x => x.sq.R )
+								.FirstOrDefault();
+							if ( best.n < intent.Minimum )
+							{
+								fp.Trace.Add( $"line {intent.Line + 1} (engage): no square within "
+									+ $"{intent.Move} is adjacent to {intent.Minimum} Rebels" );
+								continue;
+							}
+							var atk = allTargets.Where( t => t.InPlay )
+								.Select( t => (t, a: AttackEvaluator.Assess( board, best.sq, t.Position,
+									fig.AttackKind, blockers, visOf( t ), fig.HasReach )) )
+								.FirstOrDefault( x => x.a.CanDeclare );
+							Commit( fp, reach, best.sq, reach.CostTo( best.sq ), atk.a );
+							if ( atk.t != null ) fp.Target = atk.t;
+							fp.Trace.Add( $"line {intent.Line + 1}: moves {reach.CostTo( best.sq )} to engage "
+								+ $"{best.n} Rebels" + (atk.t != null ? ", attacks " + atk.t.Name : "") );
+							return true;
+						}
+
+						var spots = AttackEvaluator.FiringPositions( board, reach, groupTarget.Position,
+							fig.AttackKind, canEnd, blockers, visOf( groupTarget ), fig.HasReach );
+						if ( spots.Count == 0 )
+						{
+							fp.Trace.Add( $"line {intent.Line + 1} (move {intent.Move} to attack): "
+								+ $"no square within {intent.Move} can attack {groupTarget.Name}" );
+							continue;
+						}
+						var spot = ChooseSpot( spots, map );
+						Commit( fp, reach, spot.square, spot.moveCost, spot.attack );
+						fp.Trace.Add( $"line {intent.Line + 1}: moves {spot.moveCost} of {intent.Move} "
+							+ $"and attacks {groupTarget.Name} from {spot.square}"
+							+ ContestNote( map, spot.square ) );
+						return true;
+					}
+
+					case IntentKind.PlaceAdjacentAttack:
+					{
+						// "Place" ignores movement: any empty legal square within
+						// N COUNTED spaces qualifies, terrain and cost aside. The
+						// figure must end adjacent to the target (or to the
+						// stated number of Rebels), and the base must fit.
+						var candidates = new List<(Sq sq, int d, int n)>();
+						foreach ( var sq in board.Squares )
+						{
+							if ( !canEnd( sq ) ) continue;
+							if ( !FootprintFits( board, sq, fig.Footprint ) ) continue;
+							int d = Distance.Count( board, fig.Position, sq, intent.Within );
+							if ( d < 0 || d > intent.Within ) continue;
+							int n = allTargets.Count( t => t.InPlay && board.AreAdjacent( sq, t.Position ) );
+							bool ok = intent.Minimum > 1
+								? n >= intent.Minimum
+								: board.AreAdjacent( sq, groupTarget.Position );
+							if ( ok ) candidates.Add( (sq, d, n) );
+						}
+						if ( candidates.Count == 0 )
+						{
+							fp.Trace.Add( $"line {intent.Line + 1} (place within {intent.Within}): "
+								+ "no empty space within reach is adjacent to "
+								+ (intent.Minimum > 1 ? intent.Minimum + " Rebels" : groupTarget.Name) );
+							continue;
+						}
+						var pick = candidates
+							.Select( c => (c, a: AttackEvaluator.Assess( board, c.sq, groupTarget.Position,
+								fig.AttackKind, blockers, visOf( groupTarget ), fig.HasReach )) )
+							.OrderByDescending( x => x.a.CanDeclare )
+							.ThenByDescending( x => x.c.n )
+							.ThenBy( x => x.c.d )
+							.ThenBy( x => x.c.sq.C ).ThenBy( x => x.c.sq.R )
+							.First();
+
+						// A placement is not a walk: the path is start and end,
+						// and the token jumps rather than slides.
+						fp.End = pick.c.sq;
+						fp.Moved = pick.c.sq != fp.Start;
+						fp.MovementSpent = 0;
+						fp.Path = new List<Sq> { fp.Start, pick.c.sq };
+						fp.Attack = pick.a.CanDeclare ? pick.a : null;
+						fp.Trace.Add( $"line {intent.Line + 1}: PLACED at {pick.c.sq}, {pick.c.d} spaces "
+							+ $"away, adjacent to {pick.c.n} Rebel(s)"
+							+ (pick.a.CanDeclare ? ", attacks " + groupTarget.Name : ", no attack from there") );
+						return true;
+					}
+
+					case IntentKind.MoveToward:
+					case IntentKind.Reposition:
+					{
+						var reach = Pathfinder.Compute( board, fig.Position, intent.Move, opt );
+						var goal = groupTarget.Position;
+						bool countable = Distance.Count( board, fig.Position, goal ) >= 0;
+						Func<Sq, int> progress = sq =>
+						{
+							if ( countable )
+							{
+								int d = Distance.Count( board, sq, goal );
+								if ( d >= 0 ) return d;
+							}
+							return Sq.Chebyshev( sq, goal );
+						};
+
+						// Reposition M: anything within M of the target is as
+						// good as anything else within M, so the cheaper and the
+						// objective-contesting square wins among those.
+						int within = intent.Kind == IntentKind.Reposition ? intent.Within : 0;
+						Func<Sq, int> score = sq => within > 0 ? Math.Max( progress( sq ), within ) : progress( sq );
+
+						Sq bestSq = fig.Position;
+						int bestScore = score( fig.Position );
+						int bestCost = 0;
+						int bestContest = map.Contest( fig.Position );
+						foreach ( var sq in reach.EndSquares( canEnd ) )
+						{
+							int sc = score( sq ), cost = reach.CostTo( sq ), contest = map.Contest( sq );
+							bool better = sc < bestScore
+								|| (sc == bestScore && contest > bestContest)
+								|| (sc == bestScore && contest == bestContest && cost < bestCost);
+							if ( !better ) continue;
+							bestSq = sq; bestScore = sc; bestCost = cost; bestContest = contest;
+						}
+						Commit( fp, reach, bestSq, bestCost, null );
+						fp.Trace.Add( $"line {intent.Line + 1}: moves {bestCost} of {intent.Move} "
+							+ (intent.Kind == IntentKind.Reposition
+								? $"to reposition {intent.Within}, ending {progress( bestSq )} from {groupTarget.Name}"
+								: $"toward {groupTarget.Name}, ending {progress( bestSq )} away")
+							+ ContestNote( map, bestSq ) );
+						return true;
+					}
+				}
+			}
+
+			fp.Trace.Add( "no line on the card could be carried out on the board; using the generic plan" );
+			return false;
+		}
+
+		private static bool FootprintFits( BoardModel board, Sq anchor, Footprint footprint )
+		{
+			foreach ( var cell in Pathfinder.Cells( new MoveState( anchor, Facing.NorthSouth ), footprint ) )
+				if ( !board.IsEnterable( cell ) ) return false;
+			return true;
 		}
 
 		private static void Commit( FigurePlan fp, Reach reach, Sq end, int cost,

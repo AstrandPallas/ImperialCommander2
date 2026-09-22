@@ -75,6 +75,7 @@ namespace Saga.Board.Tests
 			NarrationTests.Register();
 			RuntimeCoordinateTests.Register();
 			LargeFigurePlacementTests.Register();
+			InstructionTests.Register();
 			Dispute_Example.Register();
 			SimTests.Register();
 

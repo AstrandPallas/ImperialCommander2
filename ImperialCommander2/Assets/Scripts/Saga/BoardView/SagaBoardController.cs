@@ -573,7 +573,8 @@ namespace Saga
 		/// move a figure somewhere else, the correction path overrides it.
 		/// </remarks>
 		public ActivationPlan PlanActivation( GroupCombatState group, int round,
-			PlanOverride overrides = null, Action onPlayed = null )
+			PlanOverride overrides = null, Action onPlayed = null,
+			IEnumerable<string> instructions = null )
 		{
 			if ( !IsReady || group == null ) return null;
 
@@ -603,7 +604,11 @@ namespace Saga
 
 			var plan = ActivationPlanner.Plan( Board, snapshot.Enemies, snapshot.Rebels,
 				null, snapshot.Visibility, overrides,
-				TrackerBridge.ObjectivesFrom( Tracker.Tokens ) );
+				TrackerBridge.ObjectivesFrom( Tracker.Tokens ), instructions );
+
+			foreach ( var fp in plan.Figures )
+				Utils.LogWarning( "SagaBoardController::" + (fp.Figure?.Name ?? "figure") + ": "
+					+ string.Join( " | ", fp.Trace ) );
 
 			LastPlan = plan;
 			_lastSnapshot = snapshot;

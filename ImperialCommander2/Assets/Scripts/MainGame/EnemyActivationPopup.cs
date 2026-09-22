@@ -31,6 +31,8 @@ public class EnemyActivationPopup : MonoBehaviour
 	Saga.SagaBoardController boardController;
 	Saga.Board.ActivationPlan boardPlan;
 	string rebel1;
+	//the card id behind rebel1, so the board attacks the SAME hero the text names
+	string rebel1Id;
 	bool spaceListen;
 	Action callback;
 
@@ -107,10 +109,13 @@ public class EnemyActivationPopup : MonoBehaviour
 		{
 			Debug.Log( "***RE-USING PREVIOUS ACTIVATION DATA::rebelName***" );
 			rebel1 = cardDescriptor.rebelName;
+			//recover the id from the name so the board still targets the same hero
+			rebel1Id = DataStore.heroCards?.FirstOrDefault( h => h.name == rebel1 )?.id;
 		}
 		else
 		{
 			DeploymentCard potentialRebel = FindRebelSaga();
+			rebel1Id = potentialRebel?.id;
 			if ( potentialRebel != null )
 			{
 				rebel1 = potentialRebel.name;
@@ -402,8 +407,16 @@ public class EnemyActivationPopup : MonoBehaviour
 			.FirstOrDefault( g => g.CardId == cd.id && !g.IsDefeated );
 		if ( group == null ) return;
 
+		//the board follows the card: the SAME lines, in the same order, and
+		//the SAME rebel the text names as {R1}. Otherwise the text can say
+		//"Pounce 6 on Jyn" while the token walks 4 toward somebody else.
+		Saga.Board.PlanOverride ovrd = null;
+		if ( !string.IsNullOrEmpty( rebel1Id ) )
+			ovrd = new Saga.Board.PlanOverride { TargetId = rebel1Id, Reason = "named by the card as {R1}" };
+
 		boardPlan = boardController.PlanActivation(
-			group, DataStore.sagaSessionData.gameVars.round );
+			group, DataStore.sagaSessionData.gameVars.round, ovrd, null,
+			cardDescriptor.instructionOption?.instruction );
 
 		if ( boardPlan == null ) return;
 

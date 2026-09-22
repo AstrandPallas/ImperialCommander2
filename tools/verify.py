@@ -20,6 +20,7 @@ STEPS = [
     ("enemy card fixture", [sys.executable, "tools/gen_enemy_fixture.py"], ROOT),
     ("hero sheet fixture", [sys.executable, "tools/gen_herostats_fixture.py"], ROOT),
     ("class deck fixture", [sys.executable, "tools/gen_skills_fixture.py"], ROOT),
+    ("instruction fixture", [sys.executable, "tools/gen_instruction_fixture.py"], ROOT),
     ("card translations", [sys.executable, "tools/check_card_translations.py"], ROOT),
     # Regenerating the worked example keeps the dispute importer honest:
     # if it ever emits code that will not compile, the suite says so.
