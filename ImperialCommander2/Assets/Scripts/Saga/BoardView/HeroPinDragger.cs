@@ -50,8 +50,11 @@ namespace Saga
 		private void Awake()
 		{
 			if ( boardController == null ) boardController = FindObjectOfType<SagaBoardController>();
-			if ( boardCamera == null ) boardCamera = Camera.main;
 			if ( _camera == null ) _camera = FindObjectOfType<CameraController>();
+			// NOT Camera.main: in this scene that tag is on the UI camera, and a
+			// ray from it never meets the board. The board is looked at through
+			// whichever camera the controller currently has active.
+			if ( boardCamera == null ) boardCamera = _camera != null ? _camera.ActiveCamera : Camera.main;
 		}
 
 		// The camera pans on left-drag with the same guard this does, so without
@@ -226,9 +229,15 @@ namespace Saga
 		private bool PointerWorld( out Vector3 world )
 		{
 			world = Vector3.zero;
-			if ( boardCamera == null ) return false;
+			// The active camera changes with the view mode, so ask each time.
+			var cam = _camera != null ? _camera.ActiveCamera : boardCamera;
+			if ( cam == null ) return false;
 
-			var ray = boardCamera.ScreenPointToRay( Input.mousePosition );
+			var mouse = Input.mousePosition;
+			if ( mouse.x < 0 || mouse.x >= Screen.width || mouse.y < 0 || mouse.y >= Screen.height )
+				return false;
+
+			var ray = cam.ScreenPointToRay( mouse );
 			var plane = new Plane( Vector3.up, Vector3.zero );
 			if ( !plane.Raycast( ray, out float distance ) ) return false;
 

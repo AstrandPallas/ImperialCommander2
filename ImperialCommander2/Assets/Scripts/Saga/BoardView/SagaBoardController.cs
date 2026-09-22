@@ -233,21 +233,8 @@ namespace Saga
 			var heroes = new List<HeroCombatState>();
 			foreach ( var card in party ?? Enumerable.Empty<DeploymentCard>() )
 			{
-				if ( card == null ) continue;
-				var hero = new HeroCombatState { CardId = card.id, Name = card.name };
-
-				// The printed sheet wins where we have it. The deployment card's
-				// health is the ALLY version of that character and does not
-				// match the hero sheet, so it is only a last resort.
-				if ( sheets.Knows( card.id ) )
-					carry.Seat( hero, sheets );
-				else
-				{
-					hero.MaxHealth = card.health > 0 ? card.health : 10;
-					carry.For( card.id ).ApplyTo( hero );
-					Utils.LogWarning( "SagaBoardController::no hero sheet for " + card.name
-						+ " (" + card.id + "), tracking it on defaults" );
-				}
+				if ( card == null || card.isDummy ) continue;
+				var hero = HeroFromCard( card, sheets, carry );
 
 				var gains = carry.For( card.id );
 				if ( !gains.IsEmpty )
@@ -258,6 +245,80 @@ namespace Saga
 			}
 
 			SeedHeroes( heroes );
+		}
+
+		/// <summary>
+		/// A tracked Rebel from its card: a hero on its printed sheet, or an
+		/// ally on its deployment card.
+		/// </summary>
+		/// <remarks>
+		/// An ally card carries a full stat block, so it is the source for
+		/// allies the way herostats.json is for heroes. Allies have no
+		/// endurance -- they cannot strain -- so it is left at zero, and the
+		/// card hides the strain controls for them.
+		/// </remarks>
+		private static HeroCombatState HeroFromCard( DeploymentCard card, HeroStats sheets,
+			CampaignCarryOver carry )
+		{
+			var hero = new HeroCombatState { CardId = card.id, Name = card.name };
+			bool ally = card.characterType == CharacterType.Ally
+				|| (!string.IsNullOrEmpty( card.id ) && card.id[0] == 'A');
+
+			if ( ally )
+			{
+				hero.IsAlly = true;
+				hero.MaxHealth = card.health > 0 ? card.health : 10;
+				hero.Endurance = 0;
+				hero.Speed = card.speed > 0 ? card.speed : 4;
+			}
+			else if ( sheets.Knows( card.id ) )
+				carry.Seat( hero, sheets );
+			else
+			{
+				// The deployment card's health is the ALLY version of that
+				// character and does not match the hero sheet, so it is only a
+				// last resort.
+				hero.MaxHealth = card.health > 0 ? card.health : 10;
+				carry.For( card.id ).ApplyTo( hero );
+				Utils.LogWarning( "SagaBoardController::no hero sheet for " + card.name
+					+ " (" + card.id + "), tracking it on defaults" );
+			}
+			return hero;
+		}
+
+		/// <summary>
+		/// Track an ally that arrives after the mission has begun, seating it
+		/// beside the party.
+		/// </summary>
+		/// <remarks>
+		/// Allies that arrive mid-mission do so wherever the mission's text
+		/// says, which the app cannot read, so the party's own position is the
+		/// best guess and the players drag from there.
+		/// </remarks>
+		public HeroCombatState RegisterAlly( DeploymentCard card )
+		{
+			if ( card == null || card.isDummy ) return null;
+			var existing = _heroes.FirstOrDefault( h => h.CardId == card.id );
+			if ( existing != null ) return existing;
+
+			var ally = HeroFromCard( card, HeroStatsLoader.Stats, new CampaignCarryOver() );
+			_heroes.Add( ally );
+			if ( !IsReady ) return ally;
+
+			var anchors = _heroes.Where( h => h != ally && h.PosC != null && h.PosR != null )
+				.Select( h => new Sq( h.PosC.Value, h.PosR.Value ) ).ToList();
+			if ( anchors.Count > 0 )
+			{
+				var occupied = HeroPlacement.OccupiedSquares( _heroes, _groups );
+				var squares = DeploymentPlanner.PlaceGroup( Board, anchors[0], 1, occupied, _heroes );
+				if ( squares.Count > 0 )
+					TrackerBridge.SetHeroPosition( ally, squares[0], Tracker.Round );
+			}
+			Utils.LogWarning( "SagaBoardController::ally " + card.name + " joins the party"
+				+ (ally.PosC != null ? " at " + new Sq( ally.PosC.Value, ally.PosR.Value ) : ", unplaced")
+				+ " -- drag to where the mission puts it" );
+			RefreshTokens();
+			return ally;
 		}
 
 		/// <summary>
@@ -545,6 +606,12 @@ namespace Saga
 		/// <summary>Make the tokens on screen match what is tracked.</summary>
 		public void RefreshTokens()
 		{
+			// The panel is a view of the same state, and refreshing only on
+			// enable left it empty for the whole mission: it was built before
+			// a single hero existed and never told about them.
+			foreach ( var panel in FindObjectsOfType<TrackerPanel>() )
+				if ( panel.isActiveAndEnabled ) panel.Refresh();
+
 			if ( figureLayer == null ) return;
 			figureLayer.Clear();
 
@@ -670,6 +737,15 @@ namespace Saga
 				// right hero's card up the moment the attack lands, with the
 				// attacker named, so the damage goes in while it is remembered.
 				FigureCard?.PromptForAttacks( plan );
+				// "If a figure has Bleeding after it has resolved an action, the
+				// figure suffers 1 [damage]" -- after EACH action. The app knows
+				// how many it took; the card puts the group up to take it.
+				if ( group.Has( Condition.Bleeding ) )
+				{
+					int actions = plan.Figures.Count > 0 ? plan.Figures[0].ActionsAvailable : 2;
+					FigureCard?.Show( group, "Bleeding: suffers 1 damage after each action it took"
+						+ " (" + actions + " this activation)" );
+				}
 				onPlayed?.Invoke();
 			} );
 			return plan;

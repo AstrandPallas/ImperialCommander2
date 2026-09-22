@@ -171,6 +171,13 @@ namespace Saga.Tracking
 		public int MaxHealth = 10;
 		public int Endurance = 4;
 
+		/// <summary>
+		/// An ally rather than a hero. Allies are Rebel figures for every
+		/// purpose the board cares about -- targets, blockers, things to stand
+		/// beside -- but they have no endurance and cannot strain.
+		/// </summary>
+		public bool IsAlly;
+
 		/// <summary>Spaces per move action, from the hero sheet.</summary>
 		/// <remarks>
 		/// The app never moves a hero -- the players do -- so this is carried for

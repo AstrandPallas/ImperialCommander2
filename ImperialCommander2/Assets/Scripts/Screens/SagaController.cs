@@ -471,12 +471,17 @@ namespace Saga
 			if ( boardController == null )
 				boardController = FindObjectOfType<SagaBoardController>();
 			if ( boardController != null )
-				// The campaign's own heroes carry the gains a party has earned.
-				// Passing null here would seat everybody on their printed sheet
-				// every mission, which is the whole thing carry-over exists to
-				// prevent.
-				boardController.OnMissionReady( DataStore.sagaSessionData.MissionHeroes,
-					null, RunningCampaign.sagaCampaign?.campaignHeroes );
+			{
+				//the campaign's own heroes carry the gains a party has earned;
+				//passing null would seat everybody on the printed sheet every
+				//mission, which is what carry-over exists to prevent.
+				//the ally the players brought counts as one of the party: a
+				//Rebel figure to seat, to target and to stand beside
+				var party = new List<DeploymentCard>( DataStore.sagaSessionData.MissionHeroes ?? new List<DeploymentCard>() );
+				if ( DataStore.sagaSessionData.selectedAlly != null ) party.Add( DataStore.sagaSessionData.selectedAlly );
+				if ( DataStore.sagaSessionData.fixedAlly != null ) party.Add( DataStore.sagaSessionData.fixedAlly );
+				boardController.OnMissionReady( party, null, RunningCampaign.sagaCampaign?.campaignHeroes );
+			}
 
 			//if no tiles are initially shown, skip the placement window
 			if ( tiles.Item1.Count > 0 )

@@ -33,10 +33,15 @@ namespace Saga
 		private string _cardName;
 		private GameObject _ghost;
 
+		private CameraController _cameras;
+
 		private void Awake()
 		{
 			_board = FindObjectOfType<SagaBoardController>();
-			_camera = Camera.main;
+			_cameras = FindObjectOfType<CameraController>();
+			// Camera.main is the UI camera here; the board is seen through the
+			// controller's active camera.
+			_camera = _cameras != null ? _cameras.ActiveCamera : Camera.main;
 		}
 
 		public void OnBeginDrag( PointerEventData e )
@@ -48,7 +53,8 @@ namespace Saga
 			_cardId = card.id;
 			_cardName = card.name;
 			if ( _board == null ) _board = FindObjectOfType<SagaBoardController>();
-			if ( _camera == null ) _camera = Camera.main;
+			if ( _cameras == null ) _cameras = FindObjectOfType<CameraController>();
+			_camera = _cameras != null ? _cameras.ActiveCamera : Camera.main;
 
 			MakeGhost( e );
 		}

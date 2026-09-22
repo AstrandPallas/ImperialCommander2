@@ -63,6 +63,7 @@ namespace Saga.Tracking
 
 		/// <summary>From the hero sheet; used by the player-side range queries.</summary>
 		public int speed = 4;
+		public bool isAlly;
 	}
 
 	[Serializable]
@@ -173,6 +174,7 @@ namespace Saga.Tracking
 			defeatCount = h.DefeatCount,
 			conditions = h.Conditions.Select( c => c.ToString() ).OrderBy( s => s ).ToArray(),
 			speed = h.Speed,
+			isAlly = h.IsAlly,
 			posC = h.PosC ?? int.MinValue,
 			posR = h.PosR ?? int.MinValue,
 			posRound = h.PosRound,
@@ -258,6 +260,7 @@ namespace Saga.Tracking
 					PosRound = d.posRound,
 					PosConfidence = d.posConfidence,
 					Speed = d.speed > 0 ? d.speed : 4,
+					IsAlly = d.isAlly,
 				};
 				foreach ( var c in d.conditions ?? Array.Empty<string>() )
 					if ( Enum.TryParse( c, out Condition parsed ) ) h.Conditions.Add( parsed );

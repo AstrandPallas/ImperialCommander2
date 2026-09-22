@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -115,6 +116,7 @@ namespace Saga
 				return;
 			cardDescriptor.heroState.hasActivated[0] = activationToggle1.isOn;
 			FindObjectOfType<SagaBoardController>()?.RefreshTokens();
+			if ( activationToggle1.isOn ) PromptBleeding();
 		}
 
 		public void OnActivation2()
@@ -123,6 +125,7 @@ namespace Saga
 				return;
 			cardDescriptor.heroState.hasActivated[1] = activationToggle2.isOn;
 			FindObjectOfType<SagaBoardController>()?.RefreshTokens();
+			if ( activationToggle2.isOn ) PromptBleeding();
 		}
 
 		//popup menu for wound/defeat
@@ -153,6 +156,17 @@ namespace Saga
 			}
 		}
 
+		//"If a figure has Bleeding after it has resolved an action, the figure
+		//suffers 1 damage" -- so when a hero marks an activation spent while
+		//Bleeding, the card comes up to take it
+		void PromptBleeding()
+		{
+			var board = FindObjectOfType<SagaBoardController>();
+			var hero = board?.Heroes.FirstOrDefault( h => h.CardId == cardDescriptor.id );
+			if ( hero != null && hero.Conditions.Contains( Saga.Tracking.Condition.Bleeding ) )
+				board.FigureCard?.Show( hero, "Bleeding: suffers 1 damage after each action taken this activation" );
+		}
+
 		//right click popup card view, excluding Heroes
 		public void OnPointerClick()
 		{
@@ -163,6 +177,14 @@ namespace Saga
 			{
 				CardViewPopup cardViewPopup = GlowEngine.FindUnityObject<CardViewPopup>();
 				cardViewPopup.Show( cardDescriptor );
+			}
+			//a hero has no card view, so right-clicking its portrait opens the
+			//tracker card instead: damage, strain, conditions
+			else if ( !cardDescriptor.isDummy && cardDescriptor.id[0] == 'H' )
+			{
+				var board = FindObjectOfType<SagaBoardController>();
+				var hero = board?.Heroes.FirstOrDefault( h => h.CardId == cardDescriptor.id );
+				if ( hero != null ) board.FigureCard?.Show( hero );
 			}
 		}
 

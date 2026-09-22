@@ -39,6 +39,14 @@ namespace Saga
 			if ( !DataStore.deployedHeroes.ContainsCard( cd ) )
 				DataStore.deployedHeroes.Add( cd );
 			sound.PlaySound( FX.Computer );
+
+			//an ally arriving mid-mission joins the board beside the party;
+			//heroes are seated by OnMissionReady when the mission starts
+			if ( cd.characterType == CharacterType.Ally )
+			{
+				var board = FindObjectOfType<SagaBoardController>();
+				if ( board != null && board.IsReady ) board.RegisterAlly( cd );
+			}
 		}
 
 		/// <summary>

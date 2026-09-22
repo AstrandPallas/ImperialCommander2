@@ -452,6 +452,18 @@ namespace Saga.Board
 					continue;
 				}
 
+				// "A Stunned figure must spend one action to remove the
+				// condition", so it has one left. A line costing two is out
+				// of reach, and a move-then-attack line can only be done if
+				// the attack works from where the figure already stands.
+				bool oneAction = fp.ActionsAvailable < 2;
+				if ( oneAction && intent.Actions >= 2 )
+				{
+					fp.Trace.Add( $"line {intent.Line + 1} needs {intent.Actions} actions; "
+						+ "Stunned leaves one" );
+					continue;
+				}
+
 				switch ( intent.Kind )
 				{
 					case IntentKind.AttackOnly:
@@ -486,10 +498,11 @@ namespace Saga.Board
 								.ThenBy( x => reach.CostTo( x.sq ) )
 								.ThenBy( x => x.sq.C ).ThenBy( x => x.sq.R )
 								.FirstOrDefault();
-							if ( best.n < intent.Minimum )
+							if ( best.n < intent.Minimum || (oneAction && best.sq != fig.Position) )
 							{
 								fp.Trace.Add( $"line {intent.Line + 1} (engage): no square within "
-									+ $"{intent.Move} is adjacent to {intent.Minimum} Rebels" );
+									+ $"{intent.Move} is adjacent to {intent.Minimum} Rebels"
+									+ (oneAction ? " without moving (Stunned)" : "") );
 								continue;
 							}
 							var atk = allTargets.Where( t => t.InPlay )
@@ -505,6 +518,18 @@ namespace Saga.Board
 
 						var spots = AttackEvaluator.FiringPositions( board, reach, groupTarget.Position,
 							fig.AttackKind, canEnd, blockers, visOf( groupTarget ), fig.HasReach );
+						if ( oneAction )
+						{
+							// Moving and attacking are two actions; with one left
+							// only a shot from the current square counts.
+							spots = spots.Where( sp => sp.moveCost == 0 ).ToList();
+							if ( spots.Count == 0 )
+							{
+								fp.Trace.Add( $"line {intent.Line + 1}: Stunned, and cannot attack "
+									+ $"{groupTarget.Name} without moving" );
+								continue;
+							}
+						}
 						if ( spots.Count == 0 )
 						{
 							fp.Trace.Add( $"line {intent.Line + 1} (move {intent.Move} to attack): "

@@ -52,6 +52,13 @@ namespace Saga.Board
 		/// <summary>Zero-based position on the card.</summary>
 		public int Line;
 
+		/// <summary>
+		/// Actions the line costs: the count of leading {A} glyphs, with {Q}
+		/// counting as one. A line that moves AND attacks costs two regardless
+		/// of its glyphs, since those are two actions under the rules.
+		/// </summary>
+		public int Actions = 1;
+
 		public string Raw = "";
 
 		public bool IsActionable
@@ -127,6 +134,12 @@ namespace Saga.Board
 			}
 
 			var text = Plain( line );
+
+			// Leading glyphs say what the line costs in actions.
+			int glyphs = Regex.Matches( line.TrimStart(), @"^(\{A\}\s*)+" ).Count > 0
+				? Regex.Matches( Regex.Match( line.TrimStart(), @"^(\{A\}\s*)+" ).Value, @"\{A\}" ).Count
+				: 1;
+			intent.Actions = Math.Max( 1, glyphs );
 
 			// A condition the board cannot read decides whether the rest even
 			// applies. The players resolve those; the board does not pretend.

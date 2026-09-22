@@ -112,7 +112,10 @@ namespace Saga
 			Button( row, "+2", () => { Before( hero.Name + " damage +2" ); hero.ApplyDamage( 2 ); hp.text = HealthText( hero ); Redraw(); }, 70, new Color( 0.6f, 0.25f, 0.2f ) );
 			Button( row, "+3", () => { Before( hero.Name + " damage +3" ); hero.ApplyDamage( 3 ); hp.text = HealthText( hero ); Redraw(); }, 70, new Color( 0.6f, 0.25f, 0.2f ) );
 
+			// Allies cannot strain, so there is nothing to show them for it.
+			if ( hero.IsAlly ) strain.gameObject.SetActive( false );
 			var row2 = Row( list );
+			if ( hero.IsAlly ) row2.SetActive( false );
 			Label( row2, "strain", new Color( 0.75f, 0.85f, 1f ), 18, 90 );
 			Button( row2, "-1", () => { Before( hero.Name + " strain -1" ); hero.Strain = Math.Max( 0, hero.Strain - 1 ); strain.text = "strain " + hero.Strain + " / " + hero.Endurance; }, 70 );
 			Button( row2, "+1", () => { Before( hero.Name + " strain +1" ); hero.Strain = Math.Min( hero.Endurance, hero.Strain + 1 ); strain.text = "strain " + hero.Strain + " / " + hero.Endurance; }, 70 );

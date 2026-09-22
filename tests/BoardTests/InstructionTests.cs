@@ -231,6 +231,43 @@ namespace Saga.Board.Tests
 				Eq( "H2", plan.Figures[0].Target.Id, "and that is who is attacked" );
 			} );
 
+			Test( "a Stunned figure cannot do a two-action line", () =>
+			{
+				// "A Stunned figure must spend one action to remove the
+				// condition" -- so "{A}{A} ..." is out of reach, and "Move 3 to
+				// attack" is only possible if the attack works from where it
+				// stands. What it CAN still do is the one-action line.
+				var b = Open();
+				var fig = Melee( new Sq( 1, 4 ) );
+				fig[0].Stunned = true;
+				var lines = new[]
+				{
+					"{A}{A} Move 10 to reposition 1.",
+					"{A} Move 3 to attack {R1}.",
+					"{A} Move 3 to reposition 3.",
+				};
+				var plan = ActivationPlanner.Plan( b, fig, Hero( new Sq( 4, 4 ) ),
+					null, null, null, null, lines );
+				var fp = plan.Figures[0];
+				True( fp.Trace.Any( t => t.Contains( "needs 2 actions" ) ),
+					"the two-action line is skipped: " + string.Join( " | ", fp.Trace ) );
+				True( fp.Trace.Any( t => t.Contains( "Stunned, and cannot attack" ) ),
+					"move-to-attack is skipped, since it would need two actions" );
+				True( fp.Trace.Any( t => t.StartsWith( "line 3:" ) ), "and the plain move is what happens" );
+				False( fp.WillAttack, "with no attack" );
+			} );
+
+			Test( "a Stunned figure still attacks from where it stands", () =>
+			{
+				var b = Open();
+				var fig = Melee( new Sq( 3, 4 ) );
+				fig[0].Stunned = true;
+				var plan = ActivationPlanner.Plan( b, fig, Hero( new Sq( 4, 4 ) ),
+					null, null, null, null, new[] { "{A} Move 3 to attack {R1}." } );
+				True( plan.Figures[0].WillAttack, "adjacent already, so one action suffices" );
+				False( plan.Figures[0].Moved, "and it does not move" );
+			} );
+
 			Test( "with no lines the generic plan is unchanged", () =>
 			{
 				var b = Open();
