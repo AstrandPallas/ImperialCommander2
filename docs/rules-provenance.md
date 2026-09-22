@@ -46,6 +46,7 @@ Sources: [Rules Reference Guide](https://images-cdn.fantasyflightgames.com/filer
 | Blocking terrain stops movement, counting and line of sight | **verified** | Blocking terrain cannot be entered, counted through, or traced through | `SquareBlocksLos`, `Distance.CanCountInto` |
 | Walls sever adjacency | **verified** | Spaces separated by a wall are not adjacent | `EdgeBreaksAdjacency` |
 | A tile's **shape** is a wall — figures cannot leave the playable area | **verified** (by construction) | Tile shape comes from the art's alpha channel; 22% of 276 faces are non-rectangular | `BoardBuilder`, `tile_shapes.py` |
+| A **printed black line** along a tile edge is a wall; an edge the floor runs to is open | **verified** (art) | The rules define walls by the printed line; where two tiles butt, a line on either side seals the join. Read off the art by `wall_detect.py` as a dark plateau of the line's fixed thickness followed by a step back to the floor, in eight slices along each edge; 2,124 of 3,632 outward edges. Edges the art cannot settle are listed as `wallsUnsure` and decided in `wall_review.json` with a reason; the corpus sweep in `CorpusTests` fails if an unsettled wall ever cuts a mission off from itself | `tools/wall_detect.py`, `tools/walls.json`, `BoardBuilder` |
 | Crates block neither movement nor LOS | **verified** | — | not modelled as blockers |
 
 ## Movement
@@ -67,6 +68,7 @@ Sources: [Rules Reference Guide](https://images-cdn.fantasyflightgames.com/filer
 | Rotating the base costs 1 MP | **verified** | "a large figure cannot rotate its base unless it spends one movement point to do so" | `Pathfinder.Moves` |
 | After rotating it must occupy **at least half** the spaces it occupied before | **verified** | "the large figure must occupy at least half of the spaces it occupied before the rotation" | `Pathfinder.SharesHalf` |
 | A large figure needs **every** space of its footprint clear | **interpretation** | Follows from occupying multiple spaces; not quoted directly | `Pathfinder.CanOccupy` |
+| A large figure's base cannot **straddle** a wall, a closed door, or (unless Massive) a blocking or impassable edge | **interpretation** | Follows from the base being one piece on the table: nothing can be placed so that a printed wall runs through it. The Massive exception is quoted: "They can also move through and end movement on blocked or impassable terrain edges" (Consolidated Rules p.41). Found on CORE1, where a 2x2 seated with a wall through its base could never take a step | `Pathfinder.BaseIntact`, `HeroPlacement.Fits` |
 | Footprint cost is the **most expensive** space it lands on | **interpretation** | Not stated in the rules. Chosen because it is the conservative reading | `Pathfinder.EnterCost`, `BoardModel.LargeFigurePaysWorstSpace` toggle |
 
 ## Line of sight

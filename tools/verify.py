@@ -15,6 +15,9 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STEPS = [
     ("terrain library", [sys.executable, "tools/author_terrain.py"], ROOT),
+    # Every shipped mission and every face, for the sweep that proves no
+    # unsettled wall cuts a mission off from itself.
+    ("corpus fixture", [sys.executable, "tools/gen_corpus_fixture.py"], ROOT),
     ("mission fixture CORE1", [sys.executable, "tools/gen_mission_fixture.py", "CORE1"], ROOT),
     ("mission fixture TWIN1", [sys.executable, "tools/gen_mission_fixture.py", "TWIN1"], ROOT),
     ("enemy card fixture", [sys.executable, "tools/gen_enemy_fixture.py"], ROOT),

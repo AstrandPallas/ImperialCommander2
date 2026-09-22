@@ -19,6 +19,24 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -32,6 +50,24 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -44,6 +80,40 @@
 			],
 			"source": "auto-shape+no-inked-edge",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-inked-edge"
 		},
 		{
@@ -56,6 +126,40 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -69,6 +173,36 @@
 			],
 			"source": "auto-shape+no-inked-edge",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					0,
+					0,
+					"N"
+				],
+				[
+					0,
+					1,
+					"W"
+				]
+			],
+			"edges": [
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"triage": "no-inked-edge"
 		},
 		{
@@ -82,6 +216,40 @@
 			],
 			"source": "auto-shape+no-inked-edge",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"triage": "no-inked-edge"
 		},
 		{
@@ -101,6 +269,18 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					0,
+					7,
+					"S"
+				],
+				[
+					5,
+					7,
+					"E"
+				]
+			],
 			"edges": [
 				{
 					"sq": [
@@ -213,6 +393,158 @@
 					],
 					"dir": "W",
 					"type": "impassable"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						6
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						6
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
 				}
 			],
 			"why": "A hangar. DASHED red traces the stepped boundary between the central corridor and the equipment alcoves down both flanks -- 14 impassable edges, all measured at coverage 0.46-0.61 with 4-6 gaps. Four SOLID edges at the bottom corners enclose blocking squares (0,7) and (5,7), their remaining sides being the tile boundary. Authored from edge_report; the image was used only to confirm the ink is a marking rather than decoration.",
@@ -332,6 +664,182 @@
 					],
 					"dir": "N",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						6
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						6
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						7
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						7
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "A cantina: booths round the walls and a horseshoe bar down the middle. The bar is a solid blue 2x3 at coverage 0.97-1.00 with 0-1 gaps and boundary_perimeter 0, so difficult -- you clamber over it. Twelve further edges are solid red and are walls: the back-room frame at the top, the booth dividers at rows 4 and 6, and (3,2)W and (3,3)W, which run down the INSIDE of the difficult region and are the bar's own solid back. An edge marking inside a terrain region is not a contradiction -- the squares are difficult to stand on and the counter still cannot be crossed.",
@@ -351,6 +859,88 @@
 			],
 			"source": "auto-shape+no-inked-edge",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-inked-edge"
 		},
 		{
@@ -366,6 +956,88 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "A 2x2 spill of crates, tools and scrap across the middle of a storeroom, ringed in solid blue on all six boundary edges at 0.91-1.00 coverage with 0-2 gaps. boundary_perimeter 0, so the enclosure is complete and which side is marked is not in question. Voids at (3,2), (2,3) and (3,3).",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -382,6 +1054,71 @@
 			],
 			"source": "auto-shape+ink-too-shredded",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					2,
+					0,
+					"N"
+				]
+			],
+			"edges": [
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "ink-too-shredded"
 		},
 		{
@@ -396,6 +1133,72 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "One square of solid machinery in the bottom-left corner, boxed by (0,2)N at 0.91 and (1,2)W at 0.88, both 1 gap, closing against the west and south tile edges. The third reading on this tile, (1,2)N in blue, is discarded at 13 gaps -- far outside the 3-5 a dashed marking measures. Void at (2,0).",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -415,6 +1218,152 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "A circular holotable on a raised plinth, ringed by all eight edges of a red-and-white DASHED box at 0.51-0.56 coverage with 4-6 gaps, boundary_perimeter 0. Dashed means impassable, so the table stays adjacent and line of sight crosses it -- which matters here, because calling it blocking would cut every sight line across the middle of the room. The tile also reads 5.55% blue, all of it the table's own glow: those readings run 5 to 15 gaps and none of them is a marking. (4,2)W is the clearest case, since (4,2) is void -- that edge is the tile's own outline lit from beneath.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -434,6 +1383,152 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "NO terrain. An L-shaped dune tile; the 0.17% red is scattered rock and debris detail, none of it on a grid edge. 16 void squares from alpha.",
 			"confidence": "high",
 			"triage": "no-inked-edge"
@@ -455,6 +1550,152 @@
 			],
 			"source": "auto-shape+no-inked-edge",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						6
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						6
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						7
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-inked-edge"
 		},
 		{
@@ -474,6 +1715,152 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						6
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						6
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						7
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						7
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "Two solid red rock piles. The detector found only the lower one at (0,6),(0,7); the upper pile at (1,2),(1,3) closes against the VOID column at (2,2)-(2,5) rather than into a loop, so no region forms. Third confirmed instance of that failure mode, after Core_9A and Core_22B.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -490,6 +1877,104 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "An engine assembly filling the middle column of the top two rows, boxed by (2,0)W, (3,0)W, (2,1)W, (3,1)W and (2,2)N at 0.92-1.00 coverage with 0-1 gaps, closing against the north tile edge. The detector splits the two squares into separate regions because of a dashed red reading at (2,1)N, but that is the machine's own banding: a dashed impassable edge BETWEEN two blocking squares would be meaningless, since neither can be entered from either side. The mixed blue at (2,2)N is the lit floor panel below the box, not a second marking.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -506,6 +1991,104 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "Solid red over the rock pile forming a 2-square column at (2,0),(2,1). The detector reports them as two separate 1-square regions, which is the same answer.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -523,6 +2106,72 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "A single blocking square at (1,2), enclosed by four solid red edges at 0.98-0.99 with 1 gap each and boundary_perimeter 0. The two blue readings at 9 and 17 gaps are art, not markings. The shredded-ink rule does not auto-clear the tile despite those two, because it only clears when no edge on the tile looks like a line.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -540,6 +2189,72 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -553,6 +2268,16 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -566,6 +2291,24 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -578,6 +2321,40 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -590,6 +2367,40 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		}
 	]

@@ -78,6 +78,7 @@ namespace Saga.Board.Tests
 			InstructionTests.Register();
 			Dispute_Example.Register();
 			SimTests.Register();
+			CorpusTests.Register();
 
 			return Run( filter );
 		}

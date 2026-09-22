@@ -11,11 +11,11 @@ namespace Saga.Board.Tests
 	/// </summary>
 	public static class LargeFigurePlacementTests
 	{
-		private static BoardModel Core1()
+		private static BoardModel Core1( bool doorsOpen = false )
 			=> BoardBuilder.Build(
 				Core1Placements.Tiles, Core1Placements.Lookup,
 				Core1Placements.Doors.Select( d => new DoorPlacement
-				{ X = d.X, Y = d.Y, Rotation = d.Rotation, Open = false } ).ToArray(),
+				{ X = d.X, Y = d.Y, Rotation = d.Rotation, Open = doorsOpen } ).ToArray(),
 				Core1Placements.Library() ).Board;
 
 		public static void Register()
@@ -43,7 +43,9 @@ namespace Saga.Board.Tests
 
 			Test( "and can then actually move", () =>
 			{
-				var b = Core1();
+				// Its room is walled and closed off by a door; once the door is
+				// open it has somewhere to go.
+				var b = Core1( doorsOpen: true );
 				var anchor = DeploymentPlanner.PlaceGroup( b, new Sq( 97, 108 ), 1,
 					null, null, Footprint.Large2x2 )[0];
 
@@ -61,6 +63,23 @@ namespace Saga.Board.Tests
 					"it advances rather than holding: " + string.Join( " | ", plan.Figures[0].Trace ) );
 				False( plan.Figures[0].Trace.Any( t => t.Contains( "does not fit" ) ),
 					"and its base fits at the start" );
+			} );
+
+			Test( "its seat never has a wall running through its base", () =>
+			{
+				// With the printed walls in, the old seat (96,107) put a wall
+				// between two of the Nexu's four squares. Every square existed,
+				// so it looked fine and could never take a step.
+				var b = Core1();
+				False( HeroPlacement.Fits( b, new Sq( 96, 107 ), Footprint.Large2x2 ),
+					"a base straddling a wall does not fit" );
+				var anchor = DeploymentPlanner.PlaceGroup( b, new Sq( 97, 108 ), 1,
+					null, null, Footprint.Large2x2 )[0];
+				True( Pathfinder.BaseIntact( b, HeroPlacement.Cells( anchor, Footprint.Large2x2 ) ),
+					"the seat it gets instead is whole: " + anchor );
+				var reach = Pathfinder.Compute( b, anchor, 6,
+					new MoveOptions { Footprint = Footprint.Large2x2, Mobile = true } );
+				True( reach.Cost.Count > 1, "and it can move from there" );
 			} );
 
 			Test( "a large figure's whole base counts as occupied", () =>

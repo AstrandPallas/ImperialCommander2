@@ -28,6 +28,14 @@ import terrain_detect as td  # noqa: E402
 import tile_shapes as ts  # noqa: E402
 
 OUT_DIR = os.path.join(td.ASSETS, "Resources", "TerrainData")
+WALLS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "walls.json")
+
+
+def load_walls():
+    """Printed wall lines per face, from tools/walls.json (see wall_detect.py)."""
+    if not os.path.exists(WALLS):
+        return {}
+    return json.load(open(WALLS, encoding="utf-8")).get("faces", {})
 
 # glyph -> cells, plus the reasoning. "none" means reviewed and found to have
 # no printed terrain at all, which is a real result and not the same as
@@ -1426,6 +1434,7 @@ def triage(face, dims):
 
 def build(expansion="Core"):
     dims = td.load_dimensions()
+    walls = load_walls()
     tiles = []
     faces = sorted(
         f[:-4] for f in os.listdir(os.path.join(td.TILES, expansion)) if f.endswith(".png")
@@ -1490,6 +1499,16 @@ def build(expansion="Core"):
                            ("wallEdges", "wall")):
             for (c, r, d) in (v or {}).get(key, []):
                 edges.append({"sq": [c, r], "dir": d, "type": etype})
+        # The printed border. Without it every tile blends into its
+        # neighbours and a closed door can be walked around.
+        wf = walls.get(face)
+        if wf:
+            seen = {(e["sq"][0], e["sq"][1], e["dir"]) for e in edges}
+            for (c, r, d) in wf.get("walls", []):
+                if (c, r, d) not in seen:
+                    edges.append({"sq": [c, r], "dir": d, "type": "wall"})
+            if wf.get("unsure"):
+                entry["wallsUnsure"] = [[c, r, d] for (c, r, d) in wf["unsure"]]
         if edges:
             entry["edges"] = edges
         if v and v.get("why"):

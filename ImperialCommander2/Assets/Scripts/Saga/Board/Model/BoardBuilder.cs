@@ -103,6 +103,8 @@ namespace Saga.Board
 			public int LocalC;
 			/// <summary>Row in the tile's unrotated grid.</summary>
 			public int LocalR;
+			/// <summary>The placement's rotation, to map a board direction back to the face.</summary>
+			public int Rotation;
 
 			public string Face => Expansion + "_" + TileId + Side;
 			public override string ToString() => Face + " (" + LocalC + "," + LocalR + ")";
@@ -170,6 +172,7 @@ namespace Saga.Board
 						Side = t.Side,
 						LocalC = local.c,
 						LocalR = local.r,
+						Rotation = ((t.Rotation % 360) + 360) % 360,
 					};
 					index++;
 				}

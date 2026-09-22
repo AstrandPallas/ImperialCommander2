@@ -81,6 +81,20 @@ namespace Saga.Board.Tests
 					"and the whole map is reachable from any square" );
 			} );
 
+			Test( "WITH the authored walls, CORE1's closed doors confine the Rebels", () =>
+			{
+				var closed = BuildCore1( doorsOpen: false, withShapes: true );
+				var open = BuildCore1( doorsOpen: true, withShapes: true );
+				var start = Core1Placements.Highlights[0];
+				var from = new Sq( start.C, start.R );
+
+				int shut = Pathfinder.Compute( closed.Board, from, 500 ).Cost.Count;
+				int opened = Pathfinder.Compute( open.Board, from, 500 ).Cost.Count;
+				True( shut < opened, $"closing the doors shrinks the Rebels' reach ({shut} < {opened})" );
+				True( opened - shut >= 3 * Core1Placements.Doors.Length,
+					$"each door hides at least a few squares ({opened - shut} behind {Core1Placements.Doors.Length} doors)" );
+			} );
+
 			Test( "a door does sever the map once its surrounding walls exist", () =>
 			{
 				var f = Fixture.Parse( @"

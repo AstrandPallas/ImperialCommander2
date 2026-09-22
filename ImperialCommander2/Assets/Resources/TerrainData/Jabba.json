@@ -53,6 +53,86 @@
 					],
 					"dir": "N",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "Four solid red edges at 0.98-1.00 with 0-1 gaps, forming two L-shaped corners rather than a closed box, which is why the tile reports no region.",
@@ -72,6 +152,18 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					2,
+					0,
+					"N"
+				],
+				[
+					2,
+					0,
+					"E"
+				]
+			],
 			"edges": [
 				{
 					"sq": [
@@ -104,6 +196,70 @@
 					],
 					"dir": "N",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
 				}
 			],
 			"why": "The reverse of 10A, and it carries both styles: two solid at 0.92-0.99 with 1-2 gaps (walls) and two dashed at 0.49 with 4-5 (a step).",
@@ -121,6 +277,72 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "Solid blue box, sides at (2,0)W and (4,0)W, floor at (2,1)N and (3,1)N, lid is the tile edge. Encloses two squares of piled junk. Coverage 0.93-1.00, gaps 0-2.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -136,6 +358,88 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "Palace storeroom with TWO separate solid blue boxes, each round a heap of containers. The left one is closed by (0,1)N, (1,1)N and (2,1)W against the tile's west and south edges; the right one by (3,0)W, (3,1)W, (4,0)W and (4,1)W against the north and south edges. Coverage 0.86-0.98 throughout.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -151,6 +455,40 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "A single square of standing water in the jungle floor, boxed by (1,0)W, (2,0)W and (1,1)N with the tile edge closing the top. The enclosed component is 1 square against a 7-square complement, so which side is marked is not in question here.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -174,6 +512,38 @@
 					],
 					"dir": "W",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "S",
+					"type": "wall"
 				}
 			],
 			"why": "A single solid red edge at 0.91 with 1 gap. One wall, nothing else on the tile.",
@@ -242,6 +612,40 @@
 			],
 			"source": "auto-shape+no-inked-edge",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-inked-edge"
 		},
 		{
@@ -254,6 +658,40 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -266,6 +704,40 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -278,6 +750,40 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -290,6 +796,40 @@
 			],
 			"source": "auto-shape+no-inked-edge",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-inked-edge"
 		},
 		{
@@ -302,6 +842,40 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -319,6 +893,103 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					3,
+					0,
+					"N"
+				]
+			],
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "Palace floor with scattered obstacles. Four blue regions and two red ones, every edge solid at 0.86-1.00 and not one dashed reading on the whole tile. (3,2) and (2,3) come back at boundary_perimeter 0, the others close against tile edges.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -394,6 +1065,94 @@
 					],
 					"dir": "N",
 					"type": "impassable"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "A palace corridor with a raised dais in the lower middle and stairs on either side. All seven edges are red DASHED at 0.45-0.55 coverage with 4-5 gaps: five trace the dais lip, two the stair edges. Impassable, so figures cannot step up but can see and shoot over -- which is the point of a dais.",
@@ -479,6 +1238,94 @@
 					],
 					"dir": "N",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
 				}
 			],
 			"why": "Four solid edges at 0.99-1.00 with 0-1 gaps and four dashed at 0.57-0.59 with 5 gaps. Two tight clusters, nothing in between, so the split is the print rather than a threshold: walls where the palace has masonry, step edges where it has a level change. Nothing encloses, so all eight are edges rather than marked spaces.",
@@ -500,6 +1347,28 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					1,
+					0,
+					"N"
+				],
+				[
+					1,
+					0,
+					"W"
+				],
+				[
+					4,
+					0,
+					"N"
+				],
+				[
+					4,
+					0,
+					"E"
+				]
+			],
 			"edges": [
 				{
 					"sq": [
@@ -556,6 +1425,118 @@
 					],
 					"dir": "N",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "Palace hall with a mounted gun and a staircase at each side. The gun sits in a closed solid red box -- (2,4)N, (2,4)W, (3,4)N, (4,4)W, (2,5)N, (3,5)N, every one at 0.91-1.00 coverage with 0-1 gaps and boundary_perimeter 0 -- so those two squares are blocking. Everything else is an edge marking and splits by gap count exactly as on 5B: (4,3)N solid at 0.91 is the landing wall, while the six edges round the two staircases sit at 0.49-0.55 with 4-5 gaps and are impassable. Only the gun box is listed as squares; the box's own six edges are not repeated as blockingEdges, since the region boundary already carries them.",
@@ -658,6 +1639,150 @@
 					],
 					"dir": "N",
 					"type": "impassable"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						6
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						6
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						6
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						6
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						6
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "A jungle ravine. All ten red edges are dashed -- coverage 0.55-0.64 with 3-5 gaps, tightly clustered -- and they trace the lip of the drop rather than ringing any square, which is why the tile reports no small region. Dashed is IMPASSABLE, so the two sides of the ravine stay adjacent and line of sight crosses it; a figure just cannot step over the edge. Calling this blocking instead would silently cut sight lines across half the tile.",
@@ -680,6 +1805,151 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					4,
+					5,
+					"E"
+				]
+			],
+			"edges": [
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						5
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						6
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						6
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						6
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						6
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						6
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "Three blue patches and one red rock, all solid at 0.86-1.00. (2,3) and (3,2) are fully enclosed; the rest close against the tile edge. The single dashed reading at (3,3)W is the rock's own shadow.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -698,6 +1968,136 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "Two red DASHED bands across the tile at 4-5 gaps, three squares each, enclosing at boundary_perimeter 0 and 3: impassable, so figures cannot cross them but can shoot over. One blue-boxed square at (3,2) and a solid red box at (0,0). Voids at (3,0), (4,0), (5,0).",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -764,6 +2164,110 @@
 					],
 					"dir": "W",
 					"type": "impassable"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "The Sarlacc pit, and the only tile in the corpus where BOTH inks enclose exactly the same six squares: a solid blue boundary at 0 gaps and a red DASHED one at 5, running side by side round the depression. That is not a contradiction, it is the pit described precisely -- the sand inside is difficult, and the rim cannot be crossed. A figure already in there wades; a figure outside cannot walk in, but can shoot across. Machinery at (1,1) is solid-boxed. Voids at (0,0), (1,0), (2,0).",
@@ -783,6 +2287,18 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"wallsUnsure": [
+				[
+					5,
+					0,
+					"N"
+				],
+				[
+					5,
+					3,
+					"E"
+				]
+			],
 			"edges": [
 				{
 					"sq": [
@@ -815,6 +2331,70 @@
 					],
 					"dir": "N",
 					"type": "impassable"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
 				}
 			],
 			"why": "Swamp with a wrecked structure lying across the middle. Two blue-boxed marsh patches at 0.86-1.00, above and below the wreck, and the wreck's own two long edges printed red dashed at 0.42-0.70 with 4-5 gaps. Note (2,2)N and (3,2)N carry both: they are the lower marsh region's northern boundary AND the wreck's southern lip, the same construction as Empire_4A.",
@@ -882,6 +2462,102 @@
 					],
 					"dir": "N",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						5,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
 				}
 			],
 			"why": "The rancor pit. It carries solid and dashed red on what looks like one continuous line. The creature alcove at the top is a closed solid box -- (2,0)W, (4,0)W, (2,1)N, (3,1)N against the tile edge -- so those two squares are blocking. Below it a ledge runs across the tile, stepping down to row 3 where the portcullis stands. The detector splits that ledge cleanly: 0.91-1.00 coverage with 0-1 gaps at (0,2)N, (5,2)N, (2,3)N and (3,3)N, against 0.48-0.53 with 4-5 gaps at (1,2)N and (4,2)N. Two tight clusters with nothing between them, so this is a real distinction and not a threshold artefact: wall where the art shows masonry, railing where it shows an opening. The line deliberately does NOT close, because the gate at columns 2-3 is the way through, which is also why region detection finds only the alcove.",
@@ -918,6 +2594,86 @@
 					],
 					"dir": "W",
 					"type": "impassable"
+				},
+				{
+					"sq": [
+						0,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
 				}
 			],
 			"why": "Swamp floor. The blue outlines the wet ground down the west side -- visibly darker and greener than the dry brown to the east -- plus a separate reed patch at (1,1), all at 0.86-1.00. (1,3) is NOT included: (1,3)N and (1,3)W cut it off from the marsh, and the art shows drier, rockier ground there, so the marking goes round it. A rock at (3,2) is red-boxed, and the dashed vertical at the top is the same feature as on the 6B face.",
@@ -970,6 +2726,86 @@
 					],
 					"dir": "N",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						4
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						4
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "Desert rubble outside the palace. Two rock piles in solid red boxes, two patches of loose scree in solid blue boxes, all at 0.86-1.00. A red dashed vertical at (2,0)W and (2,1)W runs down from the top edge: impassable. (1,2)N reads dashed while (0,2)N beside it reads solid, but they are one continuous line with rubble lying across part of it -- the Lothal_3B case -- so both are taken as solid. A wall that stopped sight for half its length would be the odd reading here, not the consistent one.",
@@ -989,6 +2825,104 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						1
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				}
+			],
 			"why": "One square boxed in solid red at 0.84-1.00, boundary_perimeter 0.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -1006,6 +2940,104 @@
 			],
 			"source": "auto-shape+no-ink",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						2
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						4,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"triage": "no-ink"
 		},
 		{
@@ -1021,6 +3053,72 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "Misty forest floor with two haze patches, both ringed in solid blue at coverage 0.92-1.00. This tile is why the region fill now honours void squares. Both patches close on one side against a void corner -- (0,0) for the left patch, (3,3) for the right -- so against the bare bounding box neither formed a loop and the fill leaked out and swallowed the whole top half. With voids treated as off-board the components come back as exactly {(0,1),(1,1)} and {(2,2),(3,2),(2,3)}, which is what the art shows.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -1038,6 +3136,72 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						2
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "Solid BLUE box round the raised machinery platform in the top-left. The detector reports a 4-square region including (0,0), but (0,0) is VOID from the alpha channel, so the real answer is THREE squares. Same trap as Core_7A: apply shape before terrain, or terrain lands on squares that are not part of the tile. (3,3) is also void.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -1055,6 +3219,72 @@
 			],
 			"source": "auto-shape+reviewed",
 			"verified": false,
+			"edges": [
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
+				}
+			],
 			"why": "A misty pool in a forest clearing, ringed by solid blue on all eight boundary edges -- boundary_perimeter 0, the cleanest possible enclosure. The strip at (1,0),(2,0) is not a second marking: it is the leftover floor between the box and the tile edge, hemmed in by the voids at (0,0) and (3,0), and it carries ink on only 2 of its boundary edges against the pool's 8.",
 			"confidence": "high",
 			"triage": "needs-review"
@@ -1088,6 +3318,70 @@
 					],
 					"dir": "W",
 					"type": "blocking"
+				},
+				{
+					"sq": [
+						1,
+						0
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						2,
+						0
+					],
+					"dir": "E",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						1
+					],
+					"dir": "N",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						0,
+						3
+					],
+					"dir": "W",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "S",
+					"type": "wall"
+				},
+				{
+					"sq": [
+						3,
+						3
+					],
+					"dir": "E",
+					"type": "wall"
 				}
 			],
 			"why": "A single solid red vertical at 0.99-1.00 with 0-1 gaps, spanning rows 1-2 on the west edge of column 2. Encloses nothing: a wall.",

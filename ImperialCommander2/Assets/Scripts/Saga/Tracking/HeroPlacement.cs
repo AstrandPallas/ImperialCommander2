@@ -148,12 +148,14 @@ namespace Saga.Tracking
 		{
 			if ( board == null ) return false;
 			var taken = occupied as ICollection<Sq> ?? occupied?.ToList();
-			foreach ( var cell in Cells( anchor, footprint ) )
+			var cells = Cells( anchor, footprint ).ToList();
+			foreach ( var cell in cells )
 			{
 				if ( !board.IsEnterable( cell ) ) return false;
 				if ( taken != null && taken.Contains( cell ) ) return false;
 			}
-			return true;
+			// A base seated across a printed wall can never take a step.
+			return Pathfinder.BaseIntact( board, cells );
 		}
 
 		/// <summary>

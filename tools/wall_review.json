@@ -1,0 +1,16 @@
+{
+ "_comment": [
+  "Hand decisions that override wall_detect.py where the art cannot settle an edge.",
+  "Each entry names the face, the edges to force, and the reason. The conservative",
+  "direction is wall: a withheld route makes the AI go the long way, an invented",
+  "one makes it walk through something the players can see is solid."
+ ],
+ "Core_16B": {
+  "wall": [[1, 1, "S"]],
+  "why": "Dark floor along the south row gives a black line no luminance contrast, and the tile label sits in this square, so the detector read half coverage. Kept as wall. Only OTHER30 butts another tile here (Core_36B's east end); if the printed tile shows an opening, correct it at the table."
+ },
+ "Core_36B": {
+  "wall": [[1, 0, "E"]],
+  "why": "Same join as Core_16B (1,1)S in OTHER30: dark floor, tile label in the square, half coverage. The A side of this cardboard has a confident wall on the same end. Kept as wall."
+ }
+}

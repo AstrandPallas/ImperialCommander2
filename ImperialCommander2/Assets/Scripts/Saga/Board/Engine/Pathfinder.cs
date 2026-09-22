@@ -284,6 +284,35 @@ namespace Saga.Board
 					return false;
 				}
 			}
+			return BaseIntact( b, Cells( s, opt.Footprint ), opt.Massive );
+		}
+
+		/// <summary>
+		/// A base larger than one square cannot straddle a wall or a closed
+		/// door, and unless it is Massive it cannot straddle a blocking or
+		/// impassable edge either.
+		/// </summary>
+		/// <remarks>
+		/// Checking each square of the base on its own let a 2x2 be seated
+		/// with a printed wall running through the middle of it, after which
+		/// no step was legal and the figure simply never moved. Massive is
+		/// the one exception: it "can also move through and end movement on
+		/// blocked or impassable terrain edges" (Consolidated Rules p.41).
+		/// </remarks>
+		public static bool BaseIntact( BoardModel b, IEnumerable<Sq> cells, bool massive = false )
+		{
+			var set = cells as ICollection<Sq> ?? new List<Sq>( cells );
+			if ( set.Count <= 1 ) return true;
+			foreach ( var c in set )
+			{
+				foreach ( var n in new[] { c.East, c.South } )
+				{
+					if ( !set.Contains( n ) ) continue;
+					var e = b.Edge( c, n );
+					if ( massive && (e == EdgeType.Blocking || e == EdgeType.Impassable) ) continue;
+					if ( BoardModel.EdgeBlocksMovement( e ) ) return false;
+				}
+			}
 			return true;
 		}
 
