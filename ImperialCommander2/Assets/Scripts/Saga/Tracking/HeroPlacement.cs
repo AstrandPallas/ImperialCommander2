@@ -111,13 +111,49 @@ namespace Saga.Tracking
 			}
 			foreach ( var g in groups ?? Enumerable.Empty<GroupCombatState>() )
 			{
+				// A large figure holds every square of its base, not just the
+				// anchor. Recording only the anchor let the rest of a 2x2 base
+				// read as free, so other figures were seated inside it.
+				var footprint = (g.Profile ?? UnitProfile.Default).Footprint;
 				foreach ( var slot in g.Figures )
 				{
 					if ( !slot.Alive || !slot.HasPosition ) continue;
-					set.Add( new Sq( slot.PosC.Value, slot.PosR.Value ) );
+					foreach ( var cell in Cells( new Sq( slot.PosC.Value, slot.PosR.Value ), footprint ) )
+						set.Add( cell );
 				}
 			}
 			return set;
+		}
+
+		/// <summary>The squares a figure of this size covers when anchored here.</summary>
+		/// <remarks>
+		/// The tracker does not yet record which way a long base is turned, so
+		/// a 1x2 or 2x3 is taken as standing north-south. A 2x2 -- the Nexu,
+		/// and most of what actually deploys -- is the same either way.
+		/// </remarks>
+		public static IEnumerable<Sq> Cells( Sq anchor, Footprint footprint )
+			=> Pathfinder.Cells( new MoveState( anchor, Facing.NorthSouth ), footprint );
+
+		/// <summary>
+		/// Will a figure of this size stand here? Every square of the base
+		/// must exist, be enterable, and be free.
+		/// </summary>
+		/// <remarks>
+		/// This is what was missing when the Nexu was seated: its anchor square
+		/// was fine and the other three squares of its base ran off the tile,
+		/// so the planner could never fit it anywhere and it held all mission.
+		/// </remarks>
+		public static bool Fits( BoardModel board, Sq anchor, Footprint footprint,
+			IEnumerable<Sq> occupied = null )
+		{
+			if ( board == null ) return false;
+			var taken = occupied as ICollection<Sq> ?? occupied?.ToList();
+			foreach ( var cell in Cells( anchor, footprint ) )
+			{
+				if ( !board.IsEnterable( cell ) ) return false;
+				if ( taken != null && taken.Contains( cell ) ) return false;
+			}
+			return true;
 		}
 
 		/// <summary>
@@ -129,10 +165,28 @@ namespace Saga.Tracking
 		/// Returns null only when nothing within reach is free.
 		/// </remarks>
 		public static Sq? Snap( BoardModel board, Sq wanted,
-			IEnumerable<Sq> occupied = null, int searchRadius = 3 )
+			IEnumerable<Sq> occupied = null, int searchRadius = 3,
+			Footprint footprint = Footprint.Small1x1 )
 		{
 			if ( board == null ) return null;
 			var taken = occupied as ICollection<Sq> ?? occupied?.ToList();
+
+			// A large figure snaps to the nearest anchor its whole base fits
+			// on, which is what a player dragging a Nexu means by "here".
+			if ( footprint != Footprint.Small1x1 )
+			{
+				Sq? best = null;
+				int bestD = int.MaxValue;
+				for ( int dc = -searchRadius; dc <= searchRadius; dc++ )
+					for ( int dr = -searchRadius; dr <= searchRadius; dr++ )
+					{
+						var anchor = wanted.Step( dc, dr );
+						if ( !Fits( board, anchor, footprint, taken ) ) continue;
+						int d = Math.Max( Math.Abs( dc ), Math.Abs( dr ) ) * 10 + Math.Abs( dc ) + Math.Abs( dr );
+						if ( d < bestD ) { bestD = d; best = anchor; }
+					}
+				return best;
+			}
 
 			if ( CanPlace( board, wanted, taken ) == PlacementResult.Ok ) return wanted;
 

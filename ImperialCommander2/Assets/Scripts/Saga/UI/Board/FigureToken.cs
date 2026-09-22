@@ -28,12 +28,22 @@ namespace Saga
 		public string FigureId { get; private set; }
 		public Sq Square { get; private set; }
 
+		/// <summary>How many squares the base covers; the token is drawn to match.</summary>
+		public Footprint Footprint { get; private set; } = Footprint.Small1x1;
+
 		private Sequence _move;
 
 		public void Init( string figureId, Sq square, Color colour, string caption,
-			Sprite face = null )
+			Sprite face = null, Footprint footprint = Footprint.Small1x1 )
 		{
 			FigureId = figureId;
+			Footprint = footprint;
+
+			// A 2x2 base drawn as a 1x1 disc hides exactly the thing that
+			// matters about it -- which squares it is standing on. The token
+			// is scaled to the base and centred on it.
+			var (w, h) = SagaBoardBridge.FootprintSpan( footprint );
+			transform.localScale = Vector3.one * Mathf.Min( w, h );
 			if ( body != null ) body.color = colour;
 			if ( ring != null ) ring.color = colour;
 
@@ -74,8 +84,14 @@ namespace Saga
 		{
 			Stop();
 			Square = square;
-			var w = SagaBoardBridge.SquareToWorld( square, hover );
-			transform.position = new Vector3( w.x, w.y, w.z );
+			transform.position = Centre( square );
+		}
+
+		/// <summary>Where this token sits for a given anchor square.</summary>
+		private Vector3 Centre( Sq anchor )
+		{
+			var w = SagaBoardBridge.FootprintCenter( anchor, Footprint, hover );
+			return new Vector3( w.x, w.y, w.z );
 		}
 
 		/// <summary>
@@ -112,9 +128,8 @@ namespace Saga
 				}
 
 				int cost = board != null ? board.EnterCost( step ) : 1;
-				var w = SagaBoardBridge.SquareToWorld( step, hover );
 				_move.Append( transform
-					.DOMove( new Vector3( w.x, w.y, w.z ), secondsPerSquare * cost )
+					.DOMove( Centre( step ), secondsPerSquare * cost )
 					.SetEase( Ease.InOutSine ) );
 				_move.AppendCallback( () => Square = step );
 			}

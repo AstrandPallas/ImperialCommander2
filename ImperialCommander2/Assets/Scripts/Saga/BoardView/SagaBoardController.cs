@@ -346,7 +346,7 @@ namespace Saga
 
 			int figures = group.MaxFigures;
 			var squares = DeploymentPlanner.PlaceGroup( Board, chosen.Square, figures,
-				occupied, _heroes );
+				occupied, _heroes, group.Profile.Footprint );
 
 			for ( int i = 0; i < squares.Count && i < figures; i++ )
 				TrackerBridge.SetFigurePosition( group, i, squares[i] );
@@ -521,7 +521,7 @@ namespace Saga
 						// The number still matters for a group: it is how a
 						// token maps onto one of three identical minis.
 						group.MaxFigures > 1 ? (slot.Index + 1).ToString() : "",
-						face );
+						face, group.Profile.Footprint );
 				}
 			}
 		}

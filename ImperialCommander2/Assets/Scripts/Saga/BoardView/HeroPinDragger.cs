@@ -102,17 +102,20 @@ namespace Saga
 			// with a token that has to go where the mini actually is.
 			foreach ( var group in boardController.Groups )
 			{
+				var footprint = group.Profile.Footprint;
 				foreach ( var slot in group.Figures )
 				{
 					if ( !slot.Alive || !slot.HasPosition ) continue;
-					if ( new Sq( slot.PosC.Value, slot.PosR.Value ) != square ) continue;
+					var anchor = new Sq( slot.PosC.Value, slot.PosR.Value );
+					// Any square of a large base picks the figure up.
+					if ( !HeroPlacement.Cells( anchor, footprint ).Contains( square ) ) continue;
 
 					var token = layer.Get( TrackerBridge.FigureId( group.InstanceId, slot.Index ) );
 					if ( token == null ) continue;
 
 					_group = group;
 					_figureIndex = slot.Index;
-					PickUp( token, square );
+					PickUp( token, anchor );
 					return;
 				}
 			}
@@ -160,11 +163,13 @@ namespace Saga
 			}
 
 			// Everything except the figure being carried counts as occupied.
+			var footprint = group != null ? group.Profile.Footprint : Footprint.Small1x1;
 			var occupied = HeroPlacement.OccupiedSquares(
 				boardController.Heroes.Where( h => h != hero ), boardController.Groups );
-			if ( group != null ) occupied.Remove( _origin );
+			if ( group != null )
+				foreach ( var cell in HeroPlacement.Cells( _origin, footprint ) ) occupied.Remove( cell );
 
-			var landed = HeroPlacement.Snap( boardController.Board, wanted, occupied );
+			var landed = HeroPlacement.Snap( boardController.Board, wanted, occupied, 3, footprint );
 			if ( landed == null )
 			{
 				// Nothing free within reach, so the figure goes back rather

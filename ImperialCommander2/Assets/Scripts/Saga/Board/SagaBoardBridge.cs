@@ -79,6 +79,30 @@ namespace Saga.Board
 			=> (square.C + 0.5f, height, -(square.R + 0.5f));
 
 		/// <summary>The square a world position falls in. Inverse of SquareToWorld.</summary>
+		/// <summary>Squares a base spans along each axis, for drawing it at size.</summary>
+		public static (int w, int h) FootprintSpan( Footprint footprint, Facing facing = Facing.NorthSouth )
+		{
+			switch ( footprint )
+			{
+				case Footprint.Medium1x2: return facing == Facing.NorthSouth ? (1, 2) : (2, 1);
+				case Footprint.Large2x2: return (2, 2);
+				case Footprint.Huge2x3: return facing == Facing.NorthSouth ? (2, 3) : (3, 2);
+				default: return (1, 1);
+			}
+		}
+
+		/// <summary>
+		/// World position of the CENTRE of a figure's base, which is where its
+		/// token is drawn. A 1x1 is the square's centre; a 2x2 anchored at
+		/// (c,r) is the corner shared by its four squares.
+		/// </summary>
+		public static (float x, float y, float z) FootprintCenter( Sq anchor, Footprint footprint,
+			float height = 0f, Facing facing = Facing.NorthSouth )
+		{
+			var (w, h) = FootprintSpan( footprint, facing );
+			return (anchor.C + w / 2f, height, -(anchor.R + h / 2f));
+		}
+
 		public static Sq WorldToSquare( float x, float z )
 			=> new Sq( (int)Math.Floor( x ), (int)Math.Floor( -z ) );
 

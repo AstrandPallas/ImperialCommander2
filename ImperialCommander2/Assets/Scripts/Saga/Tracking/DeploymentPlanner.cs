@@ -130,7 +130,8 @@ namespace Saga.Tracking
 		public static List<Sq> PlaceGroup(
 			BoardModel board, Sq point, int figures,
 			IEnumerable<Sq> occupied = null,
-			IEnumerable<HeroCombatState> heroes = null )
+			IEnumerable<HeroCombatState> heroes = null,
+			Footprint footprint = Footprint.Small1x1 )
 		{
 			var placed = new List<Sq>();
 			if ( board == null || figures <= 0 ) return placed;
@@ -148,8 +149,10 @@ namespace Saga.Tracking
 			{
 				// Everything at this remove costs the group the same, so the
 				// line of sight is what separates them.
+				// A square only qualifies if the WHOLE base fits on it: for a
+				// 2x2 that is four squares, all existing, enterable and free.
 				var ring = frontier
-					.Where( sq => board.IsEnterable( sq ) && !taken.Contains( sq ) )
+					.Where( sq => HeroPlacement.Fits( board, sq, footprint, taken ) )
 					.OrderByDescending( sq => SeesAnyRebel( board, sq, rebels ) ? 1 : 0 )
 					.ThenBy( sq => sq.C )
 					.ThenBy( sq => sq.R )
@@ -158,8 +161,9 @@ namespace Saga.Tracking
 				foreach ( var sq in ring )
 				{
 					if ( placed.Count >= figures ) break;
+					if ( !HeroPlacement.Fits( board, sq, footprint, taken ) ) continue;
 					placed.Add( sq );
-					taken.Add( sq );
+					foreach ( var cell in HeroPlacement.Cells( sq, footprint ) ) taken.Add( cell );
 				}
 
 				var next = new List<Sq>();
