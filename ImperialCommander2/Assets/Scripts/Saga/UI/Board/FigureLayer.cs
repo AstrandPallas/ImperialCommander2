@@ -29,7 +29,8 @@ namespace Saga
 		public FigureToken Get( string figureId )
 			=> figureId != null && _tokens.TryGetValue( figureId, out var t ) ? t : null;
 
-		public FigureToken Spawn( string figureId, Sq square, bool imperial, string caption )
+		public FigureToken Spawn( string figureId, Sq square, bool imperial, string caption,
+			Sprite face = null )
 		{
 			Despawn( figureId );
 			// Falling back to Resources means the layer works from code alone,
@@ -46,7 +47,7 @@ namespace Saga
 
 			var token = Instantiate( tokenPrefab, transform );
 			token.name = "Figure_" + figureId;
-			token.Init( figureId, square, imperial ? imperialColour : rebelColour, caption );
+			token.Init( figureId, square, imperial ? imperialColour : rebelColour, caption, face );
 			_tokens[figureId] = token;
 			return token;
 		}

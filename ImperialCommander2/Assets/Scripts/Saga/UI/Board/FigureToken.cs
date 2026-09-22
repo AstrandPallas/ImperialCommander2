@@ -13,6 +13,12 @@ namespace Saga
 		public SpriteRenderer ring;
 		public TextMesh label;
 
+		/// <summary>The card's own portrait, the same one shown in the strip.</summary>
+		public SpriteRenderer portrait;
+
+		/// <summary>Diameter the portrait is fitted to, in squares.</summary>
+		public float portraitSize = 0.78f;
+
 		/// <summary>Height above the tiles, which sit at y = 0.</summary>
 		public float hover = 0.12f;
 
@@ -24,12 +30,42 @@ namespace Saga
 
 		private Sequence _move;
 
-		public void Init( string figureId, Sq square, Color colour, string caption )
+		public void Init( string figureId, Sq square, Color colour, string caption,
+			Sprite face = null )
 		{
 			FigureId = figureId;
 			if ( body != null ) body.color = colour;
 			if ( ring != null ) ring.color = colour;
-			if ( label != null ) label.text = caption;
+
+			// A token should be recognisable as the figure it stands for, the
+			// same way the strip on the left is. The lettered disc is only the
+			// fallback for a card with no portrait.
+			bool hasFace = face != null && portrait != null;
+			if ( portrait != null )
+			{
+				portrait.sprite = face;
+				portrait.enabled = hasFace;
+				if ( hasFace )
+				{
+					// Fit whatever pixels-per-unit the sprite was imported with.
+					float width = face.bounds.size.x;
+					float scale = width > 0f ? portraitSize / width : 1f;
+					portrait.transform.localScale = Vector3.one * scale;
+				}
+			}
+			if ( body != null ) body.enabled = !hasFace;
+
+			if ( label != null )
+			{
+				label.text = caption ?? "";
+				// With a face the caption is the figure number in the group,
+				// which still matters for matching to the minis, so it moves
+				// to the corner rather than covering the portrait.
+				label.transform.localPosition = hasFace
+					? new Vector3( 0.30f, -0.30f, -0.02f )
+					: new Vector3( 0f, 0f, -0.02f );
+				label.transform.localScale = Vector3.one * (hasFace ? 0.055f : 0.08f);
+			}
 			Place( square );
 		}
 

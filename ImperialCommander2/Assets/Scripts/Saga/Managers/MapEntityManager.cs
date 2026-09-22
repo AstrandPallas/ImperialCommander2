@@ -583,6 +583,27 @@ namespace Saga
 		}
 
 		/// <summary>
+		/// The square a deployment point stands on, by the guid the deployment
+		/// code passes around.
+		/// </summary>
+		/// <remarks>
+		/// This is how the board learns WHICH point the players are being told
+		/// to use, rather than choosing one of its own and putting the token
+		/// somewhere they were never shown.
+		/// </remarks>
+		public bool TryDeploymentSquare( Guid guid, out string name, out Sq square )
+		{
+			name = "";
+			square = default;
+			var e = GetEntity( guid );
+			if ( e == null || e.entityType != EntityType.DeploymentPoint ) return false;
+			if ( !TrySquareOf( e, out int c, out int r ) ) return false;
+			name = e.name ?? "";
+			square = new Sq( c, r );
+			return true;
+		}
+
+		/// <summary>
 		/// Returns the Active DP, or a random one if >1, or empty GUID if there is no active DP
 		/// </summary>
 		public Guid GetActiveDeploymentPoint( DeploymentCard enemyToAdd )

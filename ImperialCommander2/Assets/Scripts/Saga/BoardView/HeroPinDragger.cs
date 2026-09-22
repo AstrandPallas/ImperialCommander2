@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 namespace Saga
 {
-	/// <summary>Drag a hero's token to the square the players moved it to.</summary>
+	/// <summary>Drag any figure's token to the square the players moved it to.</summary>
 	/// <remarks>
 	/// This is the one input the players give every round, so it is a drag
 	/// rather than a form: pick the figure up, put it down, done. The square is
@@ -31,8 +31,13 @@ namespace Saga
 
 		public event Action<HeroCombatState, Sq> HeroMoved;
 
+		/// <summary>Raised when an enemy figure is put down somewhere by hand.</summary>
+		public event Action<GroupCombatState, int, Sq> FigureMoved;
+
 		private FigureToken _dragging;
 		private HeroCombatState _hero;
+		private GroupCombatState _group;
+		private int _figureIndex = -1;
 		private Color _originalColour;
 		private Sq _origin;
 		private CameraController _camera;
@@ -78,9 +83,6 @@ namespace Saga
 			var layer = boardController.figureLayer;
 			if ( layer == null ) return;
 
-			// Only heroes are dragged. Enemy positions come from the planner,
-			// and a correction to one of those goes through the override path
-			// so the rest of the group re-plans around it.
 			foreach ( var hero in boardController.Heroes )
 			{
 				if ( hero.PosC == null || hero.PosR == null ) continue;
@@ -90,17 +92,43 @@ namespace Saga
 				if ( token == null ) continue;
 
 				_hero = hero;
-				_dragging = token;
-				_origin = square;
-				HoldCamera( true );
-				if ( token.body != null )
-				{
-					_originalColour = token.body.color;
-					token.body.color = draggingColour;
-				}
-				token.Stop();
+				PickUp( token, square );
 				return;
 			}
+
+			// Enemy figures too. The planner puts them down, but the table is
+			// the authority: a mission with no deployment point, a figure the
+			// players moved by hand, or an order they disagreed with all end
+			// with a token that has to go where the mini actually is.
+			foreach ( var group in boardController.Groups )
+			{
+				foreach ( var slot in group.Figures )
+				{
+					if ( !slot.Alive || !slot.HasPosition ) continue;
+					if ( new Sq( slot.PosC.Value, slot.PosR.Value ) != square ) continue;
+
+					var token = layer.Get( TrackerBridge.FigureId( group.InstanceId, slot.Index ) );
+					if ( token == null ) continue;
+
+					_group = group;
+					_figureIndex = slot.Index;
+					PickUp( token, square );
+					return;
+				}
+			}
+		}
+
+		private void PickUp( FigureToken token, Sq square )
+		{
+			_dragging = token;
+			_origin = square;
+			HoldCamera( true );
+			if ( token.ring != null )
+			{
+				_originalColour = token.ring.color;
+				token.ring.color = draggingColour;
+			}
+			token.Stop();
 		}
 
 		private void DragTo()
@@ -114,12 +142,16 @@ namespace Saga
 		{
 			var token = _dragging;
 			var hero = _hero;
+			var group = _group;
+			int index = _figureIndex;
 			_dragging = null;
 			_hero = null;
+			_group = null;
+			_figureIndex = -1;
 			HoldCamera( false );
 
-			if ( token == null || hero == null ) return;
-			if ( token.body != null ) token.body.color = _originalColour;
+			if ( token == null || (hero == null && group == null) ) return;
+			if ( token.ring != null ) token.ring.color = _originalColour;
 
 			if ( !PointerSquare( out var wanted ) )
 			{
@@ -127,8 +159,10 @@ namespace Saga
 				return;
 			}
 
+			// Everything except the figure being carried counts as occupied.
 			var occupied = HeroPlacement.OccupiedSquares(
 				boardController.Heroes.Where( h => h != hero ), boardController.Groups );
+			if ( group != null ) occupied.Remove( _origin );
 
 			var landed = HeroPlacement.Snap( boardController.Board, wanted, occupied );
 			if ( landed == null )
@@ -141,10 +175,21 @@ namespace Saga
 
 			// Recorded only once the drop is known to be legal, so an abandoned
 			// drag leaves no step behind.
-			boardController.Undo?.Record( hero.Name + " moved to " + landed.Value );
-			TrackerBridge.SetHeroPosition( hero, landed.Value, CurrentRound );
-			token.Place( landed.Value );
-			HeroMoved?.Invoke( hero, landed.Value );
+			if ( hero != null )
+			{
+				boardController.Undo?.Record( hero.Name + " moved to " + landed.Value );
+				TrackerBridge.SetHeroPosition( hero, landed.Value, CurrentRound );
+				token.Place( landed.Value );
+				HeroMoved?.Invoke( hero, landed.Value );
+			}
+			else
+			{
+				boardController.Undo?.Record( group.CardName + " #" + (index + 1)
+					+ " moved to " + landed.Value );
+				TrackerBridge.SetFigurePosition( group, index, landed.Value );
+				token.Place( landed.Value );
+				FigureMoved?.Invoke( group, index, landed.Value );
+			}
 		}
 
 		/// <summary>Where the pointer meets the board plane.</summary>

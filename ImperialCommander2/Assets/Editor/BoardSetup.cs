@@ -30,6 +30,16 @@ namespace Saga.EditorTools
 			var ring = MakeSprite( "Ring", root.transform, sprite, 1.00f, 0 );
 			var bodyGo = MakeSprite( "Body", root.transform, sprite, 0.74f, 1 );
 
+			// The card portrait sits over the body disc. Its sprite and scale
+			// are set at runtime by FigureToken, since the mugshots are not
+			// all imported at the same pixels-per-unit.
+			var faceGo = new GameObject( "Portrait" );
+			faceGo.transform.SetParent( root.transform, false );
+			faceGo.transform.localPosition = new Vector3( 0f, 0f, -0.01f );
+			var face = faceGo.AddComponent<SpriteRenderer>();
+			face.sortingOrder = 2;
+			face.enabled = false;
+
 			var labelGo = new GameObject( "Label" );
 			labelGo.transform.SetParent( root.transform, false );
 			labelGo.transform.localPosition = new Vector3( 0f, 0f, -0.02f );
@@ -42,12 +52,13 @@ namespace Saga.EditorTools
 			label.color = Color.white;
 			label.text = "1";
 			var labelRenderer = labelGo.GetComponent<MeshRenderer>();
-			labelRenderer.sortingOrder = 2;
+			labelRenderer.sortingOrder = 3;
 
 			var token = root.AddComponent<FigureToken>();
 			token.body = bodyGo.GetComponent<SpriteRenderer>();
 			token.ring = ring.GetComponent<SpriteRenderer>();
 			token.label = label;
+			token.portrait = face;
 
 			PrefabUtility.SaveAsPrefabAsset( root, PrefabPath );
 			Object.DestroyImmediate( root );

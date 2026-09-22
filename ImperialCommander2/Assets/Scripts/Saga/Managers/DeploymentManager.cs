@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Saga.Board;
 using UnityEngine;
 
 namespace Saga
@@ -53,6 +54,7 @@ namespace Saga
 				var go = Instantiate( dgPrefab, enemyContainer );
 				go.GetComponent<SagaDGPrefab>().Init( cd );
 				DataStore.deployedEnemies.Add( cd );
+				FindObjectOfType<SagaBoardController>()?.Register( cd );
 			}
 
 			//handle visual map deployment
@@ -167,10 +169,9 @@ namespace Saga
 			//add it to deployed enemies
 			DataStore.deployedEnemies.Add( cardDescriptor );
 
-			//put the group on the board model so it can be planned and shown
-			var boardController = FindObjectOfType<SagaBoardController>();
-			if ( boardController != null )
-				boardController.DeployGroup( cardDescriptor );
+			//track the group; WHERE it stands is decided in HandleMapDeployment,
+			//from the same deployment point the players are shown
+			FindObjectOfType<SagaBoardController>()?.Register( cardDescriptor );
 			//if it's FROM the dep hand, remove it
 			//should have already been removed *IF* it's from DeploymentPopup
 			//otherwise it just got (up/down)graded to/from Elite or it's from the event action
@@ -293,6 +294,31 @@ namespace Saga
 		/// <summary>
 		/// Does the visual map deployment - uses override if exists, highlights DP, camera to DP, ovrd is from optional deployment event action
 		/// </summary>
+		/// <summary>
+		/// Stand the group's tokens at the deployment point(s) the players are
+		/// about to be shown.
+		/// </summary>
+		/// <remarks>
+		/// Called at the moment a point is resolved and BEFORE the text box, so
+		/// the tokens are already on the map while the message says where to
+		/// put the minis. Every deployment path -- starting groups, events,
+		/// reinforcements, optional deployments -- comes through here, which
+		/// is why the board is not told about deployment anywhere else.
+		/// </remarks>
+		void PlaceOnBoard( DeploymentCard card, IEnumerable<Guid> pointGuids )
+		{
+			var board = FindObjectOfType<SagaBoardController>();
+			var entities = FindObjectOfType<MapEntityManager>();
+			if ( board == null || entities == null || card == null ) return;
+
+			var points = new List<(string Name, Sq Square)>();
+			foreach ( var guid in pointGuids ?? Enumerable.Empty<Guid>() )
+				if ( entities.TryDeploymentSquare( guid, out var name, out var sq ) )
+					points.Add( (name, sq) );
+
+			board.PlaceGroupAt( card, points );
+		}
+
 		public void HandleMapDeployment( DeploymentCard enemyToAdd, Action callback = null, DeploymentGroupOverride ovrd = null )
 		{
 			string cardID = enemyToAdd.id;
@@ -311,6 +337,7 @@ namespace Saga
 					var adp = FindObjectOfType<MapEntityManager>().GetActiveDeploymentPoint( enemyToAdd );
 					if ( adp != Guid.Empty )
 					{
+						PlaceOnBoard( enemyToAdd, new[] { adp } );
 						FindObjectOfType<SagaEventManager>().toggleVisButton.SetActive( true );
 						//FindObjectOfType<SagaController>().ToggleNavAndEntitySelection( false );
 						FindObjectOfType<MapEntityManager>().ToggleHighlightDeploymentPoint( adp, true );
@@ -335,6 +362,9 @@ namespace Saga
 				else if ( ovrd.deploymentPoint == DeploymentSpot.None )
 				{
 					Debug.Log( "EnemyDeployment::NONE DP" );
+					// No point to stand on: the group is tracked with no
+					// position and the players place its tokens by dragging.
+					PlaceOnBoard( enemyToAdd, null );
 					FindObjectOfType<SagaEventManager>().toggleVisButton.SetActive( true );
 					//string enemyName = ovrd.useGenericMugshot ? "Rebel" : ovrd.nameOverride;
 					string enemyName = ovrd.nameOverride;
@@ -357,6 +387,7 @@ namespace Saga
 				var adp = FindObjectOfType<MapEntityManager>().GetActiveDeploymentPoint( enemyToAdd );
 				if ( adp != Guid.Empty )
 				{
+					PlaceOnBoard( enemyToAdd, new[] { adp } );
 					FindObjectOfType<SagaEventManager>().toggleVisButton.SetActive( true );
 					//FindObjectOfType<SagaController>().ToggleNavAndEntitySelection( false );
 					FindObjectOfType<MapEntityManager>().ToggleHighlightDeploymentPoint( adp, true );
@@ -397,6 +428,9 @@ namespace Saga
 				Guid guid = dp == Guid.Empty ? adp : dp;
 				FindObjectOfType<MapEntityManager>().ToggleHighlightDeploymentPoint( guid, true );
 			}
+			// The mission offers several points; the board takes the least
+			// crowded and the players drag if they meant another.
+			PlaceOnBoard( enemyToAdd, allDPs.Select( dp => dp == Guid.Empty ? adp : dp ) );
 
 			if ( allDPs.Length > 0 )
 				FindObjectOfType<CameraController>().MoveToEntity( allDPs[0] );

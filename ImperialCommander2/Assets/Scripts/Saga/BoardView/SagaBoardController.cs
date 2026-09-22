@@ -267,18 +267,21 @@ namespace Saga
 		}
 
 		/// <summary>
-		/// Put a newly deployed group on the board and start tracking it.
+		/// Start tracking a deployed group, with no positions yet.
 		/// </summary>
 		/// <remarks>
-		/// Figures land on the free squares nearest an active deployment point,
-		/// walking outward over CanStep so a group arrives together and on the
-		/// near side of a wall. Which point a mission means is often decided by
-		/// its rules text, so the first active one is a starting guess the
-		/// players correct by dragging -- the same as a hero's position.
+		/// Deployment happens in two steps upstream: the card is added to the
+		/// game, and then -- separately, and sometimes only after a text box --
+		/// a deployment point is chosen and shown to the players. The tracker
+		/// mirrors that. Registering here means the group exists for undo and
+		/// the panel from the moment the card does; where it stands is decided
+		/// by PlaceGroupAt, from the SAME point the players are told to use.
 		/// </remarks>
-		public GroupCombatState DeployGroup( DeploymentCard card )
+		public GroupCombatState Register( DeploymentCard card )
 		{
-			if ( card == null || !IsReady ) return null;
+			if ( card == null ) return null;
+			var existing = FindGroup( card );
+			if ( existing != null ) return existing;
 
 			int figures = card.currentSize > 0 ? card.currentSize : Math.Max( 1, card.size );
 			var group = GroupCombatState.Create(
@@ -292,48 +295,68 @@ namespace Saga
 			group.Profile = UnitProfile.From(
 				card.attackType.ToString(), card.miniSize.ToString(), card.speed, card.keywords );
 
-			var points = mapEntityManager != null
-				? mapEntityManager.CollectDeploymentPoints()
-				: new List<(string Name, int C, int R)>();
+			Track( group );
+			return group;
+		}
 
-			if ( points.Count == 0 )
+		/// <summary>The live group for a card, if it is on the board.</summary>
+		private GroupCombatState FindGroup( DeploymentCard card )
+			=> card == null ? null
+				: _groups.FirstOrDefault( g => g.CardId == card.id && !g.IsDefeated );
+
+		/// <summary>
+		/// Put a group's figures on the board at a deployment point.
+		/// </summary>
+		/// <param name="points">
+		/// The deployment squares the mission allows for this group -- the
+		/// same ones the players are shown. Several means the mission spreads
+		/// the choice, so the group takes the least crowded of them.
+		/// </param>
+		/// <remarks>
+		/// This is called from the moment upstream resolves WHICH point it is
+		/// about to highlight, so the tokens are already standing there while
+		/// the text box says "deploy here". Using a point of our own would put
+		/// the token somewhere the players were not told about, which is worse
+		/// than no token at all.
+		/// </remarks>
+		public GroupCombatState PlaceGroupAt( DeploymentCard card,
+			IEnumerable<(string Name, Sq Square)> points )
+		{
+			var group = Register( card );
+			if ( group == null || !IsReady ) return group;
+
+			var candidates = (points ?? Enumerable.Empty<(string, Sq)>())
+				.Where( p => Board.Exists( p.Square ) )
+				.ToList();
+			if ( candidates.Count == 0 )
 			{
 				Utils.LogWarning( "SagaBoardController::" + card.name
-					+ " deployed with no active deployment point, so it has no position yet" );
-				Track( group );
+					+ " has no deployment point on the board, so it has no position yet" );
 				return group;
 			}
 
 			var occupied = HeroPlacement.OccupiedSquares( _heroes, _groups );
 
-			// Which point a mission means is often set by its own rules text,
-			// which the app cannot read, so this is a suggestion the players
-			// correct by dragging. It replaces taking whichever point happened
-			// to come first, which was not a choice at all.
-			var ranked = DeploymentPlanner.RankPoints( Board, points, _heroes,
-				TrackerBridge.ObjectivesFrom( Tracker.Tokens ) );
-			var chosen = ranked.FirstOrDefault();
-			if ( chosen == null )
-			{
-				Track( group );
-				return group;
-			}
+			// Spread the arrivals: a point already crowded by the last group
+			// is the worst place to put the next one. Deterministic on ties.
+			var chosen = candidates
+				.OrderBy( p => occupied.Count( o => Sq.Chebyshev( o, p.Square ) <= 2 ) )
+				.ThenBy( p => p.Square.C ).ThenBy( p => p.Square.R )
+				.First();
 
-			Utils.LogWarning( "SagaBoardController::" + card.name + " deploys at "
-				+ chosen.Name + " -- " + chosen.Reason
-				+ (ranked.Count > 1 ? " (" + (ranked.Count - 1) + " other point(s) available)" : "") );
-
+			int figures = group.MaxFigures;
 			var squares = DeploymentPlanner.PlaceGroup( Board, chosen.Square, figures,
 				occupied, _heroes );
 
 			for ( int i = 0; i < squares.Count && i < figures; i++ )
 				TrackerBridge.SetFigurePosition( group, i, squares[i] );
 
-			if ( squares.Count < figures )
-				Utils.LogWarning( "SagaBoardController::" + card.name + " only seated "
-					+ squares.Count + " of " + figures + " figures" );
+			Utils.LogWarning( "SagaBoardController::" + card.name + " deploys at "
+				+ chosen.Name + " " + chosen.Square
+				+ (candidates.Count > 1 ? " (chosen from " + candidates.Count + ")" : "")
+				+ ", " + squares.Count + " of " + figures + " figure(s) seated" );
 
-			Track( group );
+			RefreshTokens();
 			return group;
 		}
 
@@ -480,25 +503,64 @@ namespace Saga
 			foreach ( var hero in _heroes )
 			{
 				if ( !hero.InPlay || hero.PosC == null || hero.PosR == null ) continue;
+				var face = FaceFor( hero.CardId );
 				figureLayer.Spawn( hero.CardId, new Sq( hero.PosC.Value, hero.PosR.Value ),
-					false, Initial( hero.Name ) );
+					false, face != null ? "" : Initial( hero.Name ), face );
 			}
 
 			foreach ( var group in _groups )
 			{
+				var face = FaceFor( group.CardId );
 				foreach ( var slot in group.Figures )
 				{
 					if ( !slot.Alive || !slot.HasPosition ) continue;
 					figureLayer.Spawn(
 						TrackerBridge.FigureId( group.InstanceId, slot.Index ),
 						new Sq( slot.PosC.Value, slot.PosR.Value ),
-						true, (slot.Index + 1).ToString() );
+						true,
+						// The number still matters for a group: it is how a
+						// token maps onto one of three identical minis.
+						group.MaxFigures > 1 ? (slot.Index + 1).ToString() : "",
+						face );
 				}
 			}
 		}
 
 		private static string Initial( string name )
 			=> string.IsNullOrEmpty( name ) ? "?" : name.Substring( 0, 1 ).ToUpperInvariant();
+
+		private static readonly Dictionary<string, Sprite> _faces = new Dictionary<string, Sprite>();
+
+		/// <summary>
+		/// The card's portrait -- the same image the strip on the left uses.
+		/// </summary>
+		/// <remarks>
+		/// A token that looks like the figure it stands for needs no legend.
+		/// The path is the one DataStore derives for every card, so the token
+		/// and the strip can never show different faces for the same card.
+		/// </remarks>
+		private static Sprite FaceFor( string cardId )
+		{
+			if ( string.IsNullOrEmpty( cardId ) ) return null;
+			if ( _faces.TryGetValue( cardId, out var cached ) ) return cached;
+
+			DeploymentCard card = null;
+			foreach ( var list in new[]
+			{
+				DataStore.heroCards, DataStore.deploymentCards,
+				DataStore.villainCards, DataStore.allyCards,
+			} )
+			{
+				card = list?.FirstOrDefault( c => c != null && c.id == cardId );
+				if ( card != null ) break;
+			}
+
+			var sprite = card != null && !string.IsNullOrEmpty( card.mugShotPath )
+				? Resources.Load<Sprite>( card.mugShotPath )
+				: null;
+			_faces[cardId] = sprite;
+			return sprite;
+		}
 
 		/// <summary>
 		/// Work out what a group should do, show it moving, and record where it
